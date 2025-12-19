@@ -73,6 +73,8 @@ funtzioak = {
 # -----------------------------
 if "pistak_ireki" not in st.session_state:
     st.session_state.pistak_ireki = False
+if "f_input" not in st.session_state:
+    st.session_state["f_input"] = "x"
 
 # -----------------------------
 # LAYOUT PRINCIPAL: 3 COLUMNAS
@@ -95,16 +97,16 @@ with col_left:
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
-    # Gráfico centrado usando columnas internas
     col_l, col_c, col_r = st.columns([1,1,1])
     with col_c:
+        # Gráfico
         try:
-            f = sp.sympify(st.session_state.get("f_input", "x"))
+            f = sp.sympify(st.session_state["f_input"])
             f_num = sp.lambdify(x, f, "numpy")
             x_vals = np.linspace(-5,5,250)
             y_vals = f_num(x_vals)
 
-            fig, ax = plt.subplots(figsize=(2.5,2))
+            fig, ax = plt.subplots(figsize=(3,2.2))  # un poquito más grande que antes
             ax.plot(x_vals, y_vals, color="#000000", linewidth=2)
             ax.grid(True, linestyle='--', alpha=0.5)
             ax.set_facecolor("#ffffff")
@@ -117,8 +119,8 @@ with col_center:
         except Exception as e:
             st.error(f"⚠️ Funtzioa ez da zuzena: {e}")
 
-    # Input debajo del gráfico, mismo ancho que el gráfico
-    st.session_state["f_input"] = st.text_input("✏️ Idatzi funtzioa", st.session_state.get("f_input", "x"))
+        # Input debajo, mismo ancho que gráfico
+        st.session_state["f_input"] = st.text_input("✏️ Idatzi funtzioa", st.session_state["f_input"])
 
 # -----------------------------
 # EZAUFARRIAK A LA DERECHA
@@ -126,7 +128,7 @@ with col_center:
 with col_right:
     st.subheader("📌 Ezaugarriak")
     try:
-        f = sp.sympify(st.session_state.get("f_input", "x"))
+        f = sp.sympify(st.session_state["f_input"])
         tipo = None
         if f.is_number:
             tipo = "Funtzio konstantea"
