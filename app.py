@@ -11,7 +11,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📈 Funtzioen simulazio interaktiboa")
+st.title("FUNTZIOEN PORTFOLIOA")
 st.write("Idatzi funtzio bat eta ikusi bere grafikoa eta ezaugarriak.")
 
 # -----------------------------
@@ -98,20 +98,27 @@ funtzioak = {
 if "pistak_ireki" not in st.session_state:
     st.session_state.pistak_ireki = False
 
-if st.button("❓ Pistak ireki/itxi"):
-    st.session_state.pistak_ireki = not st.session_state.pistak_ireki
+# -----------------------------
+# GOIKO LERROA: Input + Pistak
+# -----------------------------
+col_input, col_pistak = st.columns([3,1])
 
-if st.session_state.pistak_ireki:
-    st.info("**Pista: adierazpen aljebraikoak**")
-    for izena, datuak in funtzioak.items():
-        st.write(f"**{izena}** → {datuak['adierazpen aljebraikoa']}")
+with col_input:
+    f_input = st.text_input("✏️ Idatzi funtzioa", "x")
+
+with col_pistak:
+    if st.button("❓ Pistak ireki/itxi"):
+        st.session_state.pistak_ireki = not st.session_state.pistak_ireki
+
+    if st.session_state.pistak_ireki:
+        st.info("**Pista: adierazpen aljebraikoak**")
+        for izena, datuak in funtzioak.items():
+            st.write(f"**{izena}** → {datuak['adierazpen aljebraikoa']}")
 
 # -----------------------------
-# INPUT ETA LAYOUT
+# BEHEKO LERROA: Grafikoa + Ezaugarriak
 # -----------------------------
-col_ezaugarriak, col_grafikoa = st.columns([1, 2])
-
-f_input = st.text_input("✏️ Idatzi funtzioa (adib.: x**2 + 3*x + 1)", "x")
+col_grafikoa, col_ezaugarriak = st.columns([2,1])
 x = sp.symbols("x")
 
 # -----------------------------
@@ -122,7 +129,7 @@ with col_grafikoa:
     try:
         f = sp.sympify(f_input)
         f_num = sp.lambdify(x, f, "numpy")
-        x_balioak = np.linspace(-10, 10, 400)
+        x_balioak = np.linspace(-5,5,300)
         y_balioak = f_num(x_balioak)
 
         fig, ax = plt.subplots()
