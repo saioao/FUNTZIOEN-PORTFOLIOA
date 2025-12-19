@@ -14,16 +14,16 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-    .stApp { background-color: #ffffff; color: #000000; }
-    h1, h2, h3, h4, h5, h6, p, span, div { color: #000000; }
+    .stApp { background-color: #ffffff; color: #333333; }
+    h1, h2, h3, h4, h5, h6, p, span, div { color: #333333; }
     .funtzio-tipo {
         background-color: #d3d3d3;
         font-weight: bold;
-        text-decoration: underline;
         padding: 4px 8px;
         border-radius: 4px;
         display: inline-block;
         margin-bottom: 5px;
+        color: #333333;
     }
     .stButton>button { height: 3em; width: 100%; font-size:16px; }
     </style>
@@ -77,9 +77,9 @@ if "f_input" not in st.session_state:
     st.session_state["f_input"] = "x"
 
 # -----------------------------
-# LAYOUT PRINCIPAL: 3 COLUMNAS
+# LAYOUT PRINCIPAL: 3 COLUMNAS MISMO ANCHO
 # -----------------------------
-col_left, col_center, col_right = st.columns([1,3,3])
+col_left, col_center, col_right = st.columns([1,1,1])
 
 # -----------------------------
 # BOTÓN ❓ A LA IZQUIERDA
@@ -107,15 +107,15 @@ with col_center:
             x_vals = np.linspace(-5,5,250)
             y_vals = f_num(x_vals)
 
-            fig, ax = plt.subplots(figsize=(4,2.5))  # un pelín más grande para que se vea bien
-            ax.plot(x_vals, y_vals, color="#000000", linewidth=2)
+            fig, ax = plt.subplots(figsize=(4,2.5))  # tamaño intermedio
+            ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
             ax.grid(True, linestyle='--', alpha=0.5)
             ax.set_facecolor("#ffffff")
             ax.spines['top'].set_visible(False)
             ax.spines['right'].set_visible(False)
-            ax.spines['left'].set_color("#000000")
-            ax.spines['bottom'].set_color("#000000")
-            ax.tick_params(colors="#000000")
+            ax.spines['left'].set_color("#333333")
+            ax.spines['bottom'].set_color("#333333")
+            ax.tick_params(colors="#333333")
             st.pyplot(fig)
         except Exception as e:
             st.error(f"⚠️ Funtzioa ez da zuzena: {e}")
@@ -151,7 +151,8 @@ with col_right:
             tipo = "Funtzio irrazionala"
 
         if tipo in funtzioak:
-            st.markdown(f"<span class='funtzio-tipo'>{tipo}</span>", unsafe_allow_html=True)
+            # Fondo gris, texto gris oscuro, sin subrayado
+            st.markdown(f"<div class='funtzio-tipo'>{tipo}</div>", unsafe_allow_html=True)
             for k,v in funtzioak[tipo].items():
                 st.write(f"**{k.capitalize()}**: {v}")
         else:
