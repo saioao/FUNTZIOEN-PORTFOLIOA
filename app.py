@@ -14,15 +14,10 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-    .stApp {
-        background-color: #ffffff;
-        color: #000000;
-    }
-    h1, h2, h3, h4, h5, h6, p, span, div {
-        color: #000000;
-    }
+    .stApp { background-color: #ffffff; color: #000000; }
+    h1, h2, h3, h4, h5, h6, p, span, div { color: #000000; }
     .funtzio-tipo {
-        background-color: #d3d3d3;  /* gris */
+        background-color: #d3d3d3;
         font-weight: bold;
         text-decoration: underline;
         padding: 4px 8px;
@@ -30,11 +25,7 @@ st.markdown("""
         display: inline-block;
         margin-bottom: 5px;
     }
-    .stButton>button {
-        height: 3em;
-        width: 100%;
-        font-size:16px;
-    }
+    .stButton>button { height: 3em; width: 100%; font-size:16px; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -42,78 +33,39 @@ st.markdown("""
 # FUNTZIO MOTAK
 # -----------------------------
 funtzioak = {
-    "Funtzio lineala": {
-        "adierazpen aljebraikoa": "a·x + b",
-        "izate eremua": "ℝ",
-        "monotonia": "Gorakorra a>0 bada, beherakorra a<0 bada",
-        "kurbatura": "Nulua",
-        "ebaki puntuak": "x = -b/a",
-        "asintotak": "Ez dauka",
-        "alderantzizkoa": "(x - b)/a"
-    },
-    "2. mailako funtzio polinomikoa": {
-        "adierazpen aljebraikoa": "a·x² + b·x + c",
-        "izate eremua": "ℝ",
-        "monotonia": "Erpinaren araberakoa",
-        "kurbatura": "Ahurra edo ganbila a-ren arabera",
-        "ebaki puntuak": "Bigarren mailako formula",
-        "asintotak": "Ez dauka",
-        "alderantzizkoa": "Ez dauka ℝ-n"
-    },
-    "Funtzio polinomikoa": {
-        "adierazpen aljebraikoa": "P(x)≥3",
-        "izate eremua": "ℝ",
-        "monotonia": "Polinomioaren arabera",
-        "kurbatura": "Polinomioaren arabera",
-        "ebaki puntuak": "Polinomioaren arabera",
-        "asintotak": "Ez dauka",
-        "alderantzizkoa": "Normalean ez du"
-    },
-    "Funtzio arrazionala": {
-        "adierazpen aljebraikoa": "P(x)/Q(x)",
-        "izate eremua": "ℝ, Q(x)=0 denean izan ezik",
-        "monotonia": "Deribatuaren araberakoa",
-        "kurbatura": "Aldakorra",
-        "ebaki puntuak": "P(x)=0",
-        "asintotak": "Bertikalak / horizontalak",
-        "alderantzizkoa": "Funtzioaren araberakoa"
-    },
-    "Funtzio esponentziala": {
-        "adierazpen aljebraikoa": "a^x",
-        "izate eremua": "ℝ",
-        "monotonia": "Gorakorra a>1 bada",
-        "kurbatura": "Ganbila",
-        "ebaki puntuak": "Ez du X ardatza mozten",
-        "asintotak": "y = 0",
-        "alderantzizkoa": "logₐ(x)"
-    },
-    "Funtzio logaritmikoa": {
-        "adierazpen aljebraikoa": "log(x)",
-        "izate eremua": "x > 0",
-        "monotonia": "Gorakorra",
-        "kurbatura": "Ahurra",
-        "ebaki puntuak": "x = 1",
-        "asintotak": "x = 0",
-        "alderantzizkoa": "a^x"
-    },
-    "Funtzio konstantea": {
-        "adierazpen aljebraikoa": "c",
-        "izate eremua": "ℝ",
-        "monotonia": "Konstantea",
-        "kurbatura": "Nulua",
-        "ebaki puntuak": "c-ren araberakoa",
-        "asintotak": "Ez dauka",
-        "alderantzizkoa": "Ez dauka"
-    },
-    "Funtzio irrazionala": {
-        "adierazpen aljebraikoa": "√x",
-        "izate eremua": "x ≥ 0",
-        "monotonia": "Gorakorra",
-        "kurbatura": "Ahurra",
-        "ebaki puntuak": "x = 0",
-        "asintotak": "Ez dauka",
-        "alderantzizkoa": "x²"
-    }
+    "Funtzio lineala": {"adierazpen aljebraikoa": "a·x + b", "izate eremua": "ℝ",
+                        "monotonia": "Gorakorra a>0 bada, beherakorra a<0 bada",
+                        "kurbatura": "Nulua", "ebaki puntuak": "x = -b/a",
+                        "asintotak": "Ez dauka", "alderantzizkoa": "(x - b)/a"},
+    "2. mailako funtzio polinomikoa": {"adierazpen aljebraikoa": "a·x² + b·x + c",
+                                       "izate eremua": "ℝ", "monotonia": "Erpinaren araberakoa",
+                                       "kurbatura": "Ahurra edo ganbila a-ren arabera",
+                                       "ebaki puntuak": "Bigarren mailako formula",
+                                       "asintotak": "Ez dauka", "alderantzizkoa": "Ez dauka ℝ-n"},
+    "Funtzio polinomikoa": {"adierazpen aljebraikoa": "P(x)≥3", "izate eremua": "ℝ",
+                            "monotonia": "Polinomioaren arabera", "kurbatura": "Polinomioaren arabera",
+                            "ebaki puntuak": "Polinomioaren arabera", "asintotak": "Ez dauka",
+                            "alderantzizkoa": "Normalean ez du"},
+    "Funtzio arrazionala": {"adierazpen aljebraikoa": "P(x)/Q(x)", "izate eremua": "ℝ, Q(x)=0 denean izan ezik",
+                            "monotonia": "Deribatuaren araberakoa", "kurbatura": "Aldakorra",
+                            "ebaki puntuak": "P(x)=0", "asintotak": "Bertikalak / horizontalak",
+                            "alderantzizkoa": "Funtzioaren araberakoa"},
+    "Funtzio esponentziala": {"adierazpen aljebraikoa": "a^x", "izate eremua": "ℝ",
+                              "monotonia": "Gorakorra a>1 bada", "kurbatura": "Ganbila",
+                              "ebaki puntuak": "Ez du X ardatza mozten", "asintotak": "y = 0",
+                              "alderantzizkoa": "logₐ(x)"},
+    "Funtzio logaritmikoa": {"adierazpen aljebraikoa": "log(x)", "izate eremua": "x > 0",
+                             "monotonia": "Gorakorra", "kurbatura": "Ahurra",
+                             "ebaki puntuak": "x = 1", "asintotak": "x = 0",
+                             "alderantzizkoa": "a^x"},
+    "Funtzio konstantea": {"adierazpen aljebraikoa": "c", "izate eremua": "ℝ",
+                           "monotonia": "Konstantea", "kurbatura": "Nulua",
+                           "ebaki puntuak": "c-ren araberakoa", "asintotak": "Ez dauka",
+                           "alderantzizkoa": "Ez dauka"},
+    "Funtzio irrazionala": {"adierazpen aljebraikoa": "√x", "izate eremua": "x ≥ 0",
+                            "monotonia": "Gorakorra", "kurbatura": "Ahurra",
+                            "ebaki puntuak": "x = 0", "asintotak": "Ez dauka",
+                            "alderantzizkoa": "x²"}
 }
 
 # -----------------------------
@@ -122,14 +74,10 @@ funtzioak = {
 if "pistak_ireki" not in st.session_state:
     st.session_state.pistak_ireki = False
 
-# -----------------------------
-# INPUT Y BOTÓN ❓
-# -----------------------------
 col_botoia, col_input = st.columns([1,3])
 with col_botoia:
     if st.button("❓"):
         st.session_state.pistak_ireki = not st.session_state.pistak_ireki
-
 with col_input:
     f_input = st.text_input("✏️ Idatzi funtzioa", "x")
 
@@ -139,22 +87,20 @@ if st.session_state.pistak_ireki:
         st.write(f"**{izena}** → {datuak['adierazpen aljebraikoa']}")
 
 # -----------------------------
-# GRAFICO Y EZAUFARRIAK
+# GRAFICO PEQUEÑO CENTRADO
 # -----------------------------
-col_grafikoa, col_ezaugarriak = st.columns([2,1])
 x = sp.symbols("x")
+col_left, col_center, col_right = st.columns([1,1,1])
 
-# Grafikoa txikia eta zentratua
-with col_grafikoa:
-    st.subheader("📊 Grafikoa")
+with col_center:
     try:
         f = sp.sympify(f_input)
         f_num = sp.lambdify(x, f, "numpy")
-        x_balioak = np.linspace(-5,5,250)
-        y_balioak = f_num(x_balioak)
+        x_vals = np.linspace(-5,5,250)
+        y_vals = f_num(x_vals)
 
-        fig, ax = plt.subplots(figsize=(3,2))
-        ax.plot(x_balioak, y_balioak, color="#000000", linewidth=2)
+        fig, ax = plt.subplots(figsize=(2.5,2))  # pequeño
+        ax.plot(x_vals, y_vals, color="#000000", linewidth=2)
         ax.grid(True, linestyle='--', alpha=0.5)
         ax.set_facecolor("#ffffff")
         ax.spines['top'].set_visible(False)
@@ -162,12 +108,14 @@ with col_grafikoa:
         ax.spines['left'].set_color("#000000")
         ax.spines['bottom'].set_color("#000000")
         ax.tick_params(colors="#000000")
-        st.pyplot(fig)  # Mantener tamaño pequeño
+        st.pyplot(fig)
     except Exception as e:
         st.error(f"⚠️ Funtzioa ez da zuzena: {e}")
 
-# Ezaugarriak
-with col_ezaugarriak:
+# -----------------------------
+# EZAUGARRIAK A LA DERECHA
+# -----------------------------
+with col_right:
     st.subheader("📌 Ezaugarriak")
     try:
         tipo = None
@@ -192,9 +140,8 @@ with col_ezaugarriak:
             tipo = "Funtzio irrazionala"
 
         if tipo in funtzioak:
-            # Recuerdo del fondo gris como antes
             st.markdown(f"<span class='funtzio-tipo'>{tipo}</span>", unsafe_allow_html=True)
-            for k, v in funtzioak[tipo].items():
+            for k,v in funtzioak[tipo].items():
                 st.write(f"**{k.capitalize()}**: {v}")
         else:
             st.warning("🚧 Laster erabilgarri")
