@@ -45,7 +45,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 st.markdown(
     """
     <h2 style='text-align:center; margin-bottom:4px;'>
-        Funtzioen simulazio interaktiboa
+        -FUNTZIOEN PORTFOLIOA-
     </h2>
     <p style='text-align:center; color:#666666; font-size:14px; margin-top:0;'>
         Funtzio moten azterketa grafikoa
