@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # -----------------------------
-# ORRIALDEAREN KONFIGURAZIOA
+# ORRIALDEAREN KONFIGURAZIOA MINIMALISTA
 # -----------------------------
 st.set_page_config(
     page_title="Funtzioen simulazioa",
@@ -16,6 +16,15 @@ st.markdown("""
     <style>
     .stApp {
         background-color: #ffffff;
+        color: #000000;
+    }
+    h1, h2, h3, h4, h5, h6, p, span, div {
+        color: #000000;
+    }
+    .funtzio-tipo {
+        color: gray;
+        font-weight: bold;
+        text-decoration: underline;
     }
     .stButton>button {
         height: 3em;
@@ -104,13 +113,13 @@ funtzioak = {
 }
 
 # -----------------------------
-# Botón pistak
+# BOTÓN PISTAK
 # -----------------------------
 if "pistak_ireki" not in st.session_state:
     st.session_state.pistak_ireki = False
 
 # -----------------------------
-# LAYOUT PRINCIPAL: Goiko lerroa
+# GOIKO LERROA: Botón ❓ eta inputa
 # -----------------------------
 col_botoia, col_input = st.columns([1,3])
 with col_botoia:
@@ -126,12 +135,12 @@ if st.session_state.pistak_ireki:
         st.write(f"**{izena}** → {datuak['adierazpen aljebraikoa']}")
 
 # -----------------------------
-# LAYOUT ERDIAN: Grafikoa eta ezaugarriak
+# ERDIKO LERROA: Grafikoa eta Ezaugarriak
 # -----------------------------
 col_grafikoa, col_ezaugarriak = st.columns([2,1])
 x = sp.symbols("x")
 
-# Grafikoa
+# Grafikoa txikia eta zentratua
 with col_grafikoa:
     st.subheader("📊 Grafikoa")
     try:
@@ -140,11 +149,16 @@ with col_grafikoa:
         x_balioak = np.linspace(-5,5,250)
         y_balioak = f_num(x_balioak)
 
-        fig, ax = plt.subplots(figsize=(5,4))
-        ax.plot(x_balioak, y_balioak, color="#1f77b4", linewidth=2)
-        ax.grid(True, linestyle='--', alpha=0.7)
+        fig, ax = plt.subplots(figsize=(4,3))
+        ax.plot(x_balioak, y_balioak, color="#000000", linewidth=2)
+        ax.grid(True, linestyle='--', alpha=0.5)
         ax.set_facecolor("#ffffff")
-        st.pyplot(fig)
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['left'].set_color("#000000")
+        ax.spines['bottom'].set_color("#000000")
+        ax.tick_params(colors="#000000")
+        st.pyplot(fig, use_container_width=True)
     except Exception as e:
         st.error(f"⚠️ Funtzioa ez da zuzena: {e}")
 
@@ -175,7 +189,7 @@ with col_ezaugarriak:
             tipo = "Funtzio irrazionala"
 
         if tipo in funtzioak:
-            st.success(tipo)
+            st.markdown(f"<span class='funtzio-tipo'>{tipo}</span>", unsafe_allow_html=True)
             for k, v in funtzioak[tipo].items():
                 st.write(f"**{k.capitalize()}**: {v}")
         else:
