@@ -3,19 +3,27 @@ import sympy as sp
 import numpy as np
 import matplotlib.pyplot as plt
 
-# -----------------------------
-# CONFIGURACIÓN DE LA PÁGINA
-# -----------------------------
+# =============================
+# ORRIALDEAREN KONFIGURAZIOA
+# =============================
 st.set_page_config(
-    page_title="Funtzioen simulazioa",
+    page_title="Funtzioen simulazio interaktiboa",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
+# =============================
+# ESTILOA (MINIMALISTA)
+# =============================
 st.markdown("""
 <style>
-.stApp { background-color: #ffffff; color: #333333; }
-h1, h2, h3, h4, h5, h6, p, span, div { color: #333333; }
+.stApp {
+    background-color: #ffffff;
+    color: #333333;
+}
+h1, h2, h3, h4, h5, h6, p, span, div {
+    color: #333333;
+}
 .funtzio-tipo {
     background-color: #d3d3d3;
     font-weight: bold;
@@ -24,13 +32,31 @@ h1, h2, h3, h4, h5, h6, p, span, div { color: #333333; }
     display: inline-block;
     margin-bottom: 6px;
 }
-.stButton>button { width: 100%; height: 3em; }
+.stButton>button {
+    width: 100%;
+    height: 3em;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# -----------------------------
+# =============================
+# IZENBURUA
+# =============================
+st.markdown(
+    """
+    <h2 style='text-align:center; margin-bottom:4px;'>
+        Funtzioen simulazio interaktiboa
+    </h2>
+    <p style='text-align:center; color:#666666; font-size:14px; margin-top:0;'>
+        Funtzio moten azterketa grafikoa
+    </p>
+    """,
+    unsafe_allow_html=True
+)
+
+# =============================
 # FUNTZIO MOTAK
-# -----------------------------
+# =============================
 funtzioak = {
     "Funtzio lineala": {
         "adierazpen aljebraikoa": "a·x + b",
@@ -106,19 +132,19 @@ funtzioak = {
     }
 }
 
-# -----------------------------
+# =============================
 # ESTADO
-# -----------------------------
+# =============================
 if "pistak" not in st.session_state:
     st.session_state.pistak = False
 
-# -----------------------------
-# LAYOUT: 3 COLUMNAS IGUALES
-# -----------------------------
+# =============================
+# LAYOUT NAGUSIA (3 ZUTABE)
+# =============================
 col_left, col_center, col_right = st.columns(3)
 
 # -----------------------------
-# COLUMNA IZQUIERDA (❓)
+# ❓ PISTAK (EZKERRA)
 # -----------------------------
 with col_left:
     if st.button("❓"):
@@ -128,7 +154,7 @@ with col_left:
             st.write(f"**{izena}** → {d['adierazpen aljebraikoa']}")
 
 # -----------------------------
-# COLUMNA CENTRAL (GRAFICO + INPUT)
+# GRAFIKOA + INPUT (ERDIA)
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
@@ -161,7 +187,7 @@ with col_center:
         st.warning("⚠️ Funtzioa ez da zuzena")
 
 # -----------------------------
-# COLUMNA DERECHA (EZAUGARRIAK)
+# EZAUGARRIAK (ESKUMA)
 # -----------------------------
 with col_right:
     st.subheader("Ezaugarriak")
@@ -189,7 +215,10 @@ with col_right:
             tipo = "Funtzio irrazionala"
 
         if tipo in funtzioak:
-            st.markdown(f"<div class='funtzio-tipo'>{tipo}</div>", unsafe_allow_html=True)
+            st.markdown(
+                f"<div class='funtzio-tipo'>{tipo}</div>",
+                unsafe_allow_html=True
+            )
             for k, v in funtzioak[tipo].items():
                 st.write(f"**{k.capitalize()}**: {v}")
         else:
