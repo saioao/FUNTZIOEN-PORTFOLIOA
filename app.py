@@ -127,7 +127,7 @@ funtzioak = {
         "Alderantzizkoa": "-"
     },
     "FUNTZIO IRRAZIONALA": {
-        "Adierazpen aljebraikoa": "√x",
+        "Adierazpen aljebraikoa": "f(x)=√x",
         "Izate eremua": "Erroaren indizea bikoitia denean, errokizunak positiboa edo zero (≥0) izan behar du. Adibidez, f(x)=√x+1 funtzioan, izate-eremua x≥−1 da, hau da, [−1,+∞)",
         "Monotonia": "f′(x)=0 ekuazioaren puntu kritikoak",
         "Kurbatura": "f′’(x)=0 ekuazioaren inflexio-puntuak",
