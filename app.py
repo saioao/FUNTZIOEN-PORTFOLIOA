@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # -----------------------------
-# ORRIALDEAREN KONFIGURAZIOA MINIMALISTA
+# CONFIGURACIÓN DE LA PÁGINA
 # -----------------------------
 st.set_page_config(
     page_title="Funtzioen simulazioa",
@@ -35,7 +35,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # -----------------------------
-# FUNTZIO MOTAK (Ez aldatu)
+# FUNTZIO MOTAK
 # -----------------------------
 funtzioak = {
     "Funtzio lineala": {
@@ -140,7 +140,7 @@ if st.session_state.pistak_ireki:
 col_grafikoa, col_ezaugarriak = st.columns([2,1])
 x = sp.symbols("x")
 
-# Grafikoa txikia eta zentratua
+# Grafikoa txiki eta zentratua
 with col_grafikoa:
     st.subheader("📊 Grafikoa")
     try:
@@ -149,7 +149,7 @@ with col_grafikoa:
         x_balioak = np.linspace(-5,5,250)
         y_balioak = f_num(x_balioak)
 
-        fig, ax = plt.subplots(figsize=(4,3))
+        fig, ax = plt.subplots(figsize=(3,2))
         ax.plot(x_balioak, y_balioak, color="#000000", linewidth=2)
         ax.grid(True, linestyle='--', alpha=0.5)
         ax.set_facecolor("#ffffff")
@@ -158,7 +158,7 @@ with col_grafikoa:
         ax.spines['left'].set_color("#000000")
         ax.spines['bottom'].set_color("#000000")
         ax.tick_params(colors="#000000")
-        st.pyplot(fig, use_container_width=True)
+        st.pyplot(fig)  # Sin use_container_width para mantener tamaño pequeño
     except Exception as e:
         st.error(f"⚠️ Funtzioa ez da zuzena: {e}")
 
@@ -189,6 +189,7 @@ with col_ezaugarriak:
             tipo = "Funtzio irrazionala"
 
         if tipo in funtzioak:
+            # Tipo subrayado en gris
             st.markdown(f"<span class='funtzio-tipo'>{tipo}</span>", unsafe_allow_html=True)
             for k, v in funtzioak[tipo].items():
                 st.write(f"**{k.capitalize()}**: {v}")
