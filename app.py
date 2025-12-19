@@ -69,39 +69,37 @@ funtzioak = {
 }
 
 # -----------------------------
-# SESIÓN PARA PESTAÑA ❓
+# SESIÓN PESTAÑA ❓
 # -----------------------------
 if "pistak_ireki" not in st.session_state:
     st.session_state.pistak_ireki = False
 
 # -----------------------------
-# LAYOUT PRINCIPAL: ❓ izquierda + contenido
+# LAYOUT PRINCIPAL: 3 COLUMNAS
 # -----------------------------
-if st.session_state.pistak_ireki:
-    col_panel, col_main = st.columns([1,5])
-else:
-    col_panel, col_main = st.columns([0.05,5])
+col_left, col_center, col_right = st.columns([1,3,3])
 
 # -----------------------------
-# PANEL PISTAS (solo si abierto)
+# BOTÓN ❓ A LA IZQUIERDA
 # -----------------------------
-with col_panel:
+with col_left:
+    if st.button("❓"):
+        st.session_state.pistak_ireki = not st.session_state.pistak_ireki
     if st.session_state.pistak_ireki:
         st.info("**Pista: adierazpen algebraikoak**")
         for izena, datuak in funtzioak.items():
             st.write(f"**{izena}** → {datuak['adierazpen aljebraikoa']}")
 
 # -----------------------------
-# CONTENIDO PRINCIPAL
+# GRAFICO Y INPUT EN EL CENTRO
 # -----------------------------
-with col_main:
+with col_center:
     x = sp.symbols("x")
-
     # Gráfico centrado usando columnas internas
     col_l, col_c, col_r = st.columns([1,1,1])
     with col_c:
         try:
-            f = sp.sympify(f_input if 'f_input' in locals() else "x")
+            f = sp.sympify(st.session_state.get("f_input", "x"))
             f_num = sp.lambdify(x, f, "numpy")
             x_vals = np.linspace(-5,5,250)
             y_vals = f_num(x_vals)
@@ -119,41 +117,42 @@ with col_main:
         except Exception as e:
             st.error(f"⚠️ Funtzioa ez da zuzena: {e}")
 
-    # Input debajo del gráfico
-    f_input = st.text_input("✏️ Idatzi funtzioa", f_input if 'f_input' in locals() else "x")
+    # Input debajo del gráfico, mismo ancho que el gráfico
+    st.session_state["f_input"] = st.text_input("✏️ Idatzi funtzioa", st.session_state.get("f_input", "x"))
 
-    # Características a la derecha (usando columnas)
-    col_graf, col_ez = st.columns([3,2])
-    with col_ez:
-        st.subheader("📌 Ezaugarriak")
-        try:
-            tipo = None
-            f = sp.sympify(f_input)
-            if f.is_number:
-                tipo = "Funtzio konstantea"
-            elif f.is_polynomial():
-                g = sp.degree(f)
-                if g == 1:
-                    tipo = "Funtzio lineala"
-                elif g == 2:
-                    tipo = "2. mailako funtzio polinomikoa"
-                else:
-                    tipo = "Funtzio polinomikoa"
-            elif f.is_rational_function(x):
-                tipo = "Funtzio arrazionala"
-            elif f.has(sp.exp):
-                tipo = "Funtzio esponentziala"
-            elif f.has(sp.log):
-                tipo = "Funtzio logaritmikoa"
-            elif any(isinstance(term, sp.Pow) and term.exp.is_Rational and term.exp != 1 for term in f.args):
-                tipo = "Funtzio irrazionala"
-
-            if tipo in funtzioak:
-                st.markdown(f"<span class='funtzio-tipo'>{tipo}</span>", unsafe_allow_html=True)
-                for k,v in funtzioak[tipo].items():
-                    st.write(f"**{k.capitalize()}**: {v}")
+# -----------------------------
+# EZAUFARRIAK A LA DERECHA
+# -----------------------------
+with col_right:
+    st.subheader("📌 Ezaugarriak")
+    try:
+        f = sp.sympify(st.session_state.get("f_input", "x"))
+        tipo = None
+        if f.is_number:
+            tipo = "Funtzio konstantea"
+        elif f.is_polynomial():
+            g = sp.degree(f)
+            if g == 1:
+                tipo = "Funtzio lineala"
+            elif g == 2:
+                tipo = "2. mailako funtzio polinomikoa"
             else:
-                st.warning("🚧 Laster erabilgarri")
-                st.write("Funtzio mota hau oraindik ez dago inplementatuta.")
-        except Exception as e:
-            st.error(f"⚠️ Arazoa ezaugarriak erakusten: {e}")
+                tipo = "Funtzio polinomikoa"
+        elif f.is_rational_function(x):
+            tipo = "Funtzio arrazionala"
+        elif f.has(sp.exp):
+            tipo = "Funtzio esponentziala"
+        elif f.has(sp.log):
+            tipo = "Funtzio logaritmikoa"
+        elif any(isinstance(term, sp.Pow) and term.exp.is_Rational and term.exp != 1 for term in f.args):
+            tipo = "Funtzio irrazionala"
+
+        if tipo in funtzioak:
+            st.markdown(f"<span class='funtzio-tipo'>{tipo}</span>", unsafe_allow_html=True)
+            for k,v in funtzioak[tipo].items():
+                st.write(f"**{k.capitalize()}**: {v}")
+        else:
+            st.warning("🚧 Laster erabilgarri")
+            st.write("Funtzio mota hau oraindik ez dago inplementatuta.")
+    except Exception as e:
+        st.error(f"⚠️ Arazoa ezaugarriak erakusten: {e}")
