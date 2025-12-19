@@ -157,7 +157,7 @@ with col_left:
         st.session_state.pistak = not st.session_state.pistak
     if st.session_state.pistak:
         for izena, d in funtzioak.items():
-            st.write(f"**{izena}** → {d['adierazpen aljebraikoa']}")
+            st.write(f"**{izena}** → {d['Adierazpen aljebraikoa']}")
 
 # -----------------------------
 # GRAFIKOA + INPUT (ERDIA)
@@ -202,23 +202,23 @@ with col_right:
         tipo = None
 
         if f.is_number:
-            tipo = "Funtzio konstantea"
+            tipo = "FUNTZIO KONSTANTEA"
         elif f.is_polynomial():
             deg = sp.degree(f)
             if deg == 1:
-                tipo = "Funtzio lineala"
+                tipo = "FUNTZIO LINEALA"
             elif deg == 2:
-                tipo = "2. mailako funtzio polinomikoa"
+                tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
             else:
-                tipo = "Funtzio polinomikoa"
+                tipo = "FUNTZIO POLINOMIKOA"
         elif f.is_rational_function(x):
-            tipo = "Funtzio arrazionala"
+            tipo = "FUNTZIO ARRAZIONALA"
         elif f.has(sp.exp):
-            tipo = "Funtzio esponentziala"
+            tipo = "FUNTZIO ESPONENTZIALA"
         elif f.has(sp.log):
-            tipo = "Funtzio logaritmikoa"
+            tipo = "FUNTZIO LOGARITMIKOA"
         elif f.has(sp.sqrt):
-            tipo = "Funtzio irrazionala"
+            tipo = "FUNTZIO IRRAZIONALA"
 
         if tipo in funtzioak:
             st.markdown(
