@@ -196,7 +196,7 @@ with col_center:
 # EZAUGARRIAK (ESKUMA)
 # -----------------------------
 with col_right:
-    st.subheader("EZAUGARRIAK")
+    st.subheader("︙EZAUGARRIAK︙")
 
     try:
         tipo = None
