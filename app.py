@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # ORRIALDEAREN KONFIGURAZIOA
 # =============================
 st.set_page_config(
-    page_title="Funtzioen simulazio interaktiboa",
+    page_title="-FUNTZIOEN PORTFOLIOA-",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -58,77 +58,83 @@ st.markdown(
 # FUNTZIO MOTAK
 # =============================
 funtzioak = {
-    "Funtzio lineala": {
-        "adierazpen aljebraikoa": "a·x + b",
-        "izate eremua": "ℝ",
-        "monotonia": "Gorakorra a>0 bada, beherakorra a<0 bada",
-        "kurbatura": "Nulua",
-        "ebaki puntuak": "x = -b/a",
-        "asintotak": "Ez dauka",
-        "alderantzizkoa": "(x - b)/a"
+    "FUNTZIO LINEALA": {
+        "Adierazpen aljebraikoa": "f(x)=m·x+b",
+        "Izate eremua": "ℝ",
+        "Monotonia": "Gorakorra: m>0; Beherakorra: m<0",
+        "Kurbatura": "Ahurra eta ganbila",
+        "Ebaki puntuak": "Abzisa ardatza: x=-b/m; Ordenatu ardatza: y=b",
+        "Asintotak": "Ez ditu",
+        "Deribatua": "f'(x)=m",
+        "Alderantzizkoa": "f^-1(x)=(x-b)/m"
     },
-    "2. mailako funtzio polinomikoa": {
-        "adierazpen aljebraikoa": "a·x² + b·x + c",
-        "izate eremua": "ℝ",
-        "monotonia": "Erpinaren araberakoa",
-        "kurbatura": "Ahurra edo ganbila",
-        "ebaki puntuak": "Bigarren mailako formula",
-        "asintotak": "Ez dauka",
-        "alderantzizkoa": "Ez dauka ℝ-n"
+    "2. MAILAKO FUNTZIO POLINOMIKOA": {
+        "Adierazpen aljebraikoa": "f(x)=ax²+bx+c",
+        "Izate eremua": "ℝ",
+        "Monotonia": "Mutur erlatibo bakarra (maximoa edo minimoa): f′(x)=0",
+        "Kurbatura": "Ez du inflexio-punturik (beti ahurra/beti ganbila)",
+        "Ebaki puntuak": "Ordenatu ardatza gehienez 2 puntutan ebakitzen du",
+        "Asintotak": "Ez ditu",
+        "Deribatua": "f′(x)=2ax+b",
+        "Alderantzizkoa": "-"
     },
-    "Funtzio polinomikoa": {
-        "adierazpen aljebraikoa": "P(x) ≥ 3",
-        "izate eremua": "ℝ",
-        "monotonia": "Polinomioaren araberakoa",
-        "kurbatura": "Polinomioaren araberakoa",
-        "ebaki puntuak": "Polinomioaren araberakoa",
-        "asintotak": "Ez dauka",
-        "alderantzizkoa": "Normalean ez du"
+    "FUNTZIO POLINOMIKOA": {
+        "Adierazpen aljebraikoa": " f(x)=ax^n+⋯+bx+c",
+        "Izate eremua": "ℝ",
+        "Monotonia": "Gehienez n−1 mutur erlatibo izan ditzake",
+        "Kurbatura": "Gehienez n−2 inflexio-puntu izan ditzake",
+        "Ebaki puntuak": "Ordenatu ardatza gehienez n puntutan ebakitzen du",
+        "Asintotak": "Ez ditu",
+        "Deribatua": "f′(x)=n⋅x^(n-1)",
+        "Alderantzizkoa": "-"
     },
-    "Funtzio arrazionala": {
-        "adierazpen aljebraikoa": "P(x)/Q(x)",
-        "izate eremua": "Q(x)=0 izan ezik",
-        "monotonia": "Deribatuaren araberakoa",
-        "kurbatura": "Aldakorra",
-        "ebaki puntuak": "P(x)=0",
-        "asintotak": "Bertikalak / horizontalak",
-        "alderantzizkoa": "Funtzioaren araberakoa"
+    "FUNTZIO ARRAZIONALA": {
+        "Adierazpen aljebraikoa": "f(x)=(Q(x))/(P(x))",
+        "Izate eremua": "ℝ−{Q(x)=0}",
+        "Monotonia/Kurbadura": "Deribatuak anulatzen diren puntuetan eta izate-eremutik kanpoko puntuetan aztertzen da",
+        "Ebaki puntuak": "Ordenatu ardatza: P(x)=0",
+        "Asintotak": "Bertikala: Q(x)=0; Horizontala: Limitea infinituan balio finitu bat denean; Zeiharra: Zenbakitzailearen maila izendatzailearena baino unitate bat handiagoa denean",
+        "Deribatua": "[f/g]′= (f′·g-f·g′)/(g²)",
+        "Alderantzizkoa": "-"
     },
-    "Funtzio esponentziala": {
-        "adierazpen aljebraikoa": "a^x",
-        "izate eremua": "ℝ",
-        "monotonia": "Gorakorra",
-        "kurbatura": "Ganbila",
-        "ebaki puntuak": "Ez du X ardatza mozten",
-        "asintotak": "y = 0",
-        "alderantzizkoa": "logₐ(x)"
+    "FUNTZIO ESPONENTZIALA": {
+        "Adierazpen aljebraikoa": "f(x)=e^x",
+        "Izate eremua": "ℝ",
+        "Monotonia": "Gorakorra beti",
+        "Kurbatura": "-",
+        "Ebaki puntuak": "-",
+        "Asintotak": "Horizontala: y = 0",
+        "Deribatua": "f′(x)=e^x",
+        "Alderantzizkoa": "-"
     },
-    "Funtzio logaritmikoa": {
-        "adierazpen aljebraikoa": "log(x)",
-        "izate eremua": "x > 0",
-        "monotonia": "Gorakorra",
-        "kurbatura": "Ahurra",
-        "ebaki puntuak": "x = 1",
-        "asintotak": "x = 0",
-        "alderantzizkoa": "a^x"
+    "FUNTZIO LOGARITMIKOA": {
+        "Adierazpen aljebraikoa": "f(x)=lnx",
+        "Izate eremua": "Logaritmo barrukoak positiboa izan behar du (adibidez, ln(4−x) kasuan x<4)",
+        "Monotonia": "-",
+        "Kurbatura": "-",
+        "Ebaki puntuak": "Ordenatu ardatza: (1,0) puntuan ebakitzen du",
+        "Asintotak": "Asintota bertikala izan ohi du logaritmoaren argumentua 0 denean",
+        "Deribatua": "f′(x)=1/x",
+        "Alderantzizkoa": "-"
     },
-    "Funtzio konstantea": {
-        "adierazpen aljebraikoa": "c",
-        "izate eremua": "ℝ",
-        "monotonia": "Konstantea",
-        "kurbatura": "Nulua",
-        "ebaki puntuak": "c-ren araberakoa",
-        "asintotak": "Ez dauka",
-        "alderantzizkoa": "Ez dauka"
+    "FUNTZIO KONSTANTEA": {
+        "Adierazpen aljebraikoa": "f(x)=k",
+        "Izate eremua": "ℝ",
+        "Monotonia/Kurbadura": "Ez da ez gorakorra ez beherakorra (horizontal mantentzen da) eta ez du kurbadurarik",
+        "Ebaki puntuak": "Abzisa ardatza: (0, k); Ordenatu ardatza: ez du ebakitzen (k=0 denean izan ezik)",
+        "Asintotak": "Ez ditu",
+        "Deribatua": "f′(x)=0",
+        "Alderantzizkoa": "-"
     },
-    "Funtzio irrazionala": {
-        "adierazpen aljebraikoa": "√x",
-        "izate eremua": "x ≥ 0",
-        "monotonia": "Gorakorra",
-        "kurbatura": "Ahurra",
-        "ebaki puntuak": "x = 0",
-        "asintotak": "Ez dauka",
-        "alderantzizkoa": "x²"
+    "FUNTZIO IRRAZIONALA": {
+        "Adierazpen aljebraikoa": "√x",
+        "Izate eremua": "Erroaren indizea bikoitia denean, errokizunak positiboa edo zero (≥0) izan behar du. Adibidez, f(x)=√x+1 funtzioan, izate-eremua x≥−1 da, hau da, [−1,+∞)",
+        "Monotonia": "f′(x)=0 ekuazioaren puntu kritikoak",
+        "Kurbatura": "f′’(x)=0 ekuazioaren inflexio-puntuak",
+        "Ebaki puntuak": "Ordenatu ardatza: y=0; Abzisa ardatza: x=0",
+        "Asintotak": "Bertikala: Izendatzailea duten funtzio irrazionaletan, izendatzailea zero egiten den puntuetan; Horizontalak: Limitea infinituan kalkulatuz lortzen dira; adibidez, y=0 asintota horizontala izan daiteke x→+∞ denean",
+        "Deribatua": "-",
+        "Alderantzizkoa": "-"
     }
 }
 
