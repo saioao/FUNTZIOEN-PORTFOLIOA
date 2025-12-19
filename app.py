@@ -3,165 +3,156 @@ import sympy as sp
 import numpy as np
 import matplotlib.pyplot as plt
 
-# --------------------
-# ORRIAREN KONFIGURAZIOA
-# --------------------
+# -----------------------------
+# ORRIALDEAREN KONFIGURAZIOA
+# -----------------------------
 st.set_page_config(
     page_title="Funtzioen simulazioa",
     layout="wide"
 )
 
-# --------------------
-# FUNTZIO EZAGUNEN DIBUZIONARIOA
-# --------------------
-funciones_reconocidas = {
-    "FUNTZIO LINEALA": {
-        "Adierazpen algebraikoa": "f(x)=m·x + b",
-        "Izate eremua": "ℝ",
-        "Monotonia": "Handitzen: m>0 denean, Txikitzen: m<0 denean",
-        "Kurbatura": "Ahurra eta ganbila",
-        "Ebaki puntuak": "Abzisa ardatza: -b/a, Ordenatu ardatza: y=b",
-        "Asintotak": "Ez ditu",
-        "Deribatua": "f′(x)=m",
-        "Alderantzizkoa": "f⁻¹(x)=(x-b)/m"
+st.title("📈 Funtzioen simulazio interaktiboa")
+st.write("Idatzi funtzio bat eta ikusi bere grafikoa eta ezaugarriak.")
+
+# -----------------------------
+# FUNTZIO MOTAK
+# -----------------------------
+funtzioak = {
+    "Funtzio lineala": {
+        "adierazpen aljebraikoa": "a·x + b",
+        "izate eremua": "ℝ",
+        "monotonia": "Gorakorra a>0 bada, beherakorra a<0 bada",
+        "kurbatura": "Nulua",
+        "ebaki puntuak": "x = -b/a",
+        "asintotak": "Ez dauka",
+        "alderantzizkoa": "(x - b)/a"
     },
-    "2. MAILAKO FUNTZIO POLINOMIKOA": {
-        "Adierazpen algebraikoa": "f(x)=a·x² + b·x + c",
-        "Izate eremua": "ℝ",
-        "Monotonia": "Mutur erlatibo bakarra (maximoa edo minimoa) du f′(x)=0 den puntuan",
-        "Kurbatura": "Ez dute inflexio-punturik (n−2=0). Hau da, funtzioa oso-osorik ahurra (∪) edo ganbila (∩) da bere izate eremu osoan, ez du kurbadura aldatzen",
-        "Ebaki puntuak": "(-b ± √(b²-4ac))/(2a). Ordenatu ardatza gehienez 2 puntutan ebaki dezakete",
-        "Asintotak": "Ez ditu",
-        "Deribatua": "f′(x)=2ax+b",
-        "Alderantzizkoa": "Ez du ℝ-n!!!!!!!!!!!!"
+    "2. mailako funtzio polinomikoa": {
+        "adierazpen aljebraikoa": "a·x² + b·x + c",
+        "izate eremua": "ℝ",
+        "monotonia": "Erpinaren araberakoa",
+        "kurbatura": "Ahurra edo ganbila a-ren arabera",
+        "ebaki puntuak": "Bigarren mailako formula",
+        "asintotak": "Ez dauka",
+        "alderantzizkoa": "Ez dauka ℝ-n"
     },
-    "FUNTZIO POLINOMIKOA": {
-        "Adierazpen algebraikoa": "f(x)=a_n·xⁿ + ... + a1·x + a0 (n≥3)",
-        "Izate eremua": "ℝ",
-        "Monotonia": "Gehienez n−1 izan ditzakete. Adibidez, 3. mailako funtzio batek bi mutur (maximo bat eta minimo bat) izan ditzake",
-        "Kurbatura": "n−2 inflexio-puntu izan ditzakete gehienez. 3. mailako funtzio baten kasuan, beti dago inflexio-puntu bat, non kurbadura aldatu egiten den (ahur izatetik ganbil izatera edo alderantziz)",
-        "Ebaki puntuak": "Ordenatu ardatza gehienez n puntutan ebaki dezakete (adibidez, 3. mailako batek gehienez 3 puntu)",
-        "Asintotak": "Ez ditu",
-        "Deribatua": "f′(x)=n⋅x^(n−1)",
-        "Alderantzizkoa": "Normalean ez du!!!!!!!!!!!!!"
+    "Funtzio polinomikoa": {
+        "adierazpen aljebraikoa": "P(x)≥3",
+        "izate eremua": "ℝ",
+        "monotonia": "Polinomioaren arabera",
+        "kurbatura": "Polinomioaren arabera",
+        "ebaki puntuak": "Polinomioaren arabera",
+        "asintotak": "Ez dauka",
+        "alderantzizkoa": "Normalean ez du"
     },
-    "FUNTZIO ESPONENTZIALA": {
-        "Adierazpen algebraikoa": "f(x)=eˣ",
-        "Izate eremua": "orokorrean: ℝ",
-        "Monotonia": "Beti gorakorra da bere deribatua (e^x) beti positiboa delako",
-        "Kurbatura": "Konbexa",
-        "Ebaki puntuak": "Ez du",
-        "Asintotak": "Horizontala izan ohi du: y = 0",
-        "Deribatua": "f′(x)=e^x",
-        "Alderantzizkoa": "logₐ(x)"
+    "Funtzio arrazionala": {
+        "adierazpen aljebraikoa": "P(x)/Q(x)",
+        "izate eremua": "ℝ, Q(x)=0 denean izan ezik",
+        "monotonia": "Deribatuaren araberakoa",
+        "kurbatura": "Aldakorra",
+        "ebaki puntuak": "P(x)=0",
+        "asintotak": "Bertikalak / horizontalak",
+        "alderantzizkoa": "Funtzioaren araberakoa"
     },
-    "FUNTZIO LOGARITMIKOA": {
-        "Adierazpen algebraikoa": "f(x)=lnx",
-        "Izate eremua": "Logaritmo barrukoak positiboa izan behar du (adibidez, ln(4−x) kasuan x<4)",
-        "Monotonia": "Handitzen da a>1 denean",
-        "Kurbatura": "Konkaboa",
-        "Ebaki puntuak": "x = 1",
-        "Asintotak": "Asintota bertikala izan ohi du logaritmoaren argumentua 0 denean",
-        "Deribatua": "f′(x)=1/x",
-        "Alderantzizkoa": "aˣ"
+    "Funtzio esponentziala": {
+        "adierazpen aljebraikoa": "a^x",
+        "izate eremua": "ℝ",
+        "monotonia": "Gorakorra a>1 bada",
+        "kurbatura": "Ganbila",
+        "ebaki puntuak": "Ez du X ardatza mozten",
+        "asintotak": "y = 0",
+        "alderantzizkoa": "logₐ(x)"
     },
-    "FUNTZIO KONSTANTEA": {
-        "Adierazpen algebraikoa": "f(x)=k",
-        "Izate eremua": "ℝ",
-        "Monotonia": "0",
-        "Kurbatura": "0",
-        "Ebaki puntuak": "Abzisa ardatza: (0,k); Ordenatu ardatza: ez du ebakitzen (k=0 denean izan ezik).",
-        "Asintotak": "Ez ditu",
-        "Deribatua": "f′(x)=0",
-        "Alderantzizkoa": "Ez du k≠0 denean"
+    "Funtzio logaritmikoa": {
+        "adierazpen aljebraikoa": "log(x)",
+        "izate eremua": "x > 0",
+        "monotonia": "Gorakorra",
+        "kurbatura": "Ahurra",
+        "ebaki puntuak": "x = 1",
+        "asintotak": "x = 0",
+        "alderantzizkoa": "a^x"
     },
-    "FUNTZIO IRRAZIONALA": {
-        "Adierazpen algebraikoa": "√x, x^(1/n), ...",
-        "Izate eremua": "Erroaren indizea bikoitia denean, errokizunak ≥0 izan behar du. Adibidez, f(x)= (x+1)^(1/2) funtzioan, izate-eremua x≥−1 da, hau da, [−1,+∞)",
-        "Monotonia": "f′(x)=0",
-        "Kurbatura": "f′′(x)=0",
-        "Ebaki puntuak": "Ordenatu ardatza: y=0; Abzisa ardatza: x=0 (lortutako puntua funtzioaren izate-eremuaren barruan badago)",
-        "Asintotak": "Bertikalak: Izendatzailea duten funtzio irrazionaletan (izendatzailea zero egiten den puntuetan); Horizontalak: Limitea infinituan kalkulatuz lortzen dira; adibidez, y=0 asintota horizontala izan daiteke x→+∞ denean", 
-        "Alderantzizkoa": "Ez du normalean"
- },
-    "FUNTZIO ARRAZIONALA": {
-        "Adierazpen algebraikoa": "f(x)=(Q(x))/(P(x))",
-        "Izate eremua": "R−{Q(x)=0}",
-        "Monotonia/Kurbadura": "Deribatuak anulatzen diren puntuetan eta izate-eremutik kanpoko puntuetan aztertzen da",
-        "Ebaki puntuak": " Ordenatu ardatza: P(x)=0",
-        "Asintotak": "Bertikalak: Q(x)=0 denean; Horizontalak: Limitea infinituan balio finitu bat denean; Zeiharrak: Zenbakitzailearen maila izendatzailearena baino unitate bat handiagoa denean"
+    "Funtzio konstantea": {
+        "adierazpen aljebraikoa": "c",
+        "izate eremua": "ℝ",
+        "monotonia": "Konstantea",
+        "kurbatura": "Nulua",
+        "ebaki puntuak": "c-ren araberakoa",
+        "asintotak": "Ez dauka",
+        "alderantzizkoa": "Ez dauka"
+    },
+    "Funtzio irrazionala": {
+        "adierazpen aljebraikoa": "√x",
+        "izate eremua": "x ≥ 0",
+        "monotonia": "Gorakorra",
+        "kurbatura": "Ahurra",
+        "ebaki puntuak": "x = 0",
+        "asintotak": "Ez dauka",
+        "alderantzizkoa": "x²"
     }
 }
 
-# --------------------
-# BOTON ?-AREN ESTADOA
-# --------------------
-if "mostrar_pista" not in st.session_state:
-    st.session_state.mostrar_pista = False
+# -----------------------------
+# BOTON PISTAK
+# -----------------------------
+if "pistak_ireki" not in st.session_state:
+    st.session_state.pistak_ireki = False
 
-# --------------------
-# GOIBURUA
-# --------------------
-col_q, col_title = st.columns([1, 12])
+if st.button("❓ Pistak ireki/itxi"):
+    st.session_state.pistak_ireki = not st.session_state.pistak_ireki
 
-with col_q:
-    if st.button("❓"):
-        st.session_state.mostrar_pista = not st.session_state.mostrar_pista
+if st.session_state.pistak_ireki:
+    st.info("**Pista: adierazpen aljebraikoak**")
+    for izena, datuak in funtzioak.items():
+        st.write(f"**{izena}** → {datuak['adierazpen aljebraikoa']}")
 
-with col_title:
-    st.title("Funtzioen simulazio interaktiboa")
+# -----------------------------
+# INPUT ETA LAYOUT
+# -----------------------------
+col_ezaugarriak, col_grafikoa = st.columns([1, 2])
 
-# --------------------
-# PISTA PANELA (BARENAK IREKITZEN DENEAN)
-# --------------------
-if st.session_state.mostrar_pista:
-    st.info("**Pista: adierazpen algebraikoak:**")
-    for nombre, datos in funciones_reconocidas.items():
-        st.write(f"**{nombre}** → {datos['adierazpen algebraikoa']}")
-
-# --------------------
-# INPUT ETA GRÁFICOA
-# --------------------
-col_left, col_right = st.columns([1, 2])
+f_input = st.text_input("✏️ Idatzi funtzioa (adib.: x**2 + 3*x + 1)", "x")
 x = sp.symbols("x")
 
-with col_right:
-    st.subheader("Gráfica")
-    funcion_texto = st.text_input("Sartu f(x):", value="x**2")
-
+# -----------------------------
+# GRAFIKOA
+# -----------------------------
+with col_grafikoa:
+    st.subheader("📊 Grafikoa")
     try:
-        f = sp.sympify(funcion_texto)
+        f = sp.sympify(f_input)
         f_num = sp.lambdify(x, f, "numpy")
-        x_vals = np.linspace(-10, 10, 400)
-        y_vals = f_num(x_vals)
+        x_balioak = np.linspace(-10, 10, 400)
+        y_balioak = f_num(x_balioak)
 
         fig, ax = plt.subplots()
-        ax.plot(x_vals, y_vals)
+        ax.plot(x_balioak, y_balioak)
         ax.grid(True)
         st.pyplot(fig)
+    except Exception as e:
+        st.error(f"⚠️ Funtzioa ez da zuzena: {e}")
 
-    except:
-        st.error("Funtzioa ez da zuzena")
-
-# --------------------
+# -----------------------------
 # FUNTZIO MOTAREN DETEKZIOA
-# --------------------
-def detectar_tipo(f_expr):
+# -----------------------------
+def detektatu_mota(f_expr):
     try:
         if f_expr.is_number:
-            return "Konstantea"
+            return "Funtzio konstantea"
         elif f_expr.is_polynomial():
-            grado = sp.degree(f_expr)
-            if grado == 1:
-                return "Lineala"
-            elif grado == 2:
+            g = sp.degree(f_expr)
+            if g == 1:
+                return "Funtzio lineala"
+            elif g == 2:
                 return "2. mailako funtzio polinomikoa"
             else:
                 return "Funtzio polinomikoa"
+        elif f_expr.is_rational_function(x):
+            return "Funtzio arrazionala"
         elif f_expr.has(sp.exp):
-            return "Exponentziala"
+            return "Funtzio esponentziala"
         elif f_expr.has(sp.log):
-            return "Logaritmikoa"
+            return "Funtzio logaritmikoa"
         elif any(isinstance(term, sp.Pow) and term.exp.is_Rational and term.exp != 1 for term in f_expr.args):
             return "Funtzio irrazionala"
         else:
@@ -169,12 +160,20 @@ def detectar_tipo(f_expr):
     except:
         return None
 
-with col_left:
-    st.subheader("Ezaugarriak")
-    tipo = detectar_tipo(f)
-    if tipo in funciones_reconocidas:
-        datos = funciones_reconocidas[tipo]
-        for clave, valor in datos.items():
-            st.write(f"**{clave}:** {valor}")
-    else:
-        st.warning("Coming soon…")
+# -----------------------------
+# EZAUGARRIAK
+# -----------------------------
+with col_ezaugarriak:
+    st.subheader("📌 Ezaugarriak")
+    try:
+        f = sp.sympify(f_input)
+        tipo = detektatu_mota(f)
+        if tipo in funtzioak:
+            st.success(tipo)
+            for k, v in funtzioak[tipo].items():
+                st.write(f"**{k.capitalize()}**: {v}")
+        else:
+            st.warning("🚧 Laster erabilgarri")
+            st.write("Funtzio mota hau oraindik ez dago inplementatuta.")
+    except Exception as e:
+        st.error(f"⚠️ Arazoa ezaugarriak erakusten: {e}")
