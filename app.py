@@ -4,35 +4,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # -----------------------------
-# CONFIGURACIÓN DE LA PÁGINA
+# ORRIALDEAREN KONFIGURAZIOA
 # -----------------------------
 st.set_page_config(
     page_title="Funtzioen simulazioa",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    layout="wide"
 )
 
-st.markdown("""
-    <style>
-    .stApp {
-        background-color: #ffffff;
-        color: #000000;
-    }
-    h1, h2, h3, h4, h5, h6, p, span, div {
-        color: #000000;
-    }
-    .funtzio-tipo {
-        color: gray;
-        font-weight: bold;
-        text-decoration: underline;
-    }
-    .stButton>button {
-        height: 3em;
-        width: 100%;
-        font-size:16px;
-    }
-    </style>
-""", unsafe_allow_html=True)
+st.title("📈 Funtzioen simulazio interaktiboa")
+st.write("Idatzi funtzio bat eta ikusi bere grafikoa eta ezaugarriak.")
 
 # -----------------------------
 # FUNTZIO MOTAK
@@ -113,84 +93,90 @@ funtzioak = {
 }
 
 # -----------------------------
-# BOTÓN PISTAK
+# BOTON PISTAK
 # -----------------------------
 if "pistak_ireki" not in st.session_state:
     st.session_state.pistak_ireki = False
 
 # -----------------------------
-# GOIKO LERROA: Botón ❓ eta inputa
+# GOIKO LERROA: Input + Pistak
 # -----------------------------
-col_botoia, col_input = st.columns([1,3])
-with col_botoia:
-    if st.button("❓"):
-        st.session_state.pistak_ireki = not st.session_state.pistak_ireki
+col_input, col_pistak = st.columns([3,1])
 
 with col_input:
     f_input = st.text_input("✏️ Idatzi funtzioa", "x")
 
-if st.session_state.pistak_ireki:
-    st.info("**Pista: adierazpen algebraikoak**")
-    for izena, datuak in funtzioak.items():
-        st.write(f"**{izena}** → {datuak['adierazpen aljebraikoa']}")
+with col_pistak:
+    if st.button("❓ Pistak ireki/itxi"):
+        st.session_state.pistak_ireki = not st.session_state.pistak_ireki
+
+    if st.session_state.pistak_ireki:
+        st.info("**Pista: adierazpen aljebraikoak**")
+        for izena, datuak in funtzioak.items():
+            st.write(f"**{izena}** → {datuak['adierazpen aljebraikoa']}")
 
 # -----------------------------
-# ERDIKO LERROA: Grafikoa eta Ezaugarriak
+# BEHEKO LERROA: Grafikoa + Ezaugarriak
 # -----------------------------
 col_grafikoa, col_ezaugarriak = st.columns([2,1])
 x = sp.symbols("x")
 
-# Grafikoa txiki eta zentratua
+# -----------------------------
+# GRAFIKOA
+# -----------------------------
 with col_grafikoa:
     st.subheader("📊 Grafikoa")
     try:
         f = sp.sympify(f_input)
         f_num = sp.lambdify(x, f, "numpy")
-        x_balioak = np.linspace(-5,5,250)
+        x_balioak = np.linspace(-5,5,300)
         y_balioak = f_num(x_balioak)
 
-        fig, ax = plt.subplots(figsize=(3,2))
-        ax.plot(x_balioak, y_balioak, color="#000000", linewidth=2)
-        ax.grid(True, linestyle='--', alpha=0.5)
-        ax.set_facecolor("#ffffff")
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
-        ax.spines['left'].set_color("#000000")
-        ax.spines['bottom'].set_color("#000000")
-        ax.tick_params(colors="#000000")
-        st.pyplot(fig)  # Sin use_container_width para mantener tamaño pequeño
+        fig, ax = plt.subplots()
+        ax.plot(x_balioak, y_balioak)
+        ax.grid(True)
+        st.pyplot(fig)
     except Exception as e:
         st.error(f"⚠️ Funtzioa ez da zuzena: {e}")
 
-# Ezaugarriak
+# -----------------------------
+# FUNTZIO MOTAREN DETEKZIOA
+# -----------------------------
+def detektatu_mota(f_expr):
+    try:
+        if f_expr.is_number:
+            return "Funtzio konstantea"
+        elif f_expr.is_polynomial():
+            g = sp.degree(f_expr)
+            if g == 1:
+                return "Funtzio lineala"
+            elif g == 2:
+                return "2. mailako funtzio polinomikoa"
+            else:
+                return "Funtzio polinomikoa"
+        elif f_expr.is_rational_function(x):
+            return "Funtzio arrazionala"
+        elif f_expr.has(sp.exp):
+            return "Funtzio esponentziala"
+        elif f_expr.has(sp.log):
+            return "Funtzio logaritmikoa"
+        elif any(isinstance(term, sp.Pow) and term.exp.is_Rational and term.exp != 1 for term in f_expr.args):
+            return "Funtzio irrazionala"
+        else:
+            return None
+    except:
+        return None
+
+# -----------------------------
+# EZAUGARRIAK
+# -----------------------------
 with col_ezaugarriak:
     st.subheader("📌 Ezaugarriak")
     try:
-        tipo = None
         f = sp.sympify(f_input)
-        # Detekzio automatikoa
-        if f.is_number:
-            tipo = "Funtzio konstantea"
-        elif f.is_polynomial():
-            g = sp.degree(f)
-            if g == 1:
-                tipo = "Funtzio lineala"
-            elif g == 2:
-                tipo = "2. mailako funtzio polinomikoa"
-            else:
-                tipo = "Funtzio polinomikoa"
-        elif f.is_rational_function(x):
-            tipo = "Funtzio arrazionala"
-        elif f.has(sp.exp):
-            tipo = "Funtzio esponentziala"
-        elif f.has(sp.log):
-            tipo = "Funtzio logaritmikoa"
-        elif any(isinstance(term, sp.Pow) and term.exp.is_Rational and term.exp != 1 for term in f.args):
-            tipo = "Funtzio irrazionala"
-
+        tipo = detektatu_mota(f)
         if tipo in funtzioak:
-            # Tipo subrayado en gris
-            st.markdown(f"<span class='funtzio-tipo'>{tipo}</span>", unsafe_allow_html=True)
+            st.success(tipo)
             for k, v in funtzioak[tipo].items():
                 st.write(f"**{k.capitalize()}**: {v}")
         else:
