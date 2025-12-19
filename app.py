@@ -93,11 +93,12 @@ with col_left:
             st.write(f"**{izena}** → {datuak['adierazpen aljebraikoa']}")
 
 # -----------------------------
-# GRAFICO Y INPUT EN EL CENTRO
+# GRAFICO Y INPUT EN EL CENTRO (1/3 ancho total)
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
-    col_l, col_c, col_r = st.columns([1,1,1])
+    # Para que el gráfico y el input tengan el mismo ancho, usamos columnas internas: [1,6,1]
+    col_l, col_c, col_r = st.columns([1,6,1])
     with col_c:
         # Gráfico
         try:
@@ -106,7 +107,7 @@ with col_center:
             x_vals = np.linspace(-5,5,250)
             y_vals = f_num(x_vals)
 
-            fig, ax = plt.subplots(figsize=(3,2.2))  # un poquito más grande que antes
+            fig, ax = plt.subplots(figsize=(4,2.5))  # un pelín más grande para que se vea bien
             ax.plot(x_vals, y_vals, color="#000000", linewidth=2)
             ax.grid(True, linestyle='--', alpha=0.5)
             ax.set_facecolor("#ffffff")
@@ -119,7 +120,7 @@ with col_center:
         except Exception as e:
             st.error(f"⚠️ Funtzioa ez da zuzena: {e}")
 
-        # Input debajo, mismo ancho que gráfico
+        # Input debajo, mismo ancho que el gráfico
         st.session_state["f_input"] = st.text_input("✏️ Idatzi funtzioa", st.session_state["f_input"])
 
 # -----------------------------
