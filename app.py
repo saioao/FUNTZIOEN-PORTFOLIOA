@@ -59,7 +59,7 @@ st.markdown(
 # =============================
 funtzioak = {
     "FUNTZIO LINEALA": {
-        "Adierazpen aljebraikoa": "f(x)=m·x+b",
+        "Adierazpen aljebraikoa": "f(x)=mx+b",
         "Izate eremua": "ℝ",
         "Monotonia": "Gorakorra: m>0; Beherakorra: m<0",
         "Kurbatura": "Ahurra eta ganbila",
