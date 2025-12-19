@@ -165,7 +165,7 @@ with col_left:
 with col_center:
     x = sp.symbols("x")
 
-    f_input = st.text_input("✏️ Idatzi funtzioa", "x^2")
+    f_input = st.text_input("✎ Idatzi funtzioa (Adib. x^3+x^2+x+5)", "x^2")
 
     f_clean = (
         f_input
