@@ -150,10 +150,10 @@ if "pistak" not in st.session_state:
 col_left, col_center, col_right = st.columns(3)
 
 # -----------------------------
-# ❓ PISTAK (EZKERRA)
+# ? PISTAK (EZKERRA)
 # -----------------------------
 with col_left:
-    if st.button("❓"):
+    if st.button("?"):
         st.session_state.pistak = not st.session_state.pistak
     if st.session_state.pistak:
         for izena, d in funtzioak.items():
