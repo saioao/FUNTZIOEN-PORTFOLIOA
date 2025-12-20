@@ -33,6 +33,17 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     display: inline-block;
     margin-bottom: 6px;
 }
+button[data-baseweb="button"] {
+    background-color: #d3d3d3 !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    margin-bottom: 6px !important;
+}
+button[data-baseweb="button"]:hover {
+    background-color: #c6c6c6 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -40,84 +51,14 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 # FUNTZIO MOTAK
 # =============================
 funtzioak = {
-    "FUNTZIO LINEALA": {
-        "Adierazpen aljebraikoa": "f(x)=mx+b",
-        "Izate eremua": "ℝ",
-        "Monotonia": "Gorakorra: m>0; Beherakorra: m<0",
-        "Kurbatura": "Ahurra eta ganbila batera",
-        "Ebaki puntuak": "Abzisa ardatza: x=-b/m; Ordenatu ardatza: y=b",
-        "Asintotak": "Ez ditu",
-        "Deribatua": "f′(x)=m",
-        "Alderantzizkoa": "f^-1(x)=(x-b)/m"
-    },
-    "2. MAILAKO FUNTZIO POLINOMIKOA": {
-        "Adierazpen aljebraikoa": "f(x)=ax²+bx+c",
-        "Izate eremua": "ℝ",
-        "Monotonia": "Mutur erlatibo bakarra (maximoa edo minimoa): f′(x)=0",
-        "Kurbatura": "Ez du inflexio-punturik (beti ahurra/beti ganbila)",
-        "Ebaki puntuak": "Ordenatu ardatza gehienez 2 puntutan ebakitzen du",
-        "Asintotak": "Ez ditu",
-        "Deribatua": "f′(x)=2ax+b",
-        "Alderantzizkoa": "-"
-    },
-    "FUNTZIO POLINOMIKOA": {
-        "Adierazpen aljebraikoa": "f(x)=axn+⋯+bx+c",
-        "Izate eremua": "ℝ",
-        "Monotonia": "Gehienez n−1 mutur erlatibo izan ditzake",
-        "Kurbatura": "Gehienez n−2 inflexio-puntu izan ditzake",
-        "Ebaki puntuak": "≤n",
-        "Asintotak": "Ez ditu",
-        "Deribatua": "f′(x)=n⋅x^(n-1)",
-        "Alderantzizkoa": "-"
-    },
-    "FUNTZIO ESPONENTZIALA": {
-        "Adierazpen aljebraikoa": "f(x)=e^x",
-        "Izate eremua": "ℝ",
-        "Monotonia": "Gorakorra",
-        "Kurbatura": "-",
-        "Ebaki puntuak": "-",
-        "Asintotak": "Horizontala: y=0",
-        "Deribatua": "f′(x)=e^x",
-        "Alderantzizkoa": "-"
-    },
-    "FUNTZIO LOGARITMIKOA": {
-        "Adierazpen aljebraikoa": "f(x)=ln(x)",
-        "Izate eremua": "Logaritmo barrukoak positiboa izan behar du (adibidez, ln(4−x) kasuan x<4)",
-        "Monotonia": "-",
-        "Kurbatura": "-",
-        "Ebaki puntuak": "Ordenatu ardatza: (1,0) puntuan ebakitzen du",
-        "Asintotak": "Asintota bertikala izan ohi du logaritmoaren argumentua 0 denean",
-        "Deribatua": "f′(x)=1/x",
-        "Alderantzizkoa": "-"
-    },
-    "FUNTZIO KONSTANTEA": {
-        "Adierazpen aljebraikoa": "f(x)=k",
-        "Izate eremua": "ℝ",
-        "Monotonia/Kurbatura": "Ez da ez gorakorra ez beherakorra (horizontal mantentzen da) eta ez du kurbadurarik",
-        "Ebaki puntuak": "Abzisa ardatza: (0,k); Ordenatu ardatza: ez du ebakitzen (k=0 denean izan ezik)",
-        "Asintotak": "Ez ditu",
-        "Deribatua": "f′(x)=0",
-        "Alderantzizkoa": "-"
-    },
-    "FUNTZIO IRRAZIONALA": {
-        "Adierazpen aljebraikoa": "f(x)=√x",
-        "Izate eremua": "x≥0",
-        "Monotonia": "f′(x)=0 ekuazioaren puntu kritikoak",
-        "Kurbatura": "f′’(x)=0 ekuazioaren inflexio-puntuak",
-        "Ebaki puntuak": "Abzisa ardatza: x=0; Ordenatu ardatza: y=0",
-        "Asintotak": "Bertikala: Izendatzailea duten funtzio irrazionaletan agertzen dira, izendatzailea zero egiten den puntuetan; Horizontala: Limitea infinituan kalkulatuz lortzen dira; adibidez, y=0 asintota horizontala izan daiteke x→+∞ denean",
-        "Deribatua": "-",
-        "Alderantzizkoa": "-"
-    },
-     "FUNTZIO ARRAZIONALA": {
-        "Adierazpen aljebraikoa": "f(x)=(Q(x))/(P(x))",
-        "Izate eremua": "ℝ−{Q(x)=0}",
-        "Monotonia/Kurbatura": "Deribatuak anulatzen diren puntuetan eta izate-eremutik kanpoko puntuetan aztertzen da",
-        "Ebaki puntuak": "Ordenatu ardatza: P(x)=0",
-        "Asintotak": "Bertikala: Q(x)=0; Horizontala: Limitea infinituan balio finitu bat denean; Zeiharra: Zenbakitzailearen maila izendatzailearena baino unitate bat handiagoa denean",
-        "Deribatua": "[f/g]′= (f′·g-f·g′)/(g²)",
-        "Alderantzizkoa": "-"
-    }
+    "FUNTZIO LINEALA": {"Adierazpen aljebraikoa": "f(x)=mx+b", "Izate eremua": "ℝ", "Monotonia": "Gorakorra: m>0; Beherakorra: m<0", "Kurbatura": "Ahurra eta ganbila batera", "Ebaki puntuak": "Abzisa ardatza: x=-b/m; Ordenatu ardatza: y=b", "Asintotak": "Ez ditu", "Deribatua": "f′(x)=m", "Alderantzizkoa": "f^-1(x)=(x-b)/m"},
+    "2. MAILAKO FUNTZIO POLINOMIKOA": {"Adierazpen aljebraikoa": "f(x)=ax²+bx+c", "Izate eremua": "ℝ", "Monotonia": "Mutur erlatibo bakarra (maximoa edo minimoa): f′(x)=0", "Kurbatura": "Ez du inflexio-punturik (beti ahurra/beti ganbila)", "Ebaki puntuak": "Ordenatu ardatza gehienez 2 puntutan ebakitzen du", "Asintotak": "Ez ditu", "Deribatua": "f′(x)=2ax+b", "Alderantzizkoa": "-"},
+    "FUNTZIO POLINOMIKOA": {"Adierazpen aljebraikoa": "f(x)=axn+⋯+bx+c", "Izate eremua": "ℝ", "Monotonia": "Gehienez n−1 mutur erlatibo izan ditzake", "Kurbatura": "Gehienez n−2 inflexio-puntu izan ditzake", "Ebaki puntuak": "≤n", "Asintotak": "Ez ditu", "Deribatua": "f′(x)=n⋅x^(n-1)", "Alderantzizkoa": "-"},
+    "FUNTZIO ESPONENTZIALA": {"Adierazpen aljebraikoa": "f(x)=e^x", "Izate eremua": "ℝ", "Monotonia": "Gorakorra", "Kurbatura": "-", "Ebaki puntuak": "-", "Asintotak": "Horizontala: y=0", "Deribatua": "f′(x)=e^x", "Alderantzizkoa": "-"},
+    "FUNTZIO LOGARITMIKOA": {"Adierazpen aljebraikoa": "f(x)=ln(x)", "Izate eremua": "Logaritmo barrukoak positiboa izan behar du (adibidez, ln(4−x) kasuan x<4)", "Monotonia": "-", "Kurbatura": "-", "Ebaki puntuak": "Ordenatu ardatza: (1,0) puntuan ebakitzen du", "Asintotak": "Asintota bertikala izan ohi du logaritmoaren argumentua 0 denean", "Deribatua": "f′(x)=1/x", "Alderantzizkoa": "-"},
+    "FUNTZIO KONSTANTEA": {"Adierazpen aljebraikoa": "f(x)=k", "Izate eremua": "ℝ", "Monotonia/Kurbatura": "Ez da ez gorakorra ez beherakorra (horizontal mantentzen da) eta ez du kurbadurarik", "Ebaki puntuak": "Abzisa ardatza: (0,k); Ordenatu ardatza: ez du ebakitzen (k=0 denean izan ezik)", "Asintotak": "Ez ditu", "Deribatua": "f′(x)=0", "Alderantzizkoa": "-"},
+    "FUNTZIO IRRAZIONALA": {"Adierazpen aljebraikoa": "f(x)=√x", "Izate eremua": "x≥0", "Monotonia": "f′(x)=0 ekuazioaren puntu kritikoak", "Kurbatura": "f′’(x)=0 ekuazioaren inflexio-puntuak", "Ebaki puntuak": "Abzisa ardatza: x=0; Ordenatu ardatza: y=0", "Asintotak": "Bertikala: Izendatzailea duten funtzio irrazionaletan agertzen dira, izendatzailea zero egiten den puntuetan; Horizontala: Limitea infinituan kalkulatuz lortzen dira; adibidez, y=0 asintota horizontala izan daiteke x→+∞ denean", "Deribatua": "-", "Alderantzizkoa": "-"},
+    "FUNTZIO ARRAZIONALA": {"Adierazpen aljebraikoa": "f(x)=(Q(x))/(P(x))", "Izate eremua": "ℝ−{Q(x)=0}", "Monotonia/Kurbatura": "Deribatuak anulatzen diren puntuetan eta izate-eremutik kanpoko puntuetan aztertzen da", "Ebaki puntuak": "Ordenatu ardatza: P(x)=0", "Asintotak": "Bertikala: Q(x)=0; Horizontala: Limitea infinituan balio finitu bat denean; Zeiharra: Zenbakitzailearen maila izendatzailearena baino unitate bat handiagoa denean", "Deribatua": "[f/g]′= (f′·g-f·g′)/(g²)", "Alderantzizkoa": "-"}
 }
 
 # =============================
@@ -135,10 +76,7 @@ col_left, col_center, col_right = st.columns(3)
 # EZKERRA — IZENBURUA + PISTAK
 # -----------------------------
 with col_left:
-    st.markdown("""
-    <h3>-FUNTZIOEN PORTFOLIOA-</h3>
-    <p style='font-size:13px;'>Saioa Otegi Merino</p>
-    """, unsafe_allow_html=True)
+    st.markdown("<h3>-FUNTZIOEN PORTFOLIOA-</h3><p style='font-size:13px;'>Saioa Otegi Merino</p>", unsafe_allow_html=True)
 
     pistak_clicked = st.button("❔")
     if pistak_clicked:
@@ -153,31 +91,18 @@ with col_left:
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
-
-    f_input = st.text_input(
-        "✎ f(x)= (x^2, √x, x^(1/2), e^x, 3^x, pi*x…)",
-        "x^2"
-    )
-
+    f_input = st.text_input("✎ f(x)= (x^2, √x, x^(1/2), e^x, 3^x, pi*x…)", "x^2")
     f_clean = f_input.replace("^", "**")
     f_clean = re.sub(r"√\s*([a-zA-Z0-9_()]+)", r"sqrt(\1)", f_clean)
 
     try:
-        f = sp.sympify(
-            f_clean,
-            locals={"e": sp.E, "pi": sp.pi}
-        )
-
+        f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
         x_vals = np.linspace(-5, 5, 400)
 
         if f.free_symbols == set():
             y_vals = np.full_like(x_vals, float(f))
         else:
-            f_num = sp.lambdify(
-                x,
-                f,
-                modules=[{"pi": np.pi, "e": np.e}, "numpy"]
-            )
+            f_num = sp.lambdify(x, f, modules=[{"pi": np.pi, "e": np.e}, "numpy"])
             with np.errstate(all="ignore"):
                 y_vals = f_num(x_vals)
                 y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
@@ -204,15 +129,13 @@ with col_right:
         if f.free_symbols == set():
             tipo = "FUNTZIO KONSTANTEA"
         elif f.has(x):
+            # IRRAZIONALAK
             if any(p.is_Pow and p.exp.is_Rational and p.exp.q == 2 for p in f.atoms(sp.Pow)):
                 tipo = "FUNTZIO IRRAZIONALA"
-            elif f.has(sp.exp) or any(
-                p.is_Pow and x in p.exp.free_symbols and not p.base.has(x)
-                for p in f.atoms(sp.Pow)
-            ):
+            # EXPONENTZIALAK
+            elif f.has(sp.exp) or any(p.is_Pow and x in p.exp.free_symbols and not p.base.has(x) for p in f.atoms(sp.Pow)):
                 tipo = "FUNTZIO ESPONENTZIALA"
-            elif f.is_rational_function(x):
-                tipo = "FUNTZIO ARRAZIONALA"
+            # POLINOMIOAK
             elif f.is_polynomial():
                 deg = sp.degree(f, x)
                 if deg == 1:
@@ -221,8 +144,12 @@ with col_right:
                     tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
                 else:
                     tipo = "FUNTZIO POLINOMIKOA"
+            # LOGARITMOAK
             elif f.has(sp.log):
                 tipo = "FUNTZIO LOGARITMIKOA"
+            # ARRAZIONALA (bakarrik polinomio ez direnak)
+            elif f.is_rational_function(x):
+                tipo = "FUNTZIO ARRAZIONALA"
 
         if tipo:
             st.markdown(f"<div class='funtzio-tipo'>{tipo}</div>", unsafe_allow_html=True)
