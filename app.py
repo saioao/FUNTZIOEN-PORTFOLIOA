@@ -35,13 +35,14 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 }
 .stButton>button {
     background-color: #d3d3d3;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 20px;
+    border-color: black
     width: 100%;
     height: 3em;
     color: #ffffff;             /* testua zuria */
-    font-weight: bold;
-    border-radius: 20px;
-    border-color: black
-    padding: 4px 8px;
+    
 }
 </style>
 """, unsafe_allow_html=True)
