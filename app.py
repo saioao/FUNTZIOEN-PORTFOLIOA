@@ -143,21 +143,22 @@ with col_left:
 
     if st.button("Pistak...", key="pistak_btn"):
         st.session_state.pistak = not st.session_state.pistak
-        st.markdown("""
-        <style>
-        div.stButton > button#pistak_btn {
-            background-color: #d3d3d3;
-            color: #ffffff;           /* letra kolorea zuria */
-            font-weight: bold;
-            padding: 4px 8px;
-            border-radius: 4px;
-            margin-bottom: 6px;
-        }
-        div.stButton > button#pistak_btn:hover {
-            background-color: #c6c6c6;
-        }
-        </style>
-        """, unsafe_allow_html=True)
+        
+    st.markdown("""
+    <style>
+    div.stButton > button#pistak_btn {
+        background-color: #d3d3d3;
+        color: #ffffff;           /* letra kolorea zuria */
+        font-weight: bold;
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin-bottom: 6px;
+    }
+    div.stButton > button#pistak_btn:hover {
+        background-color: #c6c6c6;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 
 
