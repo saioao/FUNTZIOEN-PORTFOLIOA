@@ -61,23 +61,23 @@ funtzioak = {
         "Alderantzizkoa": "-"
     },
     "FUNTZIO POLINOMIKOA": {
-        "Adierazpen aljebraikoa": "f(x)=axⁿ+…",
+        "Adierazpen aljebraikoa": "f(x)=axn+⋯+bx+c",
         "Izate eremua": "ℝ",
-        "Monotonia": "Anitza",
-        "Kurbatura": "Anitza",
+        "Monotonia": "Gehienez n−1 mutur erlatibo izan ditzake",
+        "Kurbatura": "Gehienez n−2 inflexio-puntu izan ditzake",
         "Ebaki puntuak": "≤n",
         "Asintotak": "Ez ditu",
-        "Deribatua": "Bai",
+        "Deribatua": "f′(x)=n⋅x^(n-1)",
         "Alderantzizkoa": "-"
     },
     "FUNTZIO ESPONENTZIALA": {
-        "Adierazpen aljebraikoa": "f(x)=a^x",
+        "Adierazpen aljebraikoa": "f(x)=e^x",
         "Izate eremua": "ℝ",
         "Monotonia": "Gorakorra",
         "Kurbatura": "-",
         "Ebaki puntuak": "-",
-        "Asintotak": "y=0",
-        "Deribatua": "a^x ln(a)",
+        "Asintotak": "Horizontala: y=0",
+        "Deribatua": "f′(x)=e^x",
         "Alderantzizkoa": "-"
     },
     "FUNTZIO LOGARITMIKOA": {
@@ -203,44 +203,49 @@ with col_right:
     try:
         tipo = None
 
+        # ---------------------------
+        # KONSTANTEAK (free_symbols hutsik eta ez dira funtzioak)
+        # ---------------------------
         if f.free_symbols == set():
             tipo = "FUNTZIO KONSTANTEA"
 
-        elif any(
-            p.is_Pow and p.exp.is_Rational and p.exp.q == 2
-            for p in f.atoms(sp.Pow)
-        ):
-            tipo = "FUNTZIO IRRAZIONALA"
+        # ---------------------------
+        # FUNTZIOAK X-rekin
+        # ---------------------------
+        elif f.has(x):
 
-        elif any(
-            p.is_Pow
-            and p.exp.has(x)        # x berretzailean
-            and not p.base.has(x)   # oinarria konstantea
-            for p in f.atoms(sp.Pow)
-        ):
-            tipo = "FUNTZIO ESPONENTZIALA"
+            # IRRAZIONALAK: x^(1/2) edo sqrt(x)
+            if any(p.is_Pow and p.exp.is_Rational and p.exp.q == 2 for p in f.atoms(sp.Pow)):
+                tipo = "FUNTZIO IRRAZIONALA"
 
-        elif f.has(sp.log):
-            tipo = "FUNTZIO LOGARITMIKOA"
+            # EXPONENTZIALAK: a^x, e^x (oinarria konstantea, indizea x)
+            elif any(p.is_Pow and x in p.exp.free_symbols and not p.base.has(x) for p in f.atoms(sp.Pow)):
+                tipo = "FUNTZIO ESPONENTZIALA"
 
-        elif f.is_polynomial():
-            deg = sp.degree(f)
-            if deg == 1:
-                tipo = "FUNTZIO LINEALA"
-            elif deg == 2:
-                tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
-            else:
-                tipo = "FUNTZIO POLINOMIKOA"
+            # POLINOMIOAK: x^n bakarrik
+            elif f.is_polynomial():
+                deg = sp.degree(f, x)
+                if deg == 1:
+                    tipo = "FUNTZIO LINEALA"
+                elif deg == 2:
+                    tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
+                else:
+                    tipo = "FUNTZIO POLINOMIKOA"
 
-        if tipo in funtzioak:
-            st.markdown(
-                f"<div class='funtzio-tipo'>{tipo}</div>",
-                unsafe_allow_html=True
-            )
+            # LOGARITMOAK
+            elif f.has(sp.log):
+                tipo = "FUNTZIO LOGARITMIKOA"
+
+        # ---------------------------
+        # BISTARATZE
+        # ---------------------------
+        if tipo:
+            st.markdown(f"<div class='funtzio-tipo'>{tipo}</div>", unsafe_allow_html=True)
             for k, v in funtzioak[tipo].items():
                 st.write(f"**{k}**: {v}")
         else:
             st.write("🚧 Laster erabilgarri")
 
-    except:
+    except Exception as e:
         st.write("—")
+
