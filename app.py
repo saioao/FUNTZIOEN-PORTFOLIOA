@@ -181,7 +181,7 @@ with col_center:
 
 # √x → sqrt(x)
     f_clean = f_clean.replace("√x", "sqrt(x)")
-)
+
 
 # sympy-k bere konstanteak erabiltzen ditu
 f = sp.sympify(f_clean)
