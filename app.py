@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # ORRIALDEAREN KONFIGURAZIOA
 # =============================
 st.set_page_config(
-    page_title="《FUNTZIOEN PORTFOLIOA》",
+    page_title="-FUNTZIOEN PORTFOLIOA-",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -48,7 +48,7 @@ st.markdown(
         -FUNTZIOEN PORTFOLIOA-
     </h2>
     <p style='text-align:center; color:#666666; font-size:14px; margin-top:0;'>
-        Funtzio moten azterketa grafikoa
+        Saioa Otegi Merino
     </p>
     """,
     unsafe_allow_html=True
