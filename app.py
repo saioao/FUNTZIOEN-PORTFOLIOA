@@ -31,22 +31,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     padding: 4px 8px;
     border-radius: 4px;
     display: inline-block;
-    margin-bottom: 6px;
-}
-.stButton>button {
-    background-color: #d3d3d3;
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
-    display: inline-block;
-    margin-bottom: 6px;
-
-<form action="#">
-    <button style="width:100%; height:3em; font-weight:bold;">
-        Pistak...
-    </button>
-</form>
-    
+    margin-bottom: 6px;   
 }
 </style>
 """, unsafe_allow_html=True)
@@ -169,6 +154,15 @@ with col_left:
     if st.session_state.pistak:
         for izena, d in funtzioak.items():
             st.write(f"**{izena}** → {d['Adierazpen aljebraikoa']}")
+
+with col_left:
+    st.markdown("""
+    <form action="#">
+        <button style="width:100%; height:3em; font-weight:bold;">
+            Pistak...
+        </button>
+    </form>
+    """, unsafe_allow_html=True)
 
 # -----------------------------
 # GRAFIKOA + INPUT (ERDIA)
