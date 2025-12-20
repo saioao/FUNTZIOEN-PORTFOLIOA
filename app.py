@@ -268,7 +268,7 @@ with col_right:
             for k, v in funtzioak[tipo].items():
                 st.write(f"**{k}**: {v}")
         else:
-            st.write("Coming soon...")
+            st.write("Jon, flipau, hau oraindik ez degu eman...")
 
     except Exception as e:
         st.write("—")
