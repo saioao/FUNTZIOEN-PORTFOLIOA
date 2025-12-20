@@ -207,6 +207,7 @@ f_num = sp.lambdify(x, f, modules=["numpy"])
         ax.tick_params(colors="#333333")
 
         st.pyplot(fig)
+        
     except:
         st.warning("⚠️ Funtzioa ez da zuzena")
 
