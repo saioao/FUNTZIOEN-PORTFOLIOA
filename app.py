@@ -153,22 +153,6 @@ col_left, col_center, col_right = st.columns(3)
 # Pistak... PISTAK (EZKERRA)
 # -----------------------------
 with col_left:
-    st.markdown(
-        """
-        <h3 style='margin-bottom:4px;'>
-            -FUNTZIOEN PORTFOLIOA-
-        </h3>
-        <p style='color:#666666; font-size:13px; margin-top:0;'>
-            Saioa Otegi Merino
-        </p>
-        """,
-        unsafe_allow_html=True
-    )
-
-    if st.button("Pistak..."):
-        st.session_state.pistak = not st.session_state.pistak
-
-with col_left:
     if st.button("Pistak..."):
         st.session_state.pistak = not st.session_state.pistak
     if st.session_state.pistak:
