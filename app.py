@@ -143,22 +143,24 @@ with col_left:
     """, unsafe_allow_html=True)
 
     # Pistak botoia
-    if st.button("Pistak...", key="pistak_btn"):
+    pistak_clicked = st.button("Pistak...")
+
+    if pistak_clicked:
         st.session_state.pistak = not st.session_state.pistak
 
-    # CSS botoiarentzat (fondo gris eta letra zuria)
+    # CSS inline estiloarekin botoia simulatzea (letra zuria, fondo gris)
     st.markdown("""
     <style>
-    div.stButton > button#pistak_btn {
-        background-color: #d3d3d3;
-        color: #ffffff;           /* letra zuria */
-        font-weight: bold;
-        padding: 4px 8px;
-        border-radius: 4px;
-        margin-bottom: 6px;
+    button[data-baseweb="button"] {
+        background-color: #d3d3d3 !important;
+        color: #ffffff !important;      /* letra zuria */
+        font-weight: bold !important;
+        padding: 4px 8px !important;
+        border-radius: 4px !important;
+        margin-bottom: 6px !important;
     }
-    div.stButton > button#pistak_btn:hover {
-        background-color: #c6c6c6;
+    button[data-baseweb="button"]:hover {
+        background-color: #c6c6c6 !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -167,9 +169,6 @@ with col_left:
     if st.session_state.pistak:
         for izena, d in funtzioak.items():
             st.markdown(f"<div class='funtzio-tipo'>{izena} → {d['Adierazpen aljebraikoa']}</div>", unsafe_allow_html=True)
-
-
-
 
 # -----------------------------
 # ERDIA — INPUT + GRAFIKOA
