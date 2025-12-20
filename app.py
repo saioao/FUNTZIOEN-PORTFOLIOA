@@ -15,6 +15,15 @@ st.set_page_config(
 # =============================
 # ESTILOA (MINIMALISTA)
 # =============================
+.stButton>button.pistak {
+    color: white;
+    background-color: black;
+    font-weight: bold;
+    width: 100%;
+    height: 3em;
+    border-radius: 5px;
+}
+
 st.markdown("""
 <style>
 .stApp {
