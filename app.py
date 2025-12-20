@@ -34,11 +34,12 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     margin-bottom: 6px;
 }
 .stButton>button {
+    background-color: #d3d3d3;
     width: 100%;
     height: 3em;
     color: #ffffff;             /* testua zuria */
     font-weight: bold;
-    border-radius: 4px;
+    border-radius: 10px;
     border-color: black
 }
 </style>
