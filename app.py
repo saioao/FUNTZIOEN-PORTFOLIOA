@@ -142,7 +142,7 @@ with col_left:
     """, unsafe_allow_html=True)
 
     if st.button("Pistak..."):
-    st.session_state.pistak = not st.session_state.pistak
+        st.session_state.pistak = not st.session_state.pistak
 
 # -----------------------------
 # ERDIA — INPUT + GRAFIKOA
