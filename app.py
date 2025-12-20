@@ -229,8 +229,17 @@ with col_right:
             elif f.is_rational_function(x):
                 tipo = "FUNTZIO ARRAZIONALA"
 
-            elif f.has(sp.exp):
+            elif (
+                f.has(sp.exp)
+                or any(
+                    isinstance(p, sp.Pow)
+                    and p.exp == x
+                    and p.base.is_number
+                    for p in f.atoms(sp.Pow)
+                )
+            ):
                 tipo = "FUNTZIO ESPONENTZIALA"
+
 
             elif f.has(sp.log):
                 tipo = "FUNTZIO LOGARITMIKOA"
