@@ -156,12 +156,17 @@ with col_center:
 
     try:
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
-        f_num = sp.lambdify(x, f, "numpy")
 
         x_vals = np.linspace(-5, 5, 400)
-        with np.errstate(all="ignore"):
-            y_vals = f_num(x_vals)
-            y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
+
+        if f.free_symbols == set():
+            # KONSTANTEA
+            y_vals = np.full_like(x_vals, float(f))
+        else:
+            f_num = sp.lambdify(x, f, "numpy")
+            with np.errstate(all="ignore"):
+                y_vals = f_num(x_vals)
+                y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
         fig, ax = plt.subplots(figsize=(4, 2.5))
         ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
@@ -182,33 +187,36 @@ with col_right:
     try:
         tipo = None
 
-        if f.is_number:
+        if f.free_symbols == set():
             tipo = "FUNTZIO KONSTANTEA"
-        elif f.is_polynomial():
-            deg = sp.degree(f)
-            if deg == 1:
-                tipo = "FUNTZIO LINEALA"
-            elif deg == 2:
-                tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
-            else:
-                tipo = "FUNTZIO POLINOMIKOA"
-        elif any(p.is_Pow and p.exp.has(x) for p in f.atoms(sp.Pow)):
-            tipo = "FUNTZIO ESPONENTZIALA"
-        elif f.has(sp.log):
-            tipo = "FUNTZIO LOGARITMIKOA"
-        elif any(
-            p.is_Pow and p.exp.is_Rational and p.exp.q == 2
-            for p in f.atoms(sp.Pow)
-        ):
-            tipo = "FUNTZIO IRRAZIONALA"
 
-        if tipo in funtzioak:
+        elif f.has(x):
+            if any(
+                p.is_Pow and p.exp.is_Rational and p.exp.q == 2
+                for p in f.atoms(sp.Pow)
+            ):
+                tipo = "FUNTZIO IRRAZIONALA"
+
+            elif any(p.is_Pow and p.base.has(x) for p in f.atoms(sp.Pow)):
+                tipo = "FUNTZIO ESPONENTZIALA"
+
+            elif f.is_polynomial():
+                deg = sp.degree(f)
+                if deg == 1:
+                    tipo = "FUNTZIO LINEALA"
+                elif deg == 2:
+                    tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
+                else:
+                    tipo = "FUNTZIO POLINOMIKOA"
+
+            elif f.has(sp.log):
+                tipo = "FUNTZIO LOGARITMIKOA"
+
+        if tipo:
             st.markdown(
                 f"<div class='funtzio-tipo'>{tipo}</div>",
                 unsafe_allow_html=True
             )
-            for k, v in funtzioak[tipo].items():
-                st.write(f"**{k.capitalize()}**: {v}")
         else:
             st.write("🚧 Laster erabilgarri")
 
