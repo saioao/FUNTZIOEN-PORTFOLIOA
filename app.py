@@ -177,12 +177,17 @@ with col_center:
 
     f_input = st.text_input("✎ Idatzi funtzioa (Adib. x^3+x^2+x+5)", "x^2")
 
-    f_clean = (
-        f_input
-        .replace("^", "**")
-        .replace("√", "sqrt")
-        .replace("π", "pi")
-        .replace("e", "E")
+f_clean = f_input
+
+# Berreketak
+f_clean = f_clean.replace("^", "**")
+
+# Errokak: √x  → sqrt(x)
+f_clean = f_clean.replace("√", "sqrt")
+
+# x^(1/2) bezalakoak ondo pasatzeko
+# (SymPy-k ondo ulertzen ditu ** bidez)
+
     )
 
     try:
@@ -232,8 +237,15 @@ with col_right:
             tipo = "FUNTZIO ESPONENTZIALA"
         elif f.has(sp.log):
             tipo = "FUNTZIO LOGARITMIKOA"
-        elif f.has(sp.sqrt) or any(p.is_Rational and p.q == 2 for p in f.atoms(sp.Pow)):
-            tipo = "FUNTZIO IRRAZIONALA"
+       elif (
+           f.has(sp.sqrt)
+           or any(
+               p.is_Pow and p.exp.is_Rational and p.exp.q == 2
+               for p in f.atoms(sp.Pow)
+           )
+):
+    tipo = "FUNTZIO IRRAZIONALA"
+
 
         if tipo in funtzioak:
             st.markdown(
