@@ -217,13 +217,6 @@ with col_center:
 
     except Exception as e:
         st.warning(f"⚠️ Funtzioa ez da zuzena: {e}")
-# y_vals konstante gisa
-if tipo == "FUNTZIO KONSTANTEA":
-    y_vals = np.full_like(x_vals, float(sp.N(f)))
-else:
-    with np.errstate(all='ignore'):
-        y_vals = f_num(x_vals)
-        y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
 # -----------------------------
 # EZAUGARRIAK (ESKUBIA)
