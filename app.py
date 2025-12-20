@@ -155,15 +155,6 @@ with col_left:
         for izena, d in funtzioak.items():
             st.write(f"**{izena}** → {d['Adierazpen aljebraikoa']}")
 
-with col_left:
-    st.markdown("""
-    <form action="#">
-        <button style="width:100%; height:3em; font-weight:bold;">
-            Pistak...
-        </button>
-    </form>
-    """, unsafe_allow_html=True)
-
 # -----------------------------
 # GRAFIKOA + INPUT (ERDIA)
 # -----------------------------
