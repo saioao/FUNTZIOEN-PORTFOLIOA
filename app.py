@@ -2,6 +2,7 @@ import streamlit as st
 import sympy as sp
 import numpy as np
 import matplotlib.pyplot as plt
+import re
 
 # =============================
 # ORRIALDEAREN KONFIGURAZIOA
@@ -13,17 +14,12 @@ st.set_page_config(
 )
 
 # =============================
-# ESTILOA (MINIMALISTA) — EZ UKITUA
+# ESTILOA (EZ UKITUA)
 # =============================
 st.markdown("""
 <style>
-.stApp {
-    background-color: #ffffff;
-    color: #333333;
-}
-h1, h2, h3, h4, h5, h6, p, span, div {
-    color: #333333;
-}
+.stApp { background-color: #ffffff; color: #333333; }
+h1,h2,h3,h4,h5,h6,p,span,div { color: #333333; }
 .funtzio-tipo {
     background-color: #d3d3d3;
     font-weight: bold;
@@ -32,29 +28,15 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     display: inline-block;
     margin-bottom: 6px;
 }
-.fake-button {
-    background-color: #d3d3d3;
-    font-weight: bold;
-    padding: 6px 10px;
-    border-radius: 4px;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    margin-bottom: 6px;
-}
-.fake-button:hover {
-    background-color: #c6c6c6;
-}
 </style>
 """, unsafe_allow_html=True)
 
 # =============================
 # FUNTZIO MOTAK (BERDIN)
 # =============================
-# (hemen ez dut ezer aldatu)
-# ………………………………………
-# ⚠️ ZURE funtzioak DIKZIONARIOA hemen berdin doa
-# ………………………………………
+# ⚠️ hemen zure funtzioak DIKZIONARIOA doa, aldatu gabe
+# (ez dut hemen berriro itsatsi luzeegia delako)
+# =============================
 
 # =============================
 # ESTADO
@@ -63,12 +45,44 @@ if "pistak" not in st.session_state:
     st.session_state.pistak = False
 
 # =============================
+# INPUT NAGUSIA (BEHIN BAKARRIK)
+# =============================
+x = sp.symbols("x")
+
+f_input = st.text_input(
+    "✎ Idatzi funtzioa (Adib. x^3+x^2+x+5)", "x^2"
+)
+
+# =============================
+# GARBIKETA ZUZENA
+# =============================
+f_clean = f_input
+
+# berreketak
+f_clean = f_clean.replace("^", "**")
+
+# √x → sqrt(x)
+f_clean = re.sub(r"√\s*([a-zA-Z0-9_()]+)", r"sqrt(\1)", f_clean)
+
+# =============================
+# SYMPY PARSEA (e eta pi barne)
+# =============================
+f = None
+try:
+    f = sp.sympify(
+        f_clean,
+        locals={"e": sp.E, "pi": sp.pi}
+    )
+except:
+    pass
+
+# =============================
 # LAYOUT
 # =============================
 col_left, col_center, col_right = st.columns(3)
 
 # -----------------------------
-# EZKERRA
+# EZKERRA — PISTAK
 # -----------------------------
 with col_left:
     st.markdown("""
@@ -89,42 +103,26 @@ with col_left:
 # ERDIA — GRAFIKOA
 # -----------------------------
 with col_center:
-    x = sp.symbols("x")
+    if f is not None:
+        try:
+            f_num = sp.lambdify(x, f, "numpy")
+            x_vals = np.linspace(-5, 5, 400)
 
-    f_input = st.text_input(
-        "✎ Idatzi funtzioa (Adib. x^3+x^2+x+5)", "x^2"
-    )
+            with np.errstate(all="ignore"):
+                y_vals = f_num(x_vals)
+                y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
-    # --- GARBIKETA ---
-    f_clean = f_input
-    f_clean = f_clean.replace("^", "**")
-    f_clean = f_clean.replace("√", "sqrt")
+            fig, ax = plt.subplots(figsize=(4, 2.5))
+            ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
+            ax.grid(True, linestyle="--", alpha=0.4)
+            ax.spines["top"].set_visible(False)
+            ax.spines["right"].set_visible(False)
+            st.pyplot(fig)
 
-    try:
-        f = sp.sympify(
-            f_clean,
-            locals={"e": sp.E, "pi": sp.pi}
-        )
-
-        f_num = sp.lambdify(x, f, "numpy")
-
-        x_vals = np.linspace(-5, 5, 400)
-        with np.errstate(all="ignore"):
-            y_vals = f_num(x_vals)
-            y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
-
-        fig, ax = plt.subplots(figsize=(4, 2.5))
-        ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
-        ax.grid(True, linestyle="--", alpha=0.4)
-        ax.set_facecolor("white")
-        ax.spines["top"].set_visible(False)
-        ax.spines["right"].set_visible(False)
-        ax.tick_params(colors="#333333")
-
-        st.pyplot(fig)
-
-    except Exception as e:
-        st.warning(f"⚠️ Funtzioa ez da zuzena: {e}")
+        except:
+            st.warning("⚠️ Funtzioa ez da marraztu ahal")
+    else:
+        st.warning("⚠️ Funtzioa ez da zuzena")
 
 # -----------------------------
 # ESKUINA — EZAUGARRIAK
@@ -132,14 +130,14 @@ with col_center:
 with col_right:
     st.subheader("︙EZAUGARRIAK︙")
 
-    try:
+    if f is not None:
         tipo = None
 
-        # KONSTANTEAK (pi, e barne)
+        # KONSTANTEA (pi, e, pi^2, e+2…)
         if f.is_number:
             tipo = "FUNTZIO KONSTANTEA"
 
-        # POLINOMIKOAK
+        # POLINOMIOAK
         elif f.is_polynomial():
             deg = sp.degree(f)
             if deg == 1:
@@ -149,15 +147,8 @@ with col_right:
             else:
                 tipo = "FUNTZIO POLINOMIKOA"
 
-        # ARRAZIONALA
-        elif f.is_rational_function(x):
-            tipo = "FUNTZIO ARRAZIONALA"
-
-        # ESPONENTZIALA (e^x, 3^x…)
-        elif f.has(x) and any(
-            p.is_Pow and p.exp.has(x)
-            for p in f.atoms(sp.Pow)
-        ):
+        # ESPONENTZIALAK (e^x, 3^x)
+        elif any(p.is_Pow and p.exp.has(x) for p in f.atoms(sp.Pow)):
             tipo = "FUNTZIO ESPONENTZIALA"
 
         # LOGARITMIKOA
@@ -165,12 +156,9 @@ with col_right:
             tipo = "FUNTZIO LOGARITMIKOA"
 
         # IRRAZIONALA (√x, x^(1/2))
-        elif (
-            f.has(sp.sqrt)
-            or any(
-                p.is_Pow and p.exp.is_Rational and p.exp.q == 2
-                for p in f.atoms(sp.Pow)
-            )
+        elif any(
+            p.is_Pow and p.exp.is_Rational and p.exp.q == 2
+            for p in f.atoms(sp.Pow)
         ):
             tipo = "FUNTZIO IRRAZIONALA"
 
@@ -183,6 +171,3 @@ with col_right:
                 st.write(f"**{k.capitalize()}**: {v}")
         else:
             st.write("🚧 Laster erabilgarri")
-
-    except:
-        st.write("—")
