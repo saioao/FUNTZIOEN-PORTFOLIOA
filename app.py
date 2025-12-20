@@ -181,6 +181,10 @@ with col_center:
 
 # √x → sqrt(x)
     f_clean = f_clean.replace("√x", "sqrt(x)")
+    # e eta pi zenbaki gisa interpretatzeko
+    f_clean = f_clean.replace("e", "(2.718281828459045)")
+    f_clean = f_clean.replace("pi", "(3.141592653589793)")
+
 
 
     try:
