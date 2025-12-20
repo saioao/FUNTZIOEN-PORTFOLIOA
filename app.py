@@ -227,8 +227,8 @@ with col_right:
             tipo = "FUNTZIO ESPONENTZIALA"
         elif f.has(sp.log):
             tipo = "FUNTZIO LOGARITMIKOA"
-        elif f.has(sp.sqrt):
-            tipo = "FUNTZIO IRRAZIONALA"
+        elif f.has(sp.sqrt) or any(exp.is_Rational and exp.q == 2 for exp in f.atoms(sp.Pow)):
+    tipo = "FUNTZIO IRRAZIONALA"
 
         if tipo in funtzioak:
             st.markdown(
