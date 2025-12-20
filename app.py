@@ -150,9 +150,6 @@ with col_left:
         unsafe_allow_html=True
     )
 
-    if st.button("Pistak..."):
-        st.session_state.pistak = not st.session_state.pistak
-
 with col_left:
     if st.button("Pistak..."):
         st.session_state.pistak = not st.session_state.pistak
