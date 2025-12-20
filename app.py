@@ -136,19 +136,22 @@ col_left, col_center, col_right = st.columns(3)
 # EZKERRA — IZENBURUA + PISTAK
 # -----------------------------
 with col_left:
+    # Izenburua
     st.markdown("""
     <h3>-FUNTZIOEN PORTFOLIOA-</h3>
     <p style='font-size:13px;'>Saioa Otegi Merino</p>
     """, unsafe_allow_html=True)
 
+    # Pistak botoia
     if st.button("Pistak...", key="pistak_btn"):
         st.session_state.pistak = not st.session_state.pistak
-        
+
+    # CSS botoiarentzat (fondo gris eta letra zuria)
     st.markdown("""
     <style>
     div.stButton > button#pistak_btn {
         background-color: #d3d3d3;
-        color: #ffffff;           /* letra kolorea zuria */
+        color: #ffffff;           /* letra zuria */
         font-weight: bold;
         padding: 4px 8px;
         border-radius: 4px;
@@ -159,6 +162,12 @@ with col_left:
     }
     </style>
     """, unsafe_allow_html=True)
+
+    # Pistak zerrenda bistaratzea botoia sakatuta badago
+    if st.session_state.pistak:
+        for izena, d in funtzioak.items():
+            st.markdown(f"<div class='funtzio-tipo'>{izena} → {d['Adierazpen aljebraikoa']}</div>", unsafe_allow_html=True)
+
 
 
 
