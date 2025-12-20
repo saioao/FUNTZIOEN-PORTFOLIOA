@@ -146,7 +146,11 @@ with col_left:
 
     if st.session_state.pistak:
         for izena, d in funtzioak.items():
-            st.write(f"**{izena}** → {d['Adierazpen aljebraikoa']}")
+            st.markdown(
+                f"<div class='funtzio-tipo'><b>{izena}</b> → {d['Adierazpen aljebraikoa']}</div>",
+                unsafe_allow_html=True
+            )
+
 
 # -----------------------------
 # ERDIA — INPUT + GRAFIKOA
