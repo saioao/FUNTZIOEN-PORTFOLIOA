@@ -189,8 +189,6 @@ f = sp.sympify(f_clean)
 # lambdify ekoizteko
 f_num = sp.lambdify(x, f, modules=["numpy"])
 
-
-
     try:
         f = sp.sympify(f_clean)
         f_num = sp.lambdify(x, f, "numpy")
