@@ -37,11 +37,9 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     background-color: #d3d3d3;
     font-weight: bold;
     padding: 4px 8px;
-    border-radius: 20px;
-    border-color: black
-    width: 100%;
-    height: 3em;
-    color: #ffffff;             /* testua zuria */
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 6px;
     
 }
 </style>
