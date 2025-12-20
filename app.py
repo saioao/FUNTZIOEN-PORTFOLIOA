@@ -175,13 +175,13 @@ with col_left:
 with col_center:
     x = sp.symbols("x")
 
-    f_input = st.text_input("✎ F(x)= (Adib. x^3+x^2+x+5)", "x^2")
+    f_input = st.text_input("✎ f(x)= (Adib. x^3+x^2+x+5)", "x^2")
 
-    f_clean = (
-        f_input
-        .replace("^", "**")
-        .replace("√", "sqrt")
-    )
+    f_clean = f_input.replace("^", "**")
+
+# √x → sqrt(x)
+    f_clean = f_clean.replace("√x", "sqrt(x)")
+
 
     try:
         f = sp.sympify(f_clean)
