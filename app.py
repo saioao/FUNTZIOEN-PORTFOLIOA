@@ -213,7 +213,7 @@ with col_center:
         st.pyplot(fig)
 
     except:
-        st.warning("👀 Errepasatu idatzitakoa")
+        st.warning("👀 Errepasatu (kontuan izan adibidea)")
 
 # -----------------------------
 # ESKUINA — EZAUGARRIAK
