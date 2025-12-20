@@ -33,16 +33,18 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     display: inline-block;
     margin-bottom: 6px;   
 
-.stButton>button {
+.fake-button {
     background-color: #d3d3d3;
-    color: #333333;
-    padding: 4px 8px;
+    font-weight: bold;
+    padding: 6px 10px;
     border-radius: 4px;
-    border: none;
-    height: auto;
-
-.stButton > button span {
-    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 6px;
+}
+.fake-button:hover {
+    background-color: #c6c6c6;
 }
 
 </style>
@@ -173,7 +175,7 @@ with col_left:
 with col_center:
     x = sp.symbols("x")
 
-    f_input = st.text_input("✎ Idatzi funtzioa (Adib. x^3+x^2+x+5)", "x^2")
+    f_input = st.text_input("✎ F(x)= (Adib. x^3+x^2+x+5)", "x^2")
 
     f_clean = (
         f_input
