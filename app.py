@@ -109,7 +109,7 @@ funtzioak = {
         "Asintotak": "-",
         "Deribatua": "-",
         "Alderantzizkoa": "-"
-    }
+    },
 
      "FUNTZIO ARRAZIONALA": {
         "Adierazpen aljebraikoa": "f(x)=(Q(x))/(P(x))",
