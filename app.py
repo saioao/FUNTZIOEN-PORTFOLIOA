@@ -16,7 +16,7 @@ st.set_page_config(
 # ESTILOA (MINIMALISTA)
 # =============================
 
-st.st.markdown("""
+st.markdown("""
 <style>
 .stApp {
     background-color: #ffffff;
