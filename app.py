@@ -48,7 +48,7 @@ funtzioak = {
         "Ebaki puntuak": "Abzisa ardatza: x=-b/m; Ordenatu ardatza: y=b",
         "Asintotak": "Ez ditu",
         "Deribatua": "f′(x)=m",
-        "Alderantzizkoa": "f-1(x)=(x-b)/m"
+        "Alderantzizkoa": "f^-1(x)=(x-b)/m"
     },
     "2. MAILAKO FUNTZIO POLINOMIKOA": {
         "Adierazpen aljebraikoa": "f(x)=ax²+bx+c",
@@ -177,7 +177,7 @@ with col_center:
     x = sp.symbols("x")
 
     f_input = st.text_input(
-        "✎ Idatzi funtzioa (x^2, √x, x^(1/2), e^x, 3^x, pi*x…)",
+        "✎ f(x)= (x^2, √x, x^(1/2), e^x, 3^x, pi*x…)",
         "x^2"
     )
 
@@ -268,7 +268,7 @@ with col_right:
             for k, v in funtzioak[tipo].items():
                 st.write(f"**{k}**: {v}")
         else:
-            st.write("🚧 Laster erabilgarri")
+            st.write("Jon, kotilla, hau oraindik ez degu eman...")
 
     except Exception as e:
         st.write("—")
