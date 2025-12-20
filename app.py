@@ -33,7 +33,16 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     display: inline-block;
     margin-bottom: 6px;   
 
+.stButton>button {
+    background-color: #d3d3d3;
+    color: #333333;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: none;
+    height: auto;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
