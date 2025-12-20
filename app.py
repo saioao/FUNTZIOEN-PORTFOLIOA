@@ -203,7 +203,7 @@ with col_center:
         st.warning("⚠️ Funtzioa ez da zuzena")
 
 # -----------------------------
-# EZAUGARRIAK (ESKUMA)
+# EZAUGARRIAK (ESKUBIA)
 # -----------------------------
 with col_right:
     st.subheader("︙EZAUGARRIAK︙")
@@ -211,25 +211,41 @@ with col_right:
     try:
         tipo = None
 
-        if f.is_number:
-            tipo = "FUNTZIO KONSTANTEA"
-        elif f.is_polynomial():
-            deg = sp.degree(f)
-            if deg == 1:
-                tipo = "FUNTZIO LINEALA"
-            elif deg == 2:
-                tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
-            else:
-                tipo = "FUNTZIO POLINOMIKOA"
-        elif f.is_rational_function(x):
-            tipo = "FUNTZIO ARRAZIONALA"
-        elif f.has(sp.exp):
-            tipo = "FUNTZIO ESPONENTZIALA"
-        elif f.has(sp.log):
-            tipo = "FUNTZIO LOGARITMIKOA"
-        elif f.has(sp.sqrt) or any(exp.is_Rational and exp.q == 2 for exp in f.atoms(sp.Pow)):
-            tipo = "FUNTZIO IRRAZIONALA"
+        # SEGURTASUN KONTROLA
+        if f is not None:
 
+            if f.is_number:
+                tipo = "FUNTZIO KONSTANTEA"
+
+            elif f.is_polynomial():
+                deg = sp.degree(f)
+                if deg == 1:
+                    tipo = "FUNTZIO LINEALA"
+                elif deg == 2:
+                    tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
+                else:
+                    tipo = "FUNTZIO POLINOMIKOA"
+
+            elif f.is_rational_function(x):
+                tipo = "FUNTZIO ARRAZIONALA"
+
+            elif f.has(sp.exp):
+                tipo = "FUNTZIO ESPONENTZIALA"
+
+            elif f.has(sp.log):
+                tipo = "FUNTZIO LOGARITMIKOA"
+
+            # √x ETA x^(1/2) BIETARAKO
+            elif (
+                f.has(sp.sqrt)
+                or any(
+                    isinstance(p, sp.Pow)
+                    and p.exp.is_Rational
+                    and p.exp.q == 2
+                    for p in f.atoms(sp.Pow)
+                )
+            ):
+                tipo = "FUNTZIO IRRAZIONALA"
 
         if tipo in funtzioak:
             st.markdown(
@@ -241,5 +257,6 @@ with col_right:
         else:
             st.write("🚧 Laster erabilgarri")
 
-    except:
+    except Exception as e:
         st.write("—")
+
