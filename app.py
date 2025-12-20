@@ -143,7 +143,7 @@ with col_left:
     """, unsafe_allow_html=True)
 
     # Pistak botoia
-    pistak_clicked = st.button("Pistak...")
+    pistak_clicked = st.button("❔")
 
     if pistak_clicked:
         st.session_state.pistak = not st.session_state.pistak
