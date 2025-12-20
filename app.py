@@ -40,6 +40,12 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     border-radius: 4px;
     display: inline-block;
     margin-bottom: 6px;
+
+<form action="#">
+    <button style="width:100%; height:3em; font-weight:bold;">
+        Pistak...
+    </button>
+</form>
     
 }
 </style>
