@@ -14,12 +14,17 @@ st.set_page_config(
 )
 
 # =============================
-# ESTILOA (EZ UKITUA)
+# ESTILOA (MINIMALISTA – EZ UKITUA)
 # =============================
 st.markdown("""
 <style>
-.stApp { background-color: #ffffff; color: #333333; }
-h1,h2,h3,h4,h5,h6,p,span,div { color: #333333; }
+.stApp {
+    background-color: #ffffff;
+    color: #333333;
+}
+h1, h2, h3, h4, h5, h6, p, span, div {
+    color: #333333;
+}
 .funtzio-tipo {
     background-color: #d3d3d3;
     font-weight: bold;
@@ -32,11 +37,80 @@ h1,h2,h3,h4,h5,h6,p,span,div { color: #333333; }
 """, unsafe_allow_html=True)
 
 # =============================
-# FUNTZIO MOTAK (BERDIN)
+# FUNTZIO MOTAK
 # =============================
-# ⚠️ hemen zure funtzioak DIKZIONARIOA doa, aldatu gabe
-# (ez dut hemen berriro itsatsi luzeegia delako)
-# =============================
+funtzioak = {
+    "FUNTZIO LINEALA": {
+        "Adierazpen aljebraikoa": "f(x)=mx+b",
+        "Izate eremua": "ℝ",
+        "Monotonia": "Gorakorra / Beherakorra",
+        "Kurbatura": "Ez du",
+        "Ebaki puntuak": "2",
+        "Asintotak": "Ez ditu",
+        "Deribatua": "m",
+        "Alderantzizkoa": "Bai"
+    },
+    "2. MAILAKO FUNTZIO POLINOMIKOA": {
+        "Adierazpen aljebraikoa": "f(x)=ax²+bx+c",
+        "Izate eremua": "ℝ",
+        "Monotonia": "Maximo edo minimo",
+        "Kurbatura": "Bai",
+        "Ebaki puntuak": "≤2",
+        "Asintotak": "Ez ditu",
+        "Deribatua": "2ax+b",
+        "Alderantzizkoa": "-"
+    },
+    "FUNTZIO POLINOMIKOA": {
+        "Adierazpen aljebraikoa": "f(x)=axⁿ+…",
+        "Izate eremua": "ℝ",
+        "Monotonia": "Anitza",
+        "Kurbatura": "Anitza",
+        "Ebaki puntuak": "≤n",
+        "Asintotak": "Ez ditu",
+        "Deribatua": "Bai",
+        "Alderantzizkoa": "-"
+    },
+    "FUNTZIO ESPONENTZIALA": {
+        "Adierazpen aljebraikoa": "f(x)=a^x",
+        "Izate eremua": "ℝ",
+        "Monotonia": "Gorakorra",
+        "Kurbatura": "-",
+        "Ebaki puntuak": "-",
+        "Asintotak": "y=0",
+        "Deribatua": "a^x ln(a)",
+        "Alderantzizkoa": "-"
+    },
+    "FUNTZIO LOGARITMIKOA": {
+        "Adierazpen aljebraikoa": "f(x)=ln(x)",
+        "Izate eremua": "x>0",
+        "Monotonia": "Gorakorra",
+        "Kurbatura": "-",
+        "Ebaki puntuak": "(1,0)",
+        "Asintotak": "x=0",
+        "Deribatua": "1/x",
+        "Alderantzizkoa": "-"
+    },
+    "FUNTZIO KONSTANTEA": {
+        "Adierazpen aljebraikoa": "f(x)=k",
+        "Izate eremua": "ℝ",
+        "Monotonia": "Konstantea",
+        "Kurbatura": "Ez du",
+        "Ebaki puntuak": "-",
+        "Asintotak": "-",
+        "Deribatua": "0",
+        "Alderantzizkoa": "-"
+    },
+    "FUNTZIO IRRAZIONALA": {
+        "Adierazpen aljebraikoa": "f(x)=√x",
+        "Izate eremua": "x≥0",
+        "Monotonia": "-",
+        "Kurbatura": "-",
+        "Ebaki puntuak": "(0,0)",
+        "Asintotak": "-",
+        "Deribatua": "-",
+        "Alderantzizkoa": "-"
+    }
+}
 
 # =============================
 # ESTADO
@@ -45,51 +119,17 @@ if "pistak" not in st.session_state:
     st.session_state.pistak = False
 
 # =============================
-# INPUT NAGUSIA (BEHIN BAKARRIK)
-# =============================
-x = sp.symbols("x")
-
-f_input = st.text_input(
-    "✎ Idatzi funtzioa (Adib. x^3+x^2+x+5)", "x^2"
-)
-
-# =============================
-# GARBIKETA ZUZENA
-# =============================
-f_clean = f_input
-
-# berreketak
-f_clean = f_clean.replace("^", "**")
-
-# √x → sqrt(x)
-f_clean = re.sub(r"√\s*([a-zA-Z0-9_()]+)", r"sqrt(\1)", f_clean)
-
-# =============================
-# SYMPY PARSEA (e eta pi barne)
-# =============================
-f = None
-try:
-    f = sp.sympify(
-        f_clean,
-        locals={"e": sp.E, "pi": sp.pi}
-    )
-except:
-    pass
-
-# =============================
-# LAYOUT
+# LAYOUT NAGUSIA — 3 ZUTABE
 # =============================
 col_left, col_center, col_right = st.columns(3)
 
 # -----------------------------
-# EZKERRA — PISTAK
+# EZKERRA — IZENBURUA + PISTAK
 # -----------------------------
 with col_left:
     st.markdown("""
-    <h3 style='margin-bottom:4px;'>-FUNTZIOEN PORTFOLIOA-</h3>
-    <p style='color:#666666; font-size:13px; margin-top:0;'>
-        Saioa Otegi Merino
-    </p>
+    <h3>-FUNTZIOEN PORTFOLIOA-</h3>
+    <p style='font-size:13px;'>Saioa Otegi Merino</p>
     """, unsafe_allow_html=True)
 
     if st.button("Pistak..."):
@@ -100,28 +140,37 @@ with col_left:
             st.write(f"**{izena}** → {d['Adierazpen aljebraikoa']}")
 
 # -----------------------------
-# ERDIA — GRAFIKOA
+# ERDIA — INPUT + GRAFIKOA
 # -----------------------------
 with col_center:
-    if f is not None:
-        try:
-            f_num = sp.lambdify(x, f, "numpy")
-            x_vals = np.linspace(-5, 5, 400)
+    x = sp.symbols("x")
 
-            with np.errstate(all="ignore"):
-                y_vals = f_num(x_vals)
-                y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
+    f_input = st.text_input(
+        "✎ Idatzi funtzioa (Adib. x^2, √x, x^(1/2), e^x, 3^x)",
+        "x^2"
+    )
 
-            fig, ax = plt.subplots(figsize=(4, 2.5))
-            ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
-            ax.grid(True, linestyle="--", alpha=0.4)
-            ax.spines["top"].set_visible(False)
-            ax.spines["right"].set_visible(False)
-            st.pyplot(fig)
+    # GARBIKETA
+    f_clean = f_input.replace("^", "**")
+    f_clean = re.sub(r"√\s*([a-zA-Z0-9_()]+)", r"sqrt(\1)", f_clean)
 
-        except:
-            st.warning("⚠️ Funtzioa ez da marraztu ahal")
-    else:
+    try:
+        f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
+        f_num = sp.lambdify(x, f, "numpy")
+
+        x_vals = np.linspace(-5, 5, 400)
+        with np.errstate(all="ignore"):
+            y_vals = f_num(x_vals)
+            y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
+
+        fig, ax = plt.subplots(figsize=(4, 2.5))
+        ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
+        ax.grid(True, linestyle="--", alpha=0.4)
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+        st.pyplot(fig)
+
+    except Exception as e:
         st.warning("⚠️ Funtzioa ez da zuzena")
 
 # -----------------------------
@@ -130,14 +179,11 @@ with col_center:
 with col_right:
     st.subheader("︙EZAUGARRIAK︙")
 
-    if f is not None:
+    try:
         tipo = None
 
-        # KONSTANTEA (pi, e, pi^2, e+2…)
         if f.is_number:
             tipo = "FUNTZIO KONSTANTEA"
-
-        # POLINOMIOAK
         elif f.is_polynomial():
             deg = sp.degree(f)
             if deg == 1:
@@ -146,16 +192,10 @@ with col_right:
                 tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
             else:
                 tipo = "FUNTZIO POLINOMIKOA"
-
-        # ESPONENTZIALAK (e^x, 3^x)
         elif any(p.is_Pow and p.exp.has(x) for p in f.atoms(sp.Pow)):
             tipo = "FUNTZIO ESPONENTZIALA"
-
-        # LOGARITMIKOA
         elif f.has(sp.log):
             tipo = "FUNTZIO LOGARITMIKOA"
-
-        # IRRAZIONALA (√x, x^(1/2))
         elif any(
             p.is_Pow and p.exp.is_Rational and p.exp.q == 2
             for p in f.atoms(sp.Pow)
@@ -171,3 +211,6 @@ with col_right:
                 st.write(f"**{k.capitalize()}**: {v}")
         else:
             st.write("🚧 Laster erabilgarri")
+
+    except:
+        st.write("—")
