@@ -41,6 +41,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     font-weight: bold;
     border-radius: 20px;
     border-color: black
+    padding: 4px 8px;
 }
 </style>
 """, unsafe_allow_html=True)
