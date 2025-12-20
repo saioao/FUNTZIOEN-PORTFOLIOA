@@ -172,42 +172,47 @@ with col_left:
 # -----------------------------
 # GRAFIKOA + INPUT (ERDIA)
 # -----------------------------
+# -----------------------------
+# GRAFIKOA + INPUT (ERDIA)
+# -----------------------------
 with col_center:
     x = sp.symbols("x")
 
     f_input = st.text_input("✎ f(x)= (Adib. x^3+x^2+x+5)", "x^2")
 
-    f_clean = f_input.replace("^", "**")
+    f_clean = (
+        f_input
+        .replace("^", "**")
+        .replace("√", "sqrt")
+    )
 
-# √x → sqrt(x)
-    f_clean = f_clean.replace("√x", "sqrt(x)")
+    try:
+        # SymPy funtzioa numeric bihurtu
+        f = sp.sympify(f_clean)
+        f_num = sp.lambdify(
+            x, f, modules=["numpy", {"sqrt": np.sqrt, "pi": np.pi, "E": np.e}]
+        )
 
+        # x balioak
+        x_vals = np.linspace(-5, 5, 250)
+        with np.errstate(all='ignore'):  # erroreak ignore
+            y_vals = f_num(x_vals)
+        y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)  # NaN/inf kendu
 
-# sympy-k bere konstanteak erabiltzen ditu
-f = sp.sympify(f_clean)
+        # Grafikoa txikia, erdian
+        fig, ax = plt.subplots(figsize=(4, 2.5))
+        ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
+        ax.grid(True, linestyle="--", alpha=0.4)
+        ax.set_facecolor("white")
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+        ax.tick_params(colors="#333333")
 
-# lambdify ekoizteko
-f_num = sp.lambdify(x, f, modules=["numpy"])
+        st.pyplot(fig)
 
-try:
-    f = sp.sympify(f_clean)
-    f_num = sp.lambdify(x, f, modules=["numpy"])
+    except Exception as e:
+        st.warning(f"⚠️ Funtzioa ez da zuzena: {e}")
 
-    x_vals = np.linspace(-5, 5, 250)
-    y_vals = f_num(x_vals)
-
-    fig, ax = plt.subplots(figsize=(4, 2.5))
-    ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
-    ax.grid(True, linestyle="--", alpha=0.4)
-    ax.set_facecolor("white")
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.tick_params(colors="#333333")
-
-    st.pyplot(fig)
-
-except:
-    st.warning("⚠️ Funtzioa ez da zuzena")
 
 
 # -----------------------------
