@@ -109,7 +109,6 @@ funtzioak = {
         "Deribatua": "-",
         "Alderantzizkoa": "-"
     },
-
      "FUNTZIO ARRAZIONALA": {
         "Adierazpen aljebraikoa": "f(x)=(Q(x))/(P(x))",
         "Izate eremua": "ℝ−{Q(x)=0}",
@@ -136,36 +135,15 @@ col_left, col_center, col_right = st.columns(3)
 # EZKERRA — IZENBURUA + PISTAK
 # -----------------------------
 with col_left:
-    # Izenburua
     st.markdown("""
     <h3>-FUNTZIOEN PORTFOLIOA-</h3>
     <p style='font-size:13px;'>Saioa Otegi Merino</p>
     """, unsafe_allow_html=True)
 
-    # Pistak botoia
     pistak_clicked = st.button("❔")
-
     if pistak_clicked:
         st.session_state.pistak = not st.session_state.pistak
 
-    # CSS inline estiloarekin botoia simulatzea (letra zuria, fondo gris)
-    st.markdown("""
-    <style>
-    button[data-baseweb="button"] {
-        background-color: #d3d3d3 !important;
-        color: #ffffff !important;      /* letra zuria */
-        font-weight: bold !important;
-        padding: 4px 8px !important;
-        border-radius: 4px !important;
-        margin-bottom: 6px !important;
-    }
-    button[data-baseweb="button"]:hover {
-        background-color: #c6c6c6 !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    # Pistak zerrenda bistaratzea botoia sakatuta badago
     if st.session_state.pistak:
         for izena, d in funtzioak.items():
             st.markdown(f"<div class='funtzio-tipo'>{izena} → {d['Adierazpen aljebraikoa']}</div>", unsafe_allow_html=True)
@@ -181,7 +159,6 @@ with col_center:
         "x^2"
     )
 
-    # ---- GARBIKETA ----
     f_clean = f_input.replace("^", "**")
     f_clean = re.sub(r"√\s*([a-zA-Z0-9_()]+)", r"sqrt(\1)", f_clean)
 
@@ -224,29 +201,18 @@ with col_right:
     try:
         tipo = None
 
-        # ---------------------------
-        # KONSTANTEAK (free_symbols hutsik eta ez dira funtzioak)
-        # ---------------------------
         if f.free_symbols == set():
             tipo = "FUNTZIO KONSTANTEA"
-
-        # ---------------------------
-        # FUNTZIOAK X-rekin
-        # ---------------------------
         elif f.has(x):
-
-            # IRRAZIONALAK: x^(1/2) edo sqrt(x)
             if any(p.is_Pow and p.exp.is_Rational and p.exp.q == 2 for p in f.atoms(sp.Pow)):
                 tipo = "FUNTZIO IRRAZIONALA"
-
-            # EXPONENTZIALAK: a^x edo e^x
             elif f.has(sp.exp) or any(
                 p.is_Pow and x in p.exp.free_symbols and not p.base.has(x)
                 for p in f.atoms(sp.Pow)
             ):
                 tipo = "FUNTZIO ESPONENTZIALA"
-
-            # POLINOMIOAK: x^n bakarrik
+            elif f.is_rational_function(x):
+                tipo = "FUNTZIO ARRAZIONALA"
             elif f.is_polynomial():
                 deg = sp.degree(f, x)
                 if deg == 1:
@@ -255,14 +221,9 @@ with col_right:
                     tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
                 else:
                     tipo = "FUNTZIO POLINOMIKOA"
-
-            # LOGARITMOAK
             elif f.has(sp.log):
                 tipo = "FUNTZIO LOGARITMIKOA"
 
-        # ---------------------------
-        # BISTARATZE
-        # ---------------------------
         if tipo:
             st.markdown(f"<div class='funtzio-tipo'>{tipo}</div>", unsafe_allow_html=True)
             for k, v in funtzioak[tipo].items():
@@ -272,6 +233,3 @@ with col_right:
 
     except Exception as e:
         st.write("—")
-
-
-
