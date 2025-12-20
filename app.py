@@ -217,6 +217,13 @@ with col_center:
 
     except Exception as e:
         st.warning(f"⚠️ Funtzioa ez da zuzena: {e}")
+# y_vals konstante gisa
+if tipo == "FUNTZIO KONSTANTEA":
+    y_vals = np.full_like(x_vals, float(sp.N(f)))
+else:
+    with np.errstate(all='ignore'):
+        y_vals = f_num(x_vals)
+        y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
 # -----------------------------
 # EZAUGARRIAK (ESKUBIA)
@@ -227,50 +234,27 @@ with col_right:
     try:
         tipo = None
 
-        # SEGURTASUN KONTROLA
-        if f is not None:
-
-            if f.is_number:
-                tipo = "FUNTZIO KONSTANTEA"
-
-            elif f.is_polynomial():
-                deg = sp.degree(f)
-                if deg == 1:
-                    tipo = "FUNTZIO LINEALA"
-                elif deg == 2:
-                    tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
-                else:
-                    tipo = "FUNTZIO POLINOMIKOA"
-
-            elif f.is_rational_function(x):
-                tipo = "FUNTZIO ARRAZIONALA"
-
-            elif (
-                f.has(sp.exp)
-                or any(
-                    isinstance(p, sp.Pow)
-                    and p.exp == x
-                    and p.base.is_number
-                    for p in f.atoms(sp.Pow)
-                )
-            ):
-                tipo = "FUNTZIO ESPONENTZIALA"
-
-
-            elif f.has(sp.log):
-                tipo = "FUNTZIO LOGARITMIKOA"
-
-            # √x ETA x^(1/2) BIETARAKO
-            elif (
-                f.has(sp.sqrt)
-                or any(
-                    isinstance(p, sp.Pow)
-                    and p.exp.is_Rational
-                    and p.exp.q == 2
-                    for p in f.atoms(sp.Pow)
-                )
-            ):
-                tipo = "FUNTZIO IRRAZIONALA"
+        # Kontrol berezi π eta e
+        if f == sp.pi or f == sp.E:
+            tipo = "FUNTZIO KONSTANTEA"
+        elif f.is_number:
+            tipo = "FUNTZIO KONSTANTEA"
+        elif f.is_polynomial():
+            deg = sp.degree(f)
+            if deg == 1:
+                tipo = "FUNTZIO LINEALA"
+            elif deg == 2:
+                tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
+            else:
+                tipo = "FUNTZIO POLINOMIKOA"
+        elif f.is_rational_function(x):
+            tipo = "FUNTZIO ARRAZIONALA"
+        elif f.has(sp.exp):
+            tipo = "FUNTZIO ESPONENTZIALA"
+        elif f.has(sp.log):
+            tipo = "FUNTZIO LOGARITMIKOA"
+        elif f.has(sp.sqrt) or any(exp.is_Rational and exp.q == 2 for exp in f.atoms(sp.Pow)):
+            tipo = "FUNTZIO IRRAZIONALA"
 
         if tipo in funtzioak:
             st.markdown(
@@ -284,4 +268,5 @@ with col_right:
 
     except Exception as e:
         st.write("—")
+
 
