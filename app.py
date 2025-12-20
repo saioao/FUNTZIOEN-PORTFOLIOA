@@ -189,25 +189,26 @@ f = sp.sympify(f_clean)
 # lambdify ekoizteko
 f_num = sp.lambdify(x, f, modules=["numpy"])
 
-    try:
-        f = sp.sympify(f_clean)
-        f_num = sp.lambdify(x, f, "numpy")
+try:
+    f = sp.sympify(f_clean)
+    f_num = sp.lambdify(x, f, modules=["numpy"])
 
-        x_vals = np.linspace(-5, 5, 250)
-        y_vals = f_num(x_vals)
+    x_vals = np.linspace(-5, 5, 250)
+    y_vals = f_num(x_vals)
 
-        fig, ax = plt.subplots(figsize=(4, 2.5))
-        ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
-        ax.grid(True, linestyle="--", alpha=0.4)
-        ax.set_facecolor("white")
-        ax.spines["top"].set_visible(False)
-        ax.spines["right"].set_visible(False)
-        ax.tick_params(colors="#333333")
+    fig, ax = plt.subplots(figsize=(4, 2.5))
+    ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
+    ax.grid(True, linestyle="--", alpha=0.4)
+    ax.set_facecolor("white")
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.tick_params(colors="#333333")
 
-        st.pyplot(fig)
-        
-    except:
-        st.warning("⚠️ Funtzioa ez da zuzena")
+    st.pyplot(fig)
+
+except:
+    st.warning("⚠️ Funtzioa ez da zuzena")
+
 
 # -----------------------------
 # EZAUGARRIAK (ESKUBIA)
