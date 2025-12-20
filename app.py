@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # =============================
-# ESTILOA (MINIMALISTA – EZ UKITUA)
+# ESTILOA
 # =============================
 st.markdown("""
 <style>
@@ -108,6 +108,16 @@ funtzioak = {
         "Ebaki puntuak": "(0,0)",
         "Asintotak": "-",
         "Deribatua": "-",
+        "Alderantzizkoa": "-"
+    }
+
+     "FUNTZIO ARRAZIONALA": {
+        "Adierazpen aljebraikoa": "f(x)=(Q(x))/(P(x))",
+        "Izate eremua": "ℝ−{Q(x)=0}",
+        "Monotonia/Kurbatura": "Deribatuak anulatzen diren puntuetan eta izate-eremutik kanpoko puntuetan aztertzen da",
+        "Ebaki puntuak": "Ordenatu ardatza: P(x)=0",
+        "Asintotak": "Bertikala: Q(x)=0; Horizontala: Limitea infinituan balio finitu bat denean; Zeiharra: Zenbakitzailearen maila izendatzailearena baino unitate bat handiagoa denean",
+        "Deribatua": "[f/g]′= (f′·g-f·g′)/(g²)",
         "Alderantzizkoa": "-"
     }
 }
