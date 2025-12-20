@@ -43,21 +43,21 @@ funtzioak = {
     "FUNTZIO LINEALA": {
         "Adierazpen aljebraikoa": "f(x)=mx+b",
         "Izate eremua": "ℝ",
-        "Monotonia": "Gorakorra / Beherakorra",
-        "Kurbatura": "Ez du",
-        "Ebaki puntuak": "2",
+        "Monotonia": "Gorakorra: m>0; Beherakorra: m<0",
+        "Kurbatura": "Ahurra eta ganbila batera",
+        "Ebaki puntuak": "Abzisa ardatza: x=-b/m; Ordenatu ardatza: y=b",
         "Asintotak": "Ez ditu",
-        "Deribatua": "m",
-        "Alderantzizkoa": "Bai"
+        "Deribatua": "f′(x)=m",
+        "Alderantzizkoa": "f-1(x)=(x-b)/m"
     },
     "2. MAILAKO FUNTZIO POLINOMIKOA": {
         "Adierazpen aljebraikoa": "f(x)=ax²+bx+c",
         "Izate eremua": "ℝ",
-        "Monotonia": "Maximo edo minimo",
-        "Kurbatura": "Bai",
-        "Ebaki puntuak": "≤2",
+        "Monotonia": "Mutur erlatibo bakarra (maximoa edo minimoa): f′(x)=0",
+        "Kurbatura": "Ez du inflexio-punturik (beti ahurra/beti ganbila)",
+        "Ebaki puntuak": "Ordenatu ardatza gehienez 2 puntutan ebakitzen du",
         "Asintotak": "Ez ditu",
-        "Deribatua": "2ax+b",
+        "Deribatua": "f′(x)=2ax+b",
         "Alderantzizkoa": "-"
     },
     "FUNTZIO POLINOMIKOA": {
@@ -212,7 +212,12 @@ with col_right:
         ):
             tipo = "FUNTZIO IRRAZIONALA"
 
-        elif any(p.is_Pow and p.base.has(x) for p in f.atoms(sp.Pow)):
+        elif any(
+            p.is_Pow
+            and p.exp.has(x)        # x berretzailean
+            and not p.base.has(x)   # oinarria konstantea
+            for p in f.atoms(sp.Pow)
+        ):
             tipo = "FUNTZIO ESPONENTZIALA"
 
         elif f.has(sp.log):
