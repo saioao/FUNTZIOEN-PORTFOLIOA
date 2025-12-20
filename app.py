@@ -177,7 +177,6 @@ with col_center:
 
     f_input = st.text_input("✎ Idatzi funtzioa (Adib. x^3+x^2+x+5)", "x^2")
 
-    # Sartu pi, e eta sqrt sinboloak
     f_clean = (
         f_input
         .replace("^", "**")
@@ -188,15 +187,13 @@ with col_center:
 
     try:
         f = sp.sympify(f_clean)
-
-        # Lambdify funtzio segurua
         f_num = sp.lambdify(x, f, "numpy")
+
         x_vals = np.linspace(-5, 5, 250)
         with np.errstate(all='ignore'):
             y_vals = f_num(x_vals)
             y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
-        # Grafikoa
         fig, ax = plt.subplots(figsize=(4, 2.5))
         ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
         ax.grid(True, linestyle="--", alpha=0.4)
@@ -206,11 +203,20 @@ with col_center:
         ax.tick_params(colors="#333333")
         st.pyplot(fig)
 
-        # ====================
-        # Funtzio mota identifikazioa
-        # ====================
+    except Exception as e:
+        st.warning(f"⚠️ Funtzioa ez da zuzena: {e}")
+
+
+# -----------------------------
+# EZAUGARRIAK (ESKUBIA)
+# -----------------------------
+with col_right:
+    st.subheader("︙EZAUGARRIAK︙")
+
+    try:
         tipo = None
-        if f == sp.pi or f == sp.E or f.is_number:
+
+        if f.is_number or f == sp.pi or f == sp.E:
             tipo = "FUNTZIO KONSTANTEA"
         elif f.is_polynomial():
             deg = sp.degree(f)
@@ -226,42 +232,7 @@ with col_center:
             tipo = "FUNTZIO ESPONENTZIALA"
         elif f.has(sp.log):
             tipo = "FUNTZIO LOGARITMIKOA"
-        elif f.has(sp.sqrt) or any(exp.is_Rational and exp.q == 2 for exp in f.atoms(sp.Pow)):
-            tipo = "FUNTZIO IRRAZIONALA"
-
-    except Exception as e:
-        st.warning(f"⚠️ Funtzioa ez da zuzena: {e}")
-
-
-# -----------------------------
-# EZAUGARRIAK (ESKUBIA)
-# -----------------------------
-with col_right:
-    st.subheader("︙EZAUGARRIAK︙")
-
-    try:
-        tipo = None
-
-        # Kontrol berezi π eta e
-        if f == sp.pi or f == sp.E:
-            tipo = "FUNTZIO KONSTANTEA"
-        elif f.is_number:
-            tipo = "FUNTZIO KONSTANTEA"
-        elif f.is_polynomial():
-            deg = sp.degree(f)
-            if deg == 1:
-                tipo = "FUNTZIO LINEALA"
-            elif deg == 2:
-                tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
-            else:
-                tipo = "FUNTZIO POLINOMIKOA"
-        elif f.is_rational_function(x):
-            tipo = "FUNTZIO ARRAZIONALA"
-        elif f.has(sp.exp):
-            tipo = "FUNTZIO ESPONENTZIALA"
-        elif f.has(sp.log):
-            tipo = "FUNTZIO LOGARITMIKOA"
-        elif f.has(sp.sqrt) or any(exp.is_Rational and exp.q == 2 for exp in f.atoms(sp.Pow)):
+        elif f.has(sp.sqrt) or any(p.is_Rational and p.q == 2 for p in f.atoms(sp.Pow)):
             tipo = "FUNTZIO IRRAZIONALA"
 
         if tipo in funtzioak:
@@ -274,7 +245,8 @@ with col_right:
         else:
             st.write("🚧 Laster erabilgarri")
 
-    except Exception as e:
+    except:
         st.write("—")
+
 
 
