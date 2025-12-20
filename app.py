@@ -172,14 +172,12 @@ with col_left:
 # -----------------------------
 # GRAFIKOA + INPUT (ERDIA)
 # -----------------------------
-# -----------------------------
-# GRAFIKOA + INPUT (ERDIA)
-# -----------------------------
 with col_center:
     x = sp.symbols("x")
 
-    f_input = st.text_input("✎ f(x)= (Adib. x^3+x^2+x+5)", "x^2")
+    f_input = st.text_input("✎ Idatzi funtzioa (Adib. x^3+x^2+x+5)", "x^2")
 
+    # SymPy-rekin bateragarria izan dadin, ordezkatuak
     f_clean = (
         f_input
         .replace("^", "**")
@@ -187,19 +185,26 @@ with col_center:
     )
 
     try:
-        # SymPy funtzioa numeric bihurtu
         f = sp.sympify(f_clean)
-        f_num = sp.lambdify(
-            x, f, modules=["numpy", {"sqrt": np.sqrt, "pi": np.pi, "E": np.e}]
-        )
 
-        # x balioak
+        # Funtzio konstanteak detektatu (π, e barne)
+        tipo_constante = f.is_number or f == sp.pi or f == sp.E
+
+        # Lambdify, modules=["numpy"] beti erabiliz
+        f_num = sp.lambdify(x, f, modules=["numpy"])
+
         x_vals = np.linspace(-5, 5, 250)
-        with np.errstate(all='ignore'):  # erroreak ignore
-            y_vals = f_num(x_vals)
-        y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)  # NaN/inf kendu
 
-        # Grafikoa txikia, erdian
+        # y_vals kalkulatu: konstanteak eta funtzio arruntak bereiziz
+        if tipo_constante:
+            y_vals = np.full_like(x_vals, float(f_num(0)))
+        else:
+            # Kontrolatu erroreak (sqrt negatiboak, log negatiboak)
+            with np.errstate(all='ignore'):
+                y_vals = f_num(x_vals)
+                y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
+
+        # Grafikoa
         fig, ax = plt.subplots(figsize=(4, 2.5))
         ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
         ax.grid(True, linestyle="--", alpha=0.4)
@@ -212,8 +217,6 @@ with col_center:
 
     except Exception as e:
         st.warning(f"⚠️ Funtzioa ez da zuzena: {e}")
-
-
 
 # -----------------------------
 # EZAUGARRIAK (ESKUBIA)
