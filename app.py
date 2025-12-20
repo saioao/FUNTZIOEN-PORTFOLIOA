@@ -146,24 +146,30 @@ with col_center:
     x = sp.symbols("x")
 
     f_input = st.text_input(
-        "✎ Idatzi funtzioa (Adib. x^2, √x, x^(1/2), e^x, 3^x)",
+        "✎ Idatzi funtzioa (x^2, √x, x^(1/2), e^x, 3^x, pi*x…)",
         "x^2"
     )
 
-    # GARBIKETA
+    # ---- GARBIKETA ----
     f_clean = f_input.replace("^", "**")
     f_clean = re.sub(r"√\s*([a-zA-Z0-9_()]+)", r"sqrt(\1)", f_clean)
 
     try:
-        f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
+        f = sp.sympify(
+            f_clean,
+            locals={"e": sp.E, "pi": sp.pi}
+        )
 
         x_vals = np.linspace(-5, 5, 400)
 
         if f.free_symbols == set():
-            # KONSTANTEA
             y_vals = np.full_like(x_vals, float(f))
         else:
-            f_num = sp.lambdify(x, f, "numpy")
+            f_num = sp.lambdify(
+                x,
+                f,
+                modules=[{"pi": np.pi, "e": np.e}, "numpy"]
+            )
             with np.errstate(all="ignore"):
                 y_vals = f_num(x_vals)
                 y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
@@ -175,7 +181,7 @@ with col_center:
         ax.spines["right"].set_visible(False)
         st.pyplot(fig)
 
-    except Exception as e:
+    except:
         st.warning("⚠️ Funtzioa ez da zuzena")
 
 # -----------------------------
@@ -190,33 +196,34 @@ with col_right:
         if f.free_symbols == set():
             tipo = "FUNTZIO KONSTANTEA"
 
-        elif f.has(x):
-            if any(
-                p.is_Pow and p.exp.is_Rational and p.exp.q == 2
-                for p in f.atoms(sp.Pow)
-            ):
-                tipo = "FUNTZIO IRRAZIONALA"
+        elif any(
+            p.is_Pow and p.exp.is_Rational and p.exp.q == 2
+            for p in f.atoms(sp.Pow)
+        ):
+            tipo = "FUNTZIO IRRAZIONALA"
 
-            elif any(p.is_Pow and p.base.has(x) for p in f.atoms(sp.Pow)):
-                tipo = "FUNTZIO ESPONENTZIALA"
+        elif any(p.is_Pow and p.base.has(x) for p in f.atoms(sp.Pow)):
+            tipo = "FUNTZIO ESPONENTZIALA"
 
-            elif f.is_polynomial():
-                deg = sp.degree(f)
-                if deg == 1:
-                    tipo = "FUNTZIO LINEALA"
-                elif deg == 2:
-                    tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
-                else:
-                    tipo = "FUNTZIO POLINOMIKOA"
+        elif f.has(sp.log):
+            tipo = "FUNTZIO LOGARITMIKOA"
 
-            elif f.has(sp.log):
-                tipo = "FUNTZIO LOGARITMIKOA"
+        elif f.is_polynomial():
+            deg = sp.degree(f)
+            if deg == 1:
+                tipo = "FUNTZIO LINEALA"
+            elif deg == 2:
+                tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
+            else:
+                tipo = "FUNTZIO POLINOMIKOA"
 
-        if tipo:
+        if tipo in funtzioak:
             st.markdown(
                 f"<div class='funtzio-tipo'>{tipo}</div>",
                 unsafe_allow_html=True
             )
+            for k, v in funtzioak[tipo].items():
+                st.write(f"**{k}**: {v}")
         else:
             st.write("🚧 Laster erabilgarri")
 
