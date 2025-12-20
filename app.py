@@ -141,30 +141,8 @@ with col_left:
     <p style='font-size:13px;'>Saioa Otegi Merino</p>
     """, unsafe_allow_html=True)
 
-    st.markdown(
-        f"""
-        <div class='funtzio-tipo' style='cursor:pointer;' onclick="window.dispatchEvent(new CustomEvent('togglePistak'))">
-            Pistak...
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-# Streamlit botoia moduko funtzioa simulatzeko
-if "togglePistak" not in st.session_state:
-    st.session_state.togglePistak = False
-
-# Erabili botoi benetako Streamlit botoia ez denez, klikak detektatzeko txiki-txiki:
-toggle = st.button(" ")  # erabilgarria da tarteko, Streamlit ez du JS onclick funtzioa zuzenean detektatzen
-if toggle:
+    if st.button("Pistak..."):
     st.session_state.pistak = not st.session_state.pistak
-
-
-    if st.session_state.pistak:
-        for izena, d in funtzioak.items():
-            st.write(f"**{izena}** → {d['Adierazpen aljebraikoa']}")
-
-
 
 # -----------------------------
 # ERDIA — INPUT + GRAFIKOA
