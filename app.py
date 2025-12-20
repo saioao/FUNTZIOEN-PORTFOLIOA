@@ -218,8 +218,11 @@ with col_right:
             if any(p.is_Pow and p.exp.is_Rational and p.exp.q == 2 for p in f.atoms(sp.Pow)):
                 tipo = "FUNTZIO IRRAZIONALA"
 
-            # EXPONENTZIALAK: a^x, e^x (oinarria konstantea, indizea x)
-            elif any(p.is_Pow and x in p.exp.free_symbols and not p.base.has(x) for p in f.atoms(sp.Pow)):
+            # EXPONENTZIALAK: a^x edo e^x
+            elif f.has(sp.exp) or any(
+                p.is_Pow and x in p.exp.free_symbols and not p.base.has(x)
+                for p in f.atoms(sp.Pow)
+            ):
                 tipo = "FUNTZIO ESPONENTZIALA"
 
             # POLINOMIOAK: x^n bakarrik
