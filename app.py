@@ -40,21 +40,6 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 """, unsafe_allow_html=True)
 
 # =============================
-# IZENBURUA
-# =============================
-st.markdown(
-    """
-    <h2 style='text-align:center; margin-bottom:4px;'>
-        -FUNTZIOEN PORTFOLIOA-
-    </h2>
-    <p style='text-align:center; color:#666666; font-size:14px; margin-top:0;'>
-        Saioa Otegi Merino
-    </p>
-    """,
-    unsafe_allow_html=True
-)
-
-# =============================
 # FUNTZIO MOTAK
 # =============================
 funtzioak = {
@@ -152,6 +137,22 @@ col_left, col_center, col_right = st.columns(3)
 # -----------------------------
 # Pistak... PISTAK (EZKERRA)
 # -----------------------------
+with col_left:
+    st.markdown(
+        """
+        <h3 style='margin-bottom:4px;'>
+            -FUNTZIOEN PORTFOLIOA-
+        </h3>
+        <p style='color:#666666; font-size:13px; margin-top:0;'>
+            Saioa Otegi Merino
+        </p>
+        """,
+        unsafe_allow_html=True
+    )
+
+    if st.button("Pistak..."):
+        st.session_state.pistak = not st.session_state.pistak
+
 with col_left:
     if st.button("Pistak..."):
         st.session_state.pistak = not st.session_state.pistak
