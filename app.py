@@ -213,7 +213,7 @@ with col_center:
         st.pyplot(fig)
 
     except:
-        st.warning("⚠️ Funtzioa ez da zuzena")
+        st.warning("👀 Errepasatu idatzitakoa")
 
 # -----------------------------
 # ESKUINA — EZAUGARRIAK
@@ -268,7 +268,7 @@ with col_right:
             for k, v in funtzioak[tipo].items():
                 st.write(f"**{k}**: {v}")
         else:
-            st.write("Jon, kotilla, hau oraindik ez degu eman...")
+            st.write("Coming soon...")
 
     except Exception as e:
         st.write("—")
