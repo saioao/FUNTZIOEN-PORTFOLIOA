@@ -15,16 +15,8 @@ st.set_page_config(
 # =============================
 # ESTILOA (MINIMALISTA)
 # =============================
-.stButton>button.pistak {
-    color: white;
-    background-color: black;
-    font-weight: bold;
-    width: 100%;
-    height: 3em;
-    border-radius: 5px;
-}
 
-st.markdown("""
+st.st.markdown("""
 <style>
 .stApp {
     background-color: #ffffff;
@@ -44,9 +36,14 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 .stButton>button {
     width: 100%;
     height: 3em;
+    background-color: black;  /* botoi beltza */
+    color: white;             /* testua zuria */
+    font-weight: bold;
+    border-radius: 4px;
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 # =============================
 # FUNTZIO MOTAK
