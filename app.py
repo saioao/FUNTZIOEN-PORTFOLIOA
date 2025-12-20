@@ -229,19 +229,6 @@ with col_center:
         elif f.has(sp.sqrt) or any(exp.is_Rational and exp.q == 2 for exp in f.atoms(sp.Pow)):
             tipo = "FUNTZIO IRRAZIONALA"
 
-        # ====================
-        # Ezaugarriak erakutsi
-        # ====================
-        if tipo in funtzioak:
-            st.markdown(
-                f"<div class='funtzio-tipo'>{tipo}</div>",
-                unsafe_allow_html=True
-            )
-            for k, v in funtzioak[tipo].items():
-                st.write(f"**{k.capitalize()}**: {v}")
-        else:
-            st.write("🚧 Laster erabilgarri")
-
     except Exception as e:
         st.warning(f"⚠️ Funtzioa ez da zuzena: {e}")
 
