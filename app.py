@@ -105,6 +105,9 @@ with col_center:
             f_num = sp.lambdify(x, f, modules=[{"pi": np.pi, "e": np.e}, "numpy"])
             with np.errstate(all="ignore"):
                 y_vals = f_num(x_vals)
+            
+            # 1️⃣ balio infinituak edo oso handiak kendu
+            y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
             # 2️⃣ jauzi handiak detektatu (asintotak)
             jauziak = np.abs(np.diff(y_vals))
