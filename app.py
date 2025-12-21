@@ -106,6 +106,16 @@ with col_center:
             with np.errstate(all="ignore"):
                 y_vals = f_num(x_vals)
 
+            # 1️⃣ balio infinituak edo oso handiak kendu
+            y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
+
+            # 2️⃣ jauzi handiak detektatu (asintotak)
+            jauziak = np.abs(np.diff(y_vals))
+
+            # 3️⃣ jauzi handien aurretik moztu marra
+            y_vals[1:][jauziak > 100] = np.nan
+
+
             # ASINTOTETAN MRRA EZ LOTZEKO
             y_vals = np.where(np.abs(y_vals) > 1e3, np.nan, y_vals)
 
