@@ -105,7 +105,10 @@ with col_center:
             f_num = sp.lambdify(x, f, modules=[{"pi": np.pi, "e": np.e}, "numpy"])
             with np.errstate(all="ignore"):
                 y_vals = f_num(x_vals)
-                y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
+
+            # ASINTOTETAN MRRA EZ LOTZEKO
+            y_vals = np.where(np.abs(y_vals) > 1e3, np.nan, y_vals)
+
 
         fig, ax = plt.subplots(figsize=(4, 2.5))
         ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
