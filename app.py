@@ -141,14 +141,17 @@ with col_right:
 
         if f.free_symbols == set():
             tipo = "FUNTZIO KONSTANTEA"
+
         elif f.has(x):
-            # IRRAZIONALAK
             if any(p.is_Pow and p.exp.is_Rational and p.exp.q == 2 for p in f.atoms(sp.Pow)):
                 tipo = "FUNTZIO IRRAZIONALA"
-            # EXPONENTZIALAK
-            elif f.has(sp.exp) or any(p.is_Pow and x in p.exp.free_symbols and not p.base.has(x) for p in f.atoms(sp.Pow)):
+
+            elif f.has(sp.exp) or any(
+                p.is_Pow and x in p.exp.free_symbols and not p.base.has(x)
+                for p in f.atoms(sp.Pow)
+            ):
                 tipo = "FUNTZIO ESPONENTZIALA"
-            # POLINOMIOAK
+
             elif f.is_polynomial():
                 deg = sp.degree(f, x)
                 if deg == 1:
@@ -157,19 +160,23 @@ with col_right:
                     tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
                 else:
                     tipo = "FUNTZIO POLINOMIKOA"
-            # LOGARITMOAK
+
             elif f.has(sp.log):
                 tipo = "FUNTZIO LOGARITMIKOA"
-            # ARRAZIONALA (bakarrik polinomio ez direnak)
+
             elif f.is_rational_function(x):
                 tipo = "FUNTZIO ARRAZIONALA"
 
+        # 🔑 HEMEN KLAVEA
         if tipo:
             st.markdown(f"<div class='funtzio-tipo'>{tipo}</div>", unsafe_allow_html=True)
             for k, v in funtzioak[tipo].items():
                 st.write(f"**{k}**: {v}")
         else:
+            # funtzioa ONDO idatzita dago, baina ez da gure 8etakoa
             st.write("Jon, flipau, hau oraindik ez degu eman...")
 
-    except Exception as e:
+    except:
+        # funtzioa GAIZKI idatzita
         st.write("—")
+
