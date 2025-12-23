@@ -74,7 +74,7 @@ with col_left:
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
-    f_input = st.text_input("✎ f(x)= (x^2, x², √x, x^(1/2), e^x…)", "x^2")
+    f_input = st.text_input("✎ f(x)= (x², √x, x^(1/2), e^x, pi+2...)", "x^2")
 
     # -----------------------------
     # GARBIKETA SINPLE ETA OROKORRA
