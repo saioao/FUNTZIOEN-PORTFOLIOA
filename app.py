@@ -133,7 +133,28 @@ with col_center:
 
         # 🔑 4️⃣ KASU OROKOR GARRANTZITSUA
         if np.all(np.isnan(y_vals)):
-            # grafiko h
+            # grafiko hutsik, baina ardatzak bai
+            fig, ax = plt.subplots(figsize=(4, 2.5))
+            ax.set_xlim(-5, 5)
+            ax.set_ylim(-5, 5)
+            ax.grid(True, linestyle="--", alpha=0.4)
+            ax.spines["top"].set_visible(False)
+            ax.spines["right"].set_visible(False)
+            st.pyplot(fig)
+            st.stop()
+
+        # 5️⃣ GRAFIKO NORMALA
+        fig, ax = plt.subplots(figsize=(4, 2.5))
+        ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
+        ax.grid(True, linestyle="--", alpha=0.4)
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+        st.pyplot(fig)
+
+    except:
+        # ❌ BAKARRIK SINTAXI AKATSETAN
+        st.warning("👀 Errepasatu (kontuan izan adibidea)")
+
 
 
 
