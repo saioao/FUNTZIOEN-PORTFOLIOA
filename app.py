@@ -105,21 +105,29 @@ with col_center:
             f_num = sp.lambdify(x, f, modules=[{"pi": np.pi, "e": np.e}, "numpy"])
             with np.errstate(all="ignore"):
                 y_vals = f_num(x_vals)
-            
-            # 1️⃣ balio infinituak edo oso handiak kendu
+
+            # ❌ balio ez-errealak kendu
             y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
-            # 2️⃣ jauzi handiak detektatu (asintotak)
+            # 🔹 jauzi handiak (asintotak) detektatu
             jauziak = np.abs(np.diff(y_vals))
-
-            # 3️⃣ jauzi handien aurretik moztu marra
             y_vals[1:][jauziak > 100] = np.nan
 
-
-            # ASINTOTETAN MRRA EZ LOTZEKO
+            # 🔹 balio oso handiak moztu
             y_vals = np.where(np.abs(y_vals) > 1e3, np.nan, y_vals)
 
+        # 🔑 KASU BEREZIA: BALIO ERREALIK EZ
+        if np.all(np.isnan(y_vals)):
+            fig, ax = plt.subplots(figsize=(4, 2.5))
+            ax.set_xlim(-5, 5)
+            ax.set_ylim(-5, 5)
+            ax.grid(True, linestyle="--", alpha=0.4)
+            ax.spines["top"].set_visible(False)
+            ax.spines["right"].set_visible(False)
+            st.pyplot(fig)
+            st.stop()
 
+        # 🔹 grafiko normala
         fig, ax = plt.subplots(figsize=(4, 2.5))
         ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
         ax.grid(True, linestyle="--", alpha=0.4)
@@ -129,6 +137,7 @@ with col_center:
 
     except:
         st.warning("👀 Errepasatu (kontuan izan adibidea)")
+
 
 # -----------------------------
 # ESKUINA — EZAUGARRIAK
