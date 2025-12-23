@@ -91,52 +91,50 @@ with col_left:
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
-    f_input = st.text_input("✎ f(x)= (x^2, √x, x^(1/2), e^x, 3^x, pi*x…)", "x^2")
+
+    f_input = st.text_input(
+        "✎ f(x)= (x^2, √x, x^(1/2), e^x, 3^x, pi*x…)",
+        "x^2"
+    )
+
+    # GARBIKETA SINPLE ETA OROKORRA
     f_clean = f_input.replace("^", "**")
-    f_clean = re.sub(r"√\s*([a-zA-Z0-9_()]+)", r"sqrt(\1)", f_clean)
+    f_clean = f_clean.replace("√", "sqrt")
 
     try:
+        # 1️⃣ ADIERAZPENA ULERTU
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
+
+        # 2️⃣ X BALIOAK
         x_vals = np.linspace(-5, 5, 400)
 
+        # 3️⃣ Y BALIOAK KALKULATU
         if f.free_symbols == set():
             y_vals = np.full_like(x_vals, float(f))
         else:
-            f_num = sp.lambdify(x, f, modules=[{"pi": np.pi, "e": np.e}, "numpy"])
+            f_num = sp.lambdify(
+                x,
+                f,
+                modules=[{"pi": np.pi, "e": np.e}, "numpy"]
+            )
+
             with np.errstate(all="ignore"):
                 y_vals = f_num(x_vals)
 
-            # ❌ balio ez-errealak kendu
+            # balio ez-errealak kendu
             y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
-            # 🔹 jauzi handiak (asintotak) detektatu
+            # jauzi handiak (asintotak)
             jauziak = np.abs(np.diff(y_vals))
             y_vals[1:][jauziak > 100] = np.nan
 
-            # 🔹 balio oso handiak moztu
+            # balio oso handiak moztu
             y_vals = np.where(np.abs(y_vals) > 1e3, np.nan, y_vals)
 
-        # 🔑 KASU BEREZIA: BALIO ERREALIK EZ
+        # 🔑 4️⃣ KASU OROKOR GARRANTZITSUA
         if np.all(np.isnan(y_vals)):
-            fig, ax = plt.subplots(figsize=(4, 2.5))
-            ax.set_xlim(-5, 5)
-            ax.set_ylim(-5, 5)
-            ax.grid(True, linestyle="--", alpha=0.4)
-            ax.spines["top"].set_visible(False)
-            ax.spines["right"].set_visible(False)
-            st.pyplot(fig)
-            st.stop()
+            # grafiko h
 
-        # 🔹 grafiko normala
-        fig, ax = plt.subplots(figsize=(4, 2.5))
-        ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
-        ax.grid(True, linestyle="--", alpha=0.4)
-        ax.spines["top"].set_visible(False)
-        ax.spines["right"].set_visible(False)
-        st.pyplot(fig)
-
-    except:
-        st.warning("👀 Errepasatu (kontuan izan adibidea)")
 
 
 # -----------------------------
