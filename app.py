@@ -42,7 +42,7 @@ funtzioak = {
     "FUNTZIO ESPONENTZIALA": {"Adierazpen aljebraikoa": "f(x)=e^x", "Izate eremua": "ℝ", "Monotonia": "Gorakorra", "Kurbatura": "-", "Ebaki puntuak": "-", "Asintotak": "Horizontala: y=0", "Deribatua": "f′(x)=e^x", "Alderantzizkoa": "-"},
     "FUNTZIO LOGARITMIKOA": {"Adierazpen aljebraikoa": "f(x)=ln(x)", "Izate eremua": "Logaritmo barrukoak positiboa izan behar du", "Monotonia": "-", "Kurbatura": "-", "Ebaki puntuak": "Ordenatu ardatza: (1,0) puntuan ebakitzen du", "Asintotak": "Asintota bertikala izan ohi du logaritmoaren argumentua 0 denean", "Deribatua": "f′(x)=1/x", "Alderantzizkoa": "-"},
     "FUNTZIO KONSTANTEA": {"Adierazpen aljebraikoa": "f(x)=k", "Izate eremua": "ℝ", "Monotonia/Kurbatura": "Horizontal eta ez du kurbadurarik", "Ebaki puntuak": "Abzisa ardatza: (0,k); Ordenatu ardatza: ez du ebakitzen", "Asintotak": "Ez ditu", "Deribatua": "f′(x)=0", "Alderantzizkoa": "-"},
-    "FUNTZIO IRRAZIONALA": {"Adierazpen aljebraikoa": "f(x)=√x", "Izate eremua": "x≥0", "Monotonia": "-", "Kurbatura": "-", "Ebaki puntuak": "Abzisa ardatza: x=0; Ordenatu ardatza: y=0", "Asintotak": "Bertikala/horizontala", "Deribatua": "-", "Alderantzizkoa": "-"},
+    "FUNTZIO IRRAZIONALA": {"Adierazpen aljebraikoa": "f(x)=√x", "Izate eremua": "x≥0", "Monotonia": "-", "Kurbatura": "-", "Ebaki puntuak": "Abzisa ardatza: x=0; Ordenatu ardatza: y=0", "Asintotak": "Bertikala/horizontala", "Alderantzizkoa": "-"},
     "FUNTZIO ARRAZIONALA": {"Adierazpen aljebraikoa": "f(x)=(Q(x))/(P(x))", "Izate eremua": "ℝ−{Q(x)=0}", "Monotonia/Kurbatura": "-", "Ebaki puntuak": "Ordenatu ardatza: P(x)=0", "Asintotak": "Bertikala/Horizontala/Zeiharra", "Deribatua": "[f/g]′= (f′·g-f·g′)/(g²)", "Alderantzizkoa": "-"}
 }
 
