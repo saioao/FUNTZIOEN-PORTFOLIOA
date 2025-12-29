@@ -74,7 +74,7 @@ with col_left:
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
-    f_input = st.text_input("✎ f(x)= (x², √x, x^(1/2), e^x, pi+2...)", "x")
+    f_input = st.text_input("✎ f(x)= (x², √(x), x^(1/2), e^x, pi+2...)", "x")
 
     # -----------------------------
     # GARBIKETA SINPLE ETA OROKORRA
@@ -147,7 +147,7 @@ with col_right:
             for k,v in funtzioak[tipo].items():
                 st.write(f"**{k}**: {v}")
         else:
-            st.write("Jon, flipau, hau oraindik ez degu eman...")
+            st.write("👀 Errepasatu, (kontuan eduki adibideak)")
 
     except:
         st.write("—")
