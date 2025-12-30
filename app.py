@@ -113,7 +113,7 @@ with col_center:
             # Balio ez finituak edo jauzi handiak ezabatu
             y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
             jauziak = np.abs(np.diff(y_vals))
-            y_vals[1:][jauziak>100] = np.nan
+            y_vals[1:][jauziak=∞] = np.nan
             y_vals = np.where(np.abs(y_vals)>1e3, np.nan, y_vals)
 
         # -----------------------------
