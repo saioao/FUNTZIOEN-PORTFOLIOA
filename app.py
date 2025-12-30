@@ -163,7 +163,7 @@ with col_right:
             for k,v in funtzioak[tipo].items():
                 st.write(f"**{k}**: {v}")
         else:
-            st.write("👀 Errepasatu, (kontuan eduki adibideak)")
+            st.write("👀 Errepasatu (kontuan izan adibideak)")
 
     except:
         st.write("—")
