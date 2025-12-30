@@ -82,14 +82,15 @@ with col_center:
     f_input = st.text_input("✎ f(x)= (x², x³, x⁴⁵, √(x), e^x, pi+2...)", "x")
 
     # -----------------------------
-    # Superíndizeak ordezkatzeko funtzioa
-    sup_map = {"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"}
+    # Superíndizeak ordezkatzeko funtzio segurua
+    sup_map = {"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5",
+               "⁶":"6","⁷":"7","⁸":"8","⁹":"9"}
     def replace_superscripts(expr):
-        # Superíndize segida bat bilatu
+        # Regex: superíndize bat edo gehiago segidan
+        pattern = re.compile(r"[⁰¹²³⁴⁵⁶⁷⁸⁹]+")
         def repl(match):
-            s = match.group()
-            return "**" + "".join(sup_map[c] for c in s)
-        return re.sub(r"[⁰¹²³⁴⁵⁶⁷⁸⁹]+", repl, expr)
+            return "**" + "".join(sup_map[c] for c in match.group())
+        return pattern.sub(repl, expr)
 
     # -----------------------------
     # Sarrera garbitzea
@@ -131,6 +132,7 @@ with col_center:
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
         st.pyplot(fig)
+
 
 
 # -----------------------------
