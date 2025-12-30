@@ -69,35 +69,54 @@ with col_left:
         for izena, d in funtzioak.items():
             st.markdown(f"<div class='funtzio-tipo'>{izena} → {d['Adierazpen aljebraikoa']}</div>", unsafe_allow_html=True)
 
+import re
+import sympy as sp
+import numpy as np
+import matplotlib.pyplot as plt
+
 # -----------------------------
 # ERDIA — INPUT + GRAFIKOA
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
-    f_input = st.text_input("✎ f(x)= (x², √(x), x^(1/2), e^x, pi+2...)", "x")
+    f_input = st.text_input("✎ f(x)= (x², x³, x⁴⁵, √(x), e^x, pi+2...)", "x")
 
     # -----------------------------
-    # GARBIKETA SINPLE ETA OROKORRA
-    f_clean = f_input.replace("^", "**")
-    # Aldaketa handia: x² -> x**2
-    f_clean = f_clean.replace("²", "**2")
-    f_clean = f_clean.replace("√", "sqrt")
+    # Superíndizeak ordezkatzeko funtzioa
+    sup_map = {"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"}
+    def replace_superscripts(expr):
+        # Superíndize segida bat bilatu
+        def repl(match):
+            s = match.group()
+            return "**" + "".join(sup_map[c] for c in s)
+        return re.sub(r"[⁰¹²³⁴⁵⁶⁷⁸⁹]+", repl, expr)
 
+    # -----------------------------
+    # Sarrera garbitzea
+    f_clean = f_input.replace("^", "**")    # x^2 -> x**2
+    f_clean = f_clean.replace("√", "sqrt")  # √x -> sqrt(x)
+    f_clean = replace_superscripts(f_clean) # x³, x⁴⁵ -> x**3, x**45
+
+    # -----------------------------
+    # Funtzioa interpretatzen saiatu
     try:
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
-        x_vals = np.linspace(-5,5,400)
+        x_vals = np.linspace(-5, 5, 400)
+
         if f.free_symbols == set():
             y_vals = np.full_like(x_vals, float(f))
         else:
             f_num = sp.lambdify(x, f, modules=[{"pi": np.pi,"e": np.e},"numpy"])
             with np.errstate(all="ignore"):
                 y_vals = f_num(x_vals)
+            # Balio ez finituak edo jauzi handiak ezabatu
             y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
             jauziak = np.abs(np.diff(y_vals))
             y_vals[1:][jauziak>100] = np.nan
             y_vals = np.where(np.abs(y_vals)>1e3, np.nan, y_vals)
 
-        # 🔑 KASU OROKORRA: grafiko hutsik, baina eskubiko kolumna exekutatu
+        # -----------------------------
+        # Grafikoa erakutsi
         fig, ax = plt.subplots(figsize=(4,2.5))
         ax.plot(x_vals, y_vals, color="#333333", linewidth=2)
         ax.grid(True, linestyle="--", alpha=0.4)
@@ -105,14 +124,14 @@ with col_center:
         ax.spines["right"].set_visible(False)
         st.pyplot(fig)
 
-    except:
-        # bakarrik sintaxi akatsetarako
-        y_vals = np.full_like(x_vals, np.nan)
+    except Exception as e:
+        st.warning(f"Funtzioa interpretatzen errorea: {e}")
         fig, ax = plt.subplots(figsize=(4,2.5))
         ax.grid(True, linestyle="--", alpha=0.4)
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
         st.pyplot(fig)
+
 
 # -----------------------------
 # ESKUINA — EZAUGARRIAK
