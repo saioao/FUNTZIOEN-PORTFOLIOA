@@ -110,11 +110,8 @@ with col_center:
             f_num = sp.lambdify(x, f, modules=[{"pi": np.pi,"e": np.e},"numpy"])
             with np.errstate(all="ignore"):
                 y_vals = f_num(x_vals)
-            # Balio ez finituak edo jauzi handiak ezabatu
+            # ±∞ edo NaN balioak ezabatu
             y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
-            jauziak = np.abs(np.diff(y_vals))
-            y_vals[1:][jauziak=∞] = np.nan
-            y_vals = np.where(np.abs(y_vals)>1e3, np.nan, y_vals)
 
         # -----------------------------
         # Grafikoa erakutsi
@@ -132,8 +129,6 @@ with col_center:
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
         st.pyplot(fig)
-
-
 
 # -----------------------------
 # ESKUINA — EZAUGARRIAK
