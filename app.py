@@ -8,7 +8,7 @@ import re
 # ORRIALDEAREN KONFIGURAZIOA
 # =============================
 st.set_page_config(
-    page_title="-FUNTZIOEN PORTFOLIOA?-",
+    page_title="-FUNTZIOEN PORTFOLIOA-",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
