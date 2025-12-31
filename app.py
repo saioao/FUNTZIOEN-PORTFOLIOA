@@ -92,7 +92,7 @@ with col_center:
 
     try:
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
-        x_vals = np.linspace(-5, 5, 400)
+        x_vals = np.linspace(0.001, 5, 400)
         f_num = sp.lambdify(x, f, modules=["numpy"])
         y_vals = f_num(x_vals)
         y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
