@@ -77,17 +77,26 @@ with col_center:
 
     sup_map = {"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"}
     def replace_superscripts(expr):
-        return re.sub(r"[⁰¹²³⁴⁵⁶⁷⁸⁹]+",
-                      lambda m: "**" + "".join(sup_map[c] for c in m.group()),
-                      expr)
+        return re.sub(
+            r"[⁰¹²³⁴⁵⁶⁷⁸⁹]+",
+            lambda m: "**" + "".join(sup_map[c] for c in m.group()),
+            expr
+        )
 
+    # -----------------------------
+    # Sarrera garbitzea
     f_clean = f_input.replace("^", "**")
     f_clean = f_clean.replace("√", "sqrt")
     f_clean = replace_superscripts(f_clean)
 
-    # 🔑 LOGARITMOAK KONPONTZEN DITUEN LERROA
-    f_clean = re.sub(r"log_([0-9]+)\((.*?)\)", r"log(\2,\1)", f_clean)
+    # log_2(3x) -> log(3*x,2)
+    f_clean = re.sub(
+        r"log_([0-9a-zA-Z]+)\(([^)]+)\)",
+        r"log(\2,\1)",
+        f_clean
+    )
 
+    # 3x -> 3*x
     f_clean = re.sub(r"(\d)(x)", r"\1*\2", f_clean)
 
     try:
@@ -97,8 +106,8 @@ with col_center:
         y_vals = f_num(x_vals)
         y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
-        fig, ax = plt.subplots(figsize=(4,2.5))
-        ax.plot(x_vals, y_vals, color="#333333")
+        fig, ax = plt.subplots(figsize=(4, 2.5))
+        ax.plot(x_vals, y_vals)
         ax.grid(True, linestyle="--", alpha=0.4)
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
@@ -106,6 +115,7 @@ with col_center:
 
     except Exception as e:
         st.warning(f"Errorea: {e}")
+
 
 # -----------------------------
 # ESKUINA
