@@ -119,9 +119,6 @@ with col_center:
     except Exception:
         st.error("❌ Ezin da funtzioa interpretatu.")
 
-
-
-
 # -----------------------------
 # ESKUINA
 # -----------------------------
