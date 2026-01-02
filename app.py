@@ -101,14 +101,13 @@ with col_center:
         # ==============================
         # JAUZI INFINITUAK EZ MARRAZTU
         # ==============================
+        finite_mask = np.isfinite(y_vals)
         fig, ax = plt.subplots(figsize=(4, 2.5))
-
         ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
         ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
         ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
 
-        # segmentu bakoitza banan-banan margotu, Inf edo NaN dutenak mozteko
-        finite_mask = np.isfinite(y_vals)
+        # finite segmentu bakoitza banan-banan margotu
         start = None
         for i in range(len(x_vals)):
             if finite_mask[i]:
@@ -130,7 +129,6 @@ with col_center:
         st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
     except Exception:
         st.error("❌ Ezin da funtzioa interpretatu.")
-
 
 # -----------------------------
 # ESKUINA
