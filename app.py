@@ -107,7 +107,7 @@ with col_center:
         ax.grid(True, linestyle="--", alpha=0.4)
         # ardatz beltzak
         ax.axhline(0, color="#949494", linewidth=1)
-        ax.axvline(0, color="b#949494", linewidth=1)
+        ax.axvline(0, color="#949494", linewidth=1)
         # goiko eta eskumako ertzak ez
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
