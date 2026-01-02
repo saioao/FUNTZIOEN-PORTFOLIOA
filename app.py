@@ -62,7 +62,7 @@ col_left, col_center, col_right = st.columns(3)
 # -----------------------------
 with col_left:
     st.markdown("<h3>-FUNTZIOEN PORTFOLIOA-</h3><p style='font-size:13px;'>Saioa Otegi Merino</p>", unsafe_allow_html=True)
-    if st.button("❔", key="pista_button"):  # ← Aldaketa bakarra
+    if st.button("❔"):
         st.session_state.pistak = not st.session_state.pistak
     if st.session_state.pistak:
         for izena, d in funtzioak.items():
@@ -98,30 +98,17 @@ with col_center:
             f_num = sp.lambdify(x, f, modules=["numpy"])
             y_vals = f_num(x_vals)
 
-        # NAN edo Inf balioak -> np.nan
-        y_vals[~np.isfinite(y_vals)] = np.nan
+        # Inf eta NaN balioak ez sartzea
+        y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
         fig, ax = plt.subplots(figsize=(4, 2.5))
-        # grid argia, zorder=0
         ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
-        # ardatzak azpitik
         ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
         ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
 
-        # MARRA SEGMENTUEN MODU ZUZENA
-        # NaN duten puntuak mozteko
-        isnan = np.isnan(y_vals)
-        # segmentu bakoitza plotatzeko
-        start = 0
-        while start < len(y_vals):
-            # non dagoen hurrengo NaN
-            try:
-                end = np.where(isnan[start:])[0][0] + start
-            except IndexError:
-                end = len(y_vals)
-            if start < end:
-                ax.plot(x_vals[start:end], y_vals[start:end], color="#333333", linewidth=1.5, zorder=1)
-            start = end + 1
+        # np.ma.masked_invalid erabiliz, NaN eta Inf balioak ez dira marrazten
+        y_masked = np.ma.masked_invalid(y_vals)
+        ax.plot(x_vals, y_masked, color="#333333", linewidth=1.5, zorder=1)
 
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
@@ -131,7 +118,6 @@ with col_center:
         st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
     except Exception:
         st.error("❌ Ezin da funtzioa interpretatu.")
-
 
 # -----------------------------
 # ESKUINA
