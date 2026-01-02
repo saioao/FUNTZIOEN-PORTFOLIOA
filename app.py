@@ -73,7 +73,7 @@ with col_left:
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
-    f_input = st.text_input("✎ f(x)= (4*x², √(x), e^x, pi+2, log_2(3x)...)", "x")
+    f_input = st.text_input("✎ f(x)= (4*x², √(x), e^x, pi+2, log_2(3x), 1/x...)", "x")
 
     sup_map = {"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"}
     def replace_superscripts(expr):
@@ -101,20 +101,20 @@ with col_center:
         # ==============================
         # JAUZI INFINITUAK EZ MARRAZTU
         # ==============================
-        fig, ax = plt.subplots(figsize=(4, 2.5))
+        y_vals = np.array(y_vals, dtype=np.float64)
+        finite_mask = np.isfinite(y_vals)
+        x_finite = x_vals[finite_mask]
+        y_finite = y_vals[finite_mask]
 
+        fig, ax = plt.subplots(figsize=(4, 2.5))
         ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
         ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
         ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
 
-        # NAN edo Inf dituzten balioak ez marrazteko, eta sign aldaketak mozteko
-        y_vals = np.array(y_vals, dtype=np.float64)
-        finite_mask = np.isfinite(y_vals)
+        # segmentu bakoitza banan-banan margotu, Inf edo NaN mozteko, eta sign aldaketa detektatu
         start = None
-
         for i in range(len(x_vals)):
             if finite_mask[i]:
-                # Sign aldaketa detektatu
                 if start is not None and i > 0 and np.sign(y_vals[i]) != np.sign(y_vals[i-1]):
                     ax.plot(x_vals[start:i], y_vals[start:i], color="#333333", linewidth=1.5, zorder=1)
                     start = i
@@ -124,7 +124,6 @@ with col_center:
                 if start is not None:
                     ax.plot(x_vals[start:i], y_vals[start:i], color="#333333", linewidth=1.5, zorder=1)
                     start = None
-        # azken segmentua
         if start is not None:
             ax.plot(x_vals[start:], y_vals[start:], color="#333333", linewidth=1.5, zorder=1)
 
@@ -143,8 +142,8 @@ with col_center:
 
     except (sp.SympifyError, SyntaxError, TypeError):
         st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
-    except Exception:
-        st.error("❌ Ezin da funtzioa interpretatu.")
+    except Exception as e:
+        st.error(f"❌ Ezin da funtzioa interpretatu. {str(e)}")
 
 # -----------------------------
 # ESKUINA
