@@ -83,28 +83,21 @@ with col_center:
             expr
         )
 
-    # -----------------------------
-    # Sarrera garbitzea
-    f_clean = f_input.replace("^", "**")
-    f_clean = f_clean.replace("√", "sqrt")
+    f_clean = f_input.replace("^", "**").replace("√", "sqrt")
     f_clean = replace_superscripts(f_clean)
-
-    # log_2(3x) -> log(3*x,2)
-    f_clean = re.sub(
-        r"log_([0-9a-zA-Z]+)\(([^)]+)\)",
-        r"log(\2,\1)",
-        f_clean
-    )
-
-    # 3x -> 3*x
+    f_clean = re.sub(r"log_([0-9a-zA-Z]+)\(([^)]+)\)", r"log(\2,\1)", f_clean)
     f_clean = re.sub(r"(\d)(x)", r"\1*\2", f_clean)
 
     try:
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
         x_vals = np.linspace(0.001, 5, 400)
-        f_num = sp.lambdify(x, f, modules=["numpy"])
-        y_vals = f_num(x_vals)
-        y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
+
+        if f.free_symbols == set():
+            y_vals = np.full_like(x_vals, float(f))
+        else:
+            f_num = sp.lambdify(x, f, modules=["numpy"])
+            y_vals = f_num(x_vals)
+            y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
         fig, ax = plt.subplots(figsize=(4, 2.5))
         ax.plot(x_vals, y_vals)
@@ -116,7 +109,6 @@ with col_center:
     except Exception as e:
         st.warning(f"Errorea: {e}")
 
-
 # -----------------------------
 # ESKUINA
 # -----------------------------
@@ -124,12 +116,30 @@ with col_right:
     st.subheader("︙EZAUGARRIAK︙")
     try:
         tipo = None
+
         if f.free_symbols == set():
             tipo = "FUNTZIO KONSTANTEA"
+
+        elif f.is_polynomial():
+            gradua = sp.degree(f)
+            if gradua == 1:
+                tipo = "FUNTZIO LINEALA"
+            elif gradua == 2:
+                tipo = "2. MAILAKO FUNTZIO POLINOMIKOA"
+            else:
+                tipo = "FUNTZIO POLINOMIKOA"
+
+        elif f.has(sp.exp):
+            tipo = "FUNTZIO ESPONENTZIALA"
+
         elif f.has(sp.log):
             tipo = "FUNTZIO LOGARITMIKOA"
-        elif f.is_polynomial():
-            tipo = "FUNTZIO POLINOMIKOA"
+
+        elif f.has(sp.sqrt):
+            tipo = "FUNTZIO IRRAZIONALA"
+
+        elif f.is_rational_function(x):
+            tipo = "FUNTZIO ARRAZIONALA"
 
         if tipo:
             st.markdown(f"<div class='funtzio-tipo'>{tipo}</div>", unsafe_allow_html=True)
