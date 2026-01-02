@@ -90,7 +90,7 @@ with col_center:
 
     try:
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
-        x_vals = np.linspace(-5, 5, 2000)  # gehiago puntuak infinituak mozteko
+        x_vals = np.linspace(-5, 5, 2000)
 
         if f.free_symbols == set():
             y_vals = np.full_like(x_vals, float(f))
@@ -101,14 +101,15 @@ with col_center:
         # NAN edo Inf balioak -> np.nan
         y_vals[~np.isfinite(y_vals)] = np.nan
 
+        # Balio "oso handiak" moztea ±1e3 baino handiagoak
+        y_vals[np.abs(y_vals) > 1e3] = np.nan
+
         fig, ax = plt.subplots(figsize=(4, 2.5))
-        # grid argia, zorder=0
         ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
-        # ardatzak azpitik
         ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
         ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
 
-        # Plot: nan dituzten segmentuak moztea
+        # Masked array: nan balioak ez marrazteko
         segments = np.ma.masked_invalid(y_vals)
         ax.plot(x_vals, segments, color="#333333", linewidth=1.5, zorder=1)
 
@@ -120,7 +121,6 @@ with col_center:
         st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
     except Exception:
         st.error("❌ Ezin da funtzioa interpretatu.")
-
 # -----------------------------
 # ESKUINA
 # -----------------------------
