@@ -73,7 +73,7 @@ with col_left:
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
-    f_input = st.text_input("✎ f(x)= (4*x², √(x), e^x, pi+2, log_2(3x)...)", "x")
+    f_input = st.text_input("✎ f(x)= (4*x², √(x), e^x, pi+2, log_2(3x), 1/x...)", "x")
 
     sup_map = {"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"}
     def replace_superscripts(expr):
@@ -98,21 +98,29 @@ with col_center:
             f_num = sp.lambdify(x, f, modules=["numpy"])
             y_vals = f_num(x_vals)
 
-        # Inf eta NaN balioak ez sartzea
-        y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
-
+        # ==============================
+        # JAUZI INFINITUAK EZ MARRAZTU
+        # ==============================
         fig, ax = plt.subplots(figsize=(4, 2.5))
-        ax.grid(True, linestyle="--", alpha=0.4)
-        ax.axhline(0, color="#949494", linewidth=0.5)
-        ax.axvline(0, color="#949494", linewidth=0.5)
 
-        # np.ma.masked_invalid erabiliz, NaN eta Inf balioak ez dira marrazten
-        y_masked = np.ma.masked_invalid(y_vals)
-        ax.plot(x_vals, y_masked, color="#333333", linewidth=1.5)
-        # NAN edo Inf balioak ez sartzea eta segmentu bakoitza berez margotzea
-        x_vals_finite = x_vals[np.isfinite(y_vals)]
-        y_vals_finite = y_vals[np.isfinite(y_vals)]
-        ax.plot(x_vals_finite, y_vals_finite, color="#333333", linewidth=1.5)
+        ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
+        ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
+        ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
+
+        # segmentu bakoitza banan-banan margotu, Inf edo NaN dutenak mozteko
+        finite_mask = np.isfinite(y_vals)
+        start = None
+        for i in range(len(x_vals)):
+            if finite_mask[i]:
+                if start is None:
+                    start = i
+            else:
+                if start is not None:
+                    ax.plot(x_vals[start:i], y_vals[start:i], color="#333333", linewidth=1.5, zorder=1)
+                    start = None
+        # azken segmentua
+        if start is not None:
+            ax.plot(x_vals[start:], y_vals[start:], color="#333333", linewidth=1.5, zorder=1)
 
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
@@ -122,6 +130,7 @@ with col_center:
         st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
     except Exception:
         st.error("❌ Ezin da funtzioa interpretatu.")
+
 
 # -----------------------------
 # ESKUINA
