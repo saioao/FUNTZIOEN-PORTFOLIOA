@@ -90,7 +90,7 @@ with col_center:
 
     try:
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
-        x_vals = np.linspace(-10, 10, 2000)
+        x_vals = np.linspace(-20, 20, 2000)
 
         if f.free_symbols == set():
             y_vals = np.full_like(x_vals, float(f))
