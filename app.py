@@ -73,7 +73,7 @@ with col_left:
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
-    f_input = st.text_input("✎ f(x)= (4*x², √(x), e^x, pi+2, log_2(3x)...)", "x")
+    f_input = st.text_input("✎ f(x)= (4*x², √(x), e^x, pi+2, log_2(3x), 1/x...)", "x")
 
     sup_map = {"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"}
     def replace_superscripts(expr):
@@ -90,28 +90,27 @@ with col_center:
 
     try:
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
-        x_vals = np.linspace(-5, 5, 800)
+        x_vals = np.linspace(-5, 5, 2000)  # gehiago puntuak behar infinitsuak mozteko
 
         if f.free_symbols == set():
             y_vals = np.full_like(x_vals, float(f))
         else:
             f_num = sp.lambdify(x, f, modules=["numpy"])
             y_vals = f_num(x_vals)
-        
-        # NAN edo Inf balioak ez sartzeko
-        mask = np.isfinite(y_vals)
-        x_vals_plot = x_vals[mask]
-        y_vals_plot = y_vals[mask]
 
+        # NAN edo Inf balioak ez sartzeko
+        y_vals[~np.isfinite(y_vals)] = np.nan  # Inf edo nan -> np.nan
+
+        # Segmentu moztea: nan balioak dituzten lerroak ez marrazteko
         fig, ax = plt.subplots(figsize=(4, 2.5))
-        # grid argia, azpitik
         ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
-        # ardatzak azpitik
         ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
         ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
-        # funtzioaren marra gainetik
-        ax.plot(x_vals_plot, y_vals_plot, color="#333333", linewidth=1.5, zorder=1)
-        # goiko eta eskubiko ertzak ez
+
+        # Plot segmentuak nan balioak zatitan
+        segments = np.ma.masked_invalid(y_vals)
+        ax.plot(x_vals, segments, color="#333333", linewidth=1.5, zorder=1)
+
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
         st.pyplot(fig)
@@ -120,8 +119,6 @@ with col_center:
         st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
     except Exception:
         st.error("❌ Ezin da funtzioa interpretatu.")
-
-
 
 # -----------------------------
 # ESKUINA
