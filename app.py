@@ -98,11 +98,7 @@ with col_center:
             f_num = sp.lambdify(x, f, modules=["numpy"])
             y_vals = f_num(x_vals)
         
-        # NAN edo Inf balioak ez sartzeko
-        mask = np.isfinite(y_vals)
-        x_vals_plot = x_vals[mask]
-        y_vals_plot = y_vals[mask]
-
+        
         fig, ax = plt.subplots(figsize=(4, 2.5))
         # grid argia, azpitik
         ax.grid(True, linestyle="--", alpha=0.4)
@@ -115,6 +111,12 @@ with col_center:
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
         st.pyplot(fig)
+
+        # NAN edo Inf balioak ez sartzeko
+        mask = np.isfinite(y_vals)
+        x_vals_plot = x_vals[mask]
+        y_vals_plot = y_vals[mask]
+
 
     except (sp.SympifyError, SyntaxError, TypeError):
         st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
