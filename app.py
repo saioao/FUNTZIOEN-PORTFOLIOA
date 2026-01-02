@@ -73,7 +73,7 @@ with col_left:
 # -----------------------------
 with col_center:
     x = sp.symbols("x")
-    f_input = st.text_input("✎ f(x)= (x², √(x), e^x, pi+2, log_2(3x)...)", "x")
+    f_input = st.text_input("✎ f(x)= (4*x², √(x), e^x, pi+2, log_2(3*x)...)", "x")
 
     sup_map = {"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"}
     def replace_superscripts(expr):
