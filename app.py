@@ -107,9 +107,9 @@ with col_center:
         st.pyplot(fig)
 
     except (sp.SympifyError, SyntaxError, TypeError):
-    st.error("👀 Adierazpena ez da zuzena. Kontuan eduki adibideak.")
+        st.error("👀 Adierazpena ez da zuzena. Kontuan eduki adibideak.")
     except Exception:
-    st.error("❌ Ezin da funtzioa interpretatu.")
+        st.error("❌ Ezin da funtzioa interpretatu.")
 
 
 # -----------------------------
