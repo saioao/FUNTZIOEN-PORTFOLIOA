@@ -109,6 +109,10 @@ with col_center:
         # np.ma.masked_invalid erabiliz, NaN eta Inf balioak ez dira marrazten
         y_masked = np.ma.masked_invalid(y_vals)
         ax.plot(x_vals, y_masked, color="#333333", linewidth=1.5, zorder=1)
+        # NAN edo Inf balioak ez sartzea eta segmentu bakoitza berez margotzea
+        x_vals_finite = x_vals[np.isfinite(y_vals)]
+        y_vals_finite = y_vals[np.isfinite(y_vals)]
+        ax.plot(x_vals_finite, y_vals_finite, color="#333333", linewidth=1.5, zorder=1)
 
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
