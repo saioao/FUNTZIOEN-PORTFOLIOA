@@ -71,9 +71,7 @@ with col_left:
 # -----------------------------
 # ERDIA
 # -----------------------------
-# -----------------------------
-# ERDIA
-# -----------------------------
+
 with col_center:
     x = sp.symbols("x")
     f_input = st.text_input("✎ f(x)= (4*x², √(x), e^x, pi+2, log_2(3x), 1/x...)", "x")
@@ -110,18 +108,12 @@ with col_center:
         ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
         ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
 
-        # NAN edo Inf dituzten balioak ez marrazteko, eta sign aldaketak mozteko
-        y_vals = np.array(y_vals, dtype=np.float64)
+        # segmentu bakoitza banan-banan margotu, Inf edo NaN dutenak mozteko
         finite_mask = np.isfinite(y_vals)
         start = None
-
         for i in range(len(x_vals)):
             if finite_mask[i]:
-                # Sign aldaketa detektatu
-                if start is not None and i > 0 and np.sign(y_vals[i]) != np.sign(y_vals[i-1]):
-                    ax.plot(x_vals[start:i], y_vals[start:i], color="#333333", linewidth=1.5, zorder=1)
-                    start = i
-                elif start is None:
+                if start is None:
                     start = i
             else:
                 if start is not None:
@@ -131,6 +123,12 @@ with col_center:
         if start is not None:
             ax.plot(x_vals[start:], y_vals[start:], color="#333333", linewidth=1.5, zorder=1)
 
+        # ==============================
+        # Y eskala mugatua infinito handiengatik
+        # ==============================
+        Ymax = 20
+        ax.set_ylim(-Ymax, Ymax)
+
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
         st.pyplot(fig)
@@ -139,6 +137,8 @@ with col_center:
         st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
     except Exception:
         st.error("❌ Ezin da funtzioa interpretatu.")
+
+
 
 # -----------------------------
 # ESKUINA
