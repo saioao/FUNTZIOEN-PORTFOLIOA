@@ -90,7 +90,6 @@ with col_center:
 
     try:
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
-        # 4 kuadranteak ikusgai
         x_vals = np.linspace(-5, 5, 800)
 
         if f.free_symbols == set():
@@ -98,17 +97,20 @@ with col_center:
         else:
             f_num = sp.lambdify(x, f, modules=["numpy"])
             y_vals = f_num(x_vals)
-            # NAN edo Inf balioak ez sartzeko
-            y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
+        
+        # NAN edo Inf balioak ez sartzeko
+        mask = np.isfinite(y_vals)
+        x_vals_plot = x_vals[mask]
+        y_vals_plot = y_vals[mask]
 
         fig, ax = plt.subplots(figsize=(4, 2.5))
-        # grid argia, zorder=0 azpitik
-        ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
-        # ardatz beltzak azpitik
-        ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
-        ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
+        # grid argia, azpitik
+        ax.grid(True, linestyle="--", alpha=0.4)
+        # ardatzak azpitik
+        ax.axhline(0, color="#949494", linewidth=0.5)
+        ax.axvline(0, color="#949494", linewidth=0.5)
         # funtzioaren marra gainetik
-        ax.plot(x_vals, y_vals, color="black", linewidth=1.5, zorder=1)
+        ax.plot(x_vals_plot, y_vals_plot, color="#333333", linewidth=1.5)
         # goiko eta eskubiko ertzak ez
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
@@ -118,6 +120,7 @@ with col_center:
         st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
     except Exception:
         st.error("❌ Ezin da funtzioa interpretatu.")
+
 
 # -----------------------------
 # ESKUINA
