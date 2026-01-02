@@ -106,8 +106,11 @@ with col_center:
         ax.spines["right"].set_visible(False)
         st.pyplot(fig)
 
-    except Exception as e:
-        st.warning(f"Errorea: {e}")
+    except (sp.SympifyError, SyntaxError, TypeError):
+    st.error("👀 Adierazpena ez da zuzena. Kontuan eduki adibideak.")
+    except Exception:
+    st.error("❌ Ezin da funtzioa interpretatu.")
+
 
 # -----------------------------
 # ESKUINA
