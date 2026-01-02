@@ -71,6 +71,9 @@ with col_left:
 # -----------------------------
 # ERDIA
 # -----------------------------
+# -----------------------------
+# ERDIA
+# -----------------------------
 with col_center:
     x = sp.symbols("x")
     f_input = st.text_input("✎ f(x)= (4*x², √(x), e^x, pi+2, log_2(3x), 1/x...)", "x")
@@ -90,7 +93,7 @@ with col_center:
 
     try:
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
-        x_vals = np.linspace(-15, 15, 3000)  # x ardatza luzeagoa
+        x_vals = np.linspace(-5, 5, 2000)
 
         if f.free_symbols == set():
             y_vals = np.full_like(x_vals, float(f))
@@ -98,17 +101,16 @@ with col_center:
             f_num = sp.lambdify(x, f, modules=["numpy"])
             y_vals = f_num(x_vals)
 
-        # ==============================
-        # JAUZI INFINITUAK EZ MARRAZTU
-        # ==============================
-        fig, ax = plt.subplots(figsize=(4, 2.5))
+        # =====================================
+        # JAUZI INFINITUAK EZ LOTU
+        # =====================================
+        finite_mask = np.isfinite(y_vals)  # NaN edo ±∞ diren balioak mozteko
 
+        fig, ax = plt.subplots(figsize=(4, 2.5))
         ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
         ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
         ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
 
-        # segmentu bakoitza banan-banan margotu, Inf edo NaN dituztenak mozteko
-        finite_mask = np.isfinite(y_vals)
         start = None
         for i in range(len(x_vals)):
             if finite_mask[i]:
@@ -118,7 +120,6 @@ with col_center:
                 if start is not None:
                     ax.plot(x_vals[start:i], y_vals[start:i], color="#333333", linewidth=1.5, zorder=1)
                     start = None
-        # azken segmentua
         if start is not None:
             ax.plot(x_vals[start:], y_vals[start:], color="#333333", linewidth=1.5, zorder=1)
 
@@ -130,7 +131,6 @@ with col_center:
         st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
     except Exception:
         st.error("❌ Ezin da funtzioa interpretatu.")
-
 
 # -----------------------------
 # ESKUINA
