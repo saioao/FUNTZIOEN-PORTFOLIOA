@@ -90,7 +90,8 @@ with col_center:
 
     try:
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
-        x_vals = np.linspace(0.001, 5, 400)
+        # 4 kuadranteak ikusgai
+        x_vals = np.linspace(-5, 5, 800)
 
         if f.free_symbols == set():
             y_vals = np.full_like(x_vals, float(f))
@@ -100,16 +101,23 @@ with col_center:
             y_vals = np.where(np.isfinite(y_vals), y_vals, np.nan)
 
         fig, ax = plt.subplots(figsize=(4, 2.5))
-        ax.plot(x_vals, y_vals)
+        # funtzioaren marra beltza
+        ax.plot(x_vals, y_vals, color="black")
+        # grid argia
         ax.grid(True, linestyle="--", alpha=0.4)
+        # ardatz beltzak
+        ax.axhline(0, color="black", linewidth=1)
+        ax.axvline(0, color="black", linewidth=1)
+        # goiko eta eskumako ertzak ez
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
         st.pyplot(fig)
 
     except (sp.SympifyError, SyntaxError, TypeError):
-        st.error("👀 Adierazpena ez da zuzena. Kontuan eduki adibideak.")
+        st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
     except Exception:
         st.error("❌ Ezin da funtzioa interpretatu.")
+
 
 
 # -----------------------------
