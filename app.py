@@ -102,12 +102,12 @@ with col_center:
 
         fig, ax = plt.subplots(figsize=(4, 2.5))
         # funtzioaren marra beltza
-        ax.plot(x_vals, y_vals, color="#333333", linewidth=1.5)
+        ax.plot(x_vals, y_vals, color="black", linewidth=1.5)
         # grid argia
         ax.grid(True, linestyle="--", alpha=0.4)
         # ardatz beltzak
-        ax.axhline(0, color="black", linewidth=1)
-        ax.axvline(0, color="black", linewidth=1)
+        ax.axhline(0, color="#949494", linewidth=1)
+        ax.axvline(0, color="b#949494", linewidth=1)
         # goiko eta eskumako ertzak ez
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
