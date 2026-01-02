@@ -102,12 +102,26 @@ with col_center:
         y_vals[~np.isfinite(y_vals)] = np.nan
 
         fig, ax = plt.subplots(figsize=(4, 2.5))
+        # grid argia, zorder=0
         ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
+        # ardatzak azpitik
         ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
         ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
 
-        segments = np.ma.masked_invalid(y_vals)
-        ax.plot(x_vals, segments, color="#333333", linewidth=1.5, zorder=1)
+        # MARRA SEGMENTUEN MODU ZUZENA
+        # NaN duten puntuak mozteko
+        isnan = np.isnan(y_vals)
+        # segmentu bakoitza plotatzeko
+        start = 0
+        while start < len(y_vals):
+            # non dagoen hurrengo NaN
+            try:
+                end = np.where(isnan[start:])[0][0] + start
+            except IndexError:
+                end = len(y_vals)
+            if start < end:
+                ax.plot(x_vals[start:end], y_vals[start:end], color="#333333", linewidth=1.5, zorder=1)
+            start = end + 1
 
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
@@ -117,6 +131,7 @@ with col_center:
         st.error("👀 Adierazpena ez da zuzena. Kontuan izan adibideak.")
     except Exception:
         st.error("❌ Ezin da funtzioa interpretatu.")
+
 
 # -----------------------------
 # ESKUINA
