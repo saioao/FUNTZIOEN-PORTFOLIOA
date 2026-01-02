@@ -71,6 +71,9 @@ with col_left:
 # -----------------------------
 # ERDIA
 # -----------------------------
+# -----------------------------
+# ERDIA
+# -----------------------------
 with col_center:
     x = sp.symbols("x")
     f_input = st.text_input("✎ f(x)= (4*x², √(x), e^x, pi+2, log_2(3x), 1/x...)", "x")
@@ -101,17 +104,24 @@ with col_center:
         # ==============================
         # JAUZI INFINITUAK EZ MARRAZTU
         # ==============================
-        finite_mask = np.isfinite(y_vals)
         fig, ax = plt.subplots(figsize=(4, 2.5))
+
         ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
         ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
         ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
 
-        # finite segmentu bakoitza banan-banan margotu
+        # NAN edo Inf dituzten balioak ez marrazteko, eta sign aldaketak mozteko
+        y_vals = np.array(y_vals, dtype=np.float64)
+        finite_mask = np.isfinite(y_vals)
         start = None
+
         for i in range(len(x_vals)):
             if finite_mask[i]:
-                if start is None:
+                # Sign aldaketa detektatu
+                if start is not None and i > 0 and np.sign(y_vals[i]) != np.sign(y_vals[i-1]):
+                    ax.plot(x_vals[start:i], y_vals[start:i], color="#333333", linewidth=1.5, zorder=1)
+                    start = i
+                elif start is None:
                     start = i
             else:
                 if start is not None:
