@@ -71,9 +71,6 @@ with col_left:
 # -----------------------------
 # ERDIA
 # -----------------------------
-# -----------------------------
-# ERDIA
-# -----------------------------
 with col_center:
     x = sp.symbols("x")
     f_input = st.text_input("✎ f(x)= (4*x², √(x), e^x, pi+2, log_2(3x), 1/x...)", "x")
@@ -93,7 +90,7 @@ with col_center:
 
     try:
         f = sp.sympify(f_clean, locals={"e": sp.E, "pi": sp.pi})
-        x_vals = np.linspace(-5, 5, 2000)
+        x_vals = np.linspace(-10, 10, 2000)
 
         if f.free_symbols == set():
             y_vals = np.full_like(x_vals, float(f))
@@ -101,16 +98,19 @@ with col_center:
             f_num = sp.lambdify(x, f, modules=["numpy"])
             y_vals = f_num(x_vals)
 
-        # =====================================
-        # JAUZI INFINITUAK EZ LOTU
-        # =====================================
-        finite_mask = np.isfinite(y_vals)  # NaN edo ±∞ diren balioak mozteko
+        # ==============================
+        # JAUZI INFINITUAK EZ MARRAZTU
+        # ==============================
+        finite_mask = np.isfinite(y_vals)
+        x_finite = x_vals[finite_mask]
+        y_finite = y_vals[finite_mask]
 
         fig, ax = plt.subplots(figsize=(4, 2.5))
         ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
         ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
         ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
 
+        # segmentu bakoitza banan-banan marrazteko
         start = None
         for i in range(len(x_vals)):
             if finite_mask[i]:
@@ -122,6 +122,15 @@ with col_center:
                     start = None
         if start is not None:
             ax.plot(x_vals[start:], y_vals[start:], color="#333333", linewidth=1.5, zorder=1)
+
+        # =====================
+        # X eta Y eskala automatikoki
+        # =====================
+        if x_finite.size > 0 and y_finite.size > 0:
+            x_margin = (max(x_finite) - min(x_finite)) * 0.05
+            y_margin = (max(y_finite) - min(y_finite)) * 0.1
+            ax.set_xlim(min(x_finite) - x_margin, max(x_finite) + x_margin)
+            ax.set_ylim(min(y_finite) - y_margin, max(y_finite) + y_margin)
 
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
@@ -170,5 +179,3 @@ with col_right:
                 st.write(f"**{k}**: {v}")
     except:
         pass
-
-
