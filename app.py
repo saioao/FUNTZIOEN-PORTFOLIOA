@@ -102,7 +102,7 @@ with col_center:
 
         fig, ax = plt.subplots(figsize=(4, 2.5))
         # funtzioaren marra beltza
-        ax.plot(x_vals, y_vals, color="black")
+        ax.plot(x_vals, y_vals, color="#333333", linewidth=1.5)
         # grid argia
         ax.grid(True, linestyle="--", alpha=0.4)
         # ardatz beltzak
