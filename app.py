@@ -106,9 +106,9 @@ with col_center:
         y_finite = y_vals[finite_mask]
 
         fig, ax = plt.subplots(figsize=(4, 2.5))
-        ax.grid(True, linestyle="--", alpha=0.4, zorder=0)
-        ax.axhline(0, color="#949494", linewidth=0.5, zorder=0)
-        ax.axvline(0, color="#949494", linewidth=0.5, zorder=0)
+        ax.grid(True, linestyle="--", alpha=0.4)
+        ax.axhline(0, color="#949494", linewidth=0.5)
+        ax.axvline(0, color="#949494", linewidth=0.5)
 
         # segmentu bakoitza banan-banan marrazteko
         start = None
@@ -118,10 +118,10 @@ with col_center:
                     start = i
             else:
                 if start is not None:
-                    ax.plot(x_vals[start:i], y_vals[start:i], color="#333333", linewidth=1.5, zorder=1)
+                    ax.plot(x_vals[start:i], y_vals[start:i], color="#333333", linewidth=1.5)
                     start = None
         if start is not None:
-            ax.plot(x_vals[start:], y_vals[start:], color="#333333", linewidth=1.5, zorder=1)
+            ax.plot(x_vals[start:], y_vals[start:], color="#333333", linewidth=1.5)
 
         # =====================
         # X eta Y eskala automatikoki
