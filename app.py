@@ -171,9 +171,6 @@ with col_right:
         elif f.has(sp.log):
             tipo = "FUNTZIO LOGARITMIKOA"
 
-        elif f.has(sp.sqrt):
-            tipo = "FUNTZIO IRRAZIONALA"
-
         elif (
             f.has(sp.sqrt)
             or any(
@@ -182,6 +179,9 @@ with col_right:
             )
         ):
             tipo = "FUNTZIO IRRAZIONALA"
+        
+        elif f.is_rational_function(x): 
+            tipo = "FUNTZIO ARRAZIONALA"
 
 
         if tipo:
