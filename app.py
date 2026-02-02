@@ -174,8 +174,15 @@ with col_right:
         elif f.has(sp.sqrt):
             tipo = "FUNTZIO IRRAZIONALA"
 
-        elif f.is_rational_function(x):
-            tipo = "FUNTZIO ARRAZIONALA"
+        elif (
+            f.has(sp.sqrt)
+            or any(
+                p.exp.is_Rational and p.exp.q != 1
+                for p in f.atoms(sp.Pow)
+            )
+        ):
+            tipo = "FUNTZIO IRRAZIONALA"
+
 
         if tipo:
             st.markdown(f"<div class='funtzio-tipo'>{tipo}</div>", unsafe_allow_html=True)
